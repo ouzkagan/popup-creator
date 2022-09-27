@@ -7,7 +7,7 @@ import {
   selectForm,
   UPDATE_FORM_STATE,
 } from '@/store/features/default.slice';
-import arrayMutators from 'final-form-arrays';
+import deepEqual from 'fast-deep-equal';
 import { Field, Form, FormSpy } from 'react-final-form';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -23,7 +23,7 @@ const FormStateToRedux = ({ form }) => {
   return (
     <FormSpy
       onChange={(state) => {
-        return state.dirty && updateForm(form, state);
+        return updateForm(form, state);
       }}
     />
   );
@@ -31,21 +31,25 @@ const FormStateToRedux = ({ form }) => {
 
 const FormStateFromRedux = ({ form }) => {
   const formValue = useSelector((state) => selectForm(state, form));
-  return <pre>{JSON.stringify(formValue, 0, 2)}</pre>;
+  return <pre>{JSON.stringify(formValue.values, 0, 2)}</pre>;
 };
 
 const Settings = (): JSX.Element => {
-  const selected_template_id = 't1';
-  // useSelector(
-  //   (state: AppState) => state.defaultForm.template_id
-  // );
+  const selected_template_id = useSelector(
+    (state: AppState) => state.defaultForm.template_id
+  );
+  const formValues =
+    useSelector((state) => selectForm(state, 'defaultForm').values) ||
+    initialGeneralSettings;
+  console.log('formvalues', formValues);
+
   // const initialGeneralSettings = useSelector(
   //   (state: AppState) => state.defaultForm
   // );
 
-  // const popupTemplates = useSelector(
-  //   (state: AppState) => state.popupTemplates.popups
-  // );
+  const popupTemplates = useSelector(
+    (state: AppState) => state.popupTemplates.popups
+  );
 
   const popupInputs = [
     {
@@ -110,7 +114,12 @@ const Settings = (): JSX.Element => {
 
   const filtered_template = (id: string) => {
     // console.log(popupInputs.filter((popup) => popup.id === id)[0].template);
-    return popupInputs.filter((popup) => popup.id === id)[0].template;
+    return popupTemplates.filter((popup) => popup.template_id === id)[0]
+      .content;
+  };
+  const filtered_settings = (id: string) => {
+    // console.log(popupInputs.filter((popup) => popup.id === id)[0].template);
+    return popupTemplates.filter((popup) => popup.template_id === id)[0];
   };
 
   const onSubmit = async (values) => {
@@ -125,11 +134,15 @@ const Settings = (): JSX.Element => {
         // form={form}
         onSubmit={onSubmit}
         mutators={{
-          ...arrayMutators,
+          // ...arrayMutators,
+          setValue: ([field, value], state, { changeValue }) => {
+            changeValue(state, field, () => value);
+          },
         }}
         initialValues={{
+          ...formValues,
+          template_id: selected_template_id,
           texts: [...filtered_template(selected_template_id)],
-          ...initialGeneralSettings,
           // texts: [
           //   {
           //     type: "text",
@@ -143,17 +156,13 @@ const Settings = (): JSX.Element => {
           //   },
           // ],
         }}
-        initialValuesEqual={() => true}
+        initialValuesEqual={deepEqual}
         subscription={{ submitting: true, pristine: true }}
-        render={({ handleSubmit, pristine, form, submitting }) => {
+        render={({ handleSubmit, pristine, form, submitting, values }) => {
           return (
             <form onSubmit={handleSubmit}>
               <FormStateToRedux form="defaultForm" />
 
-              <div>
-                <label>Company</label>
-                <Field name="company" component="input" />
-              </div>
               <div className="buttons">
                 {/* <button type="button" onClick={() => push('texts', undefined)}>
                   Add Customer
@@ -168,19 +177,26 @@ const Settings = (): JSX.Element => {
                   2
                 </span>
                 <div className="font-semibold text-lg leading-9 text-black tracking-half-tighter ">
-                  Appearance{' '}
+                  Appearance {selected_template_id}
                   <span className="font-normal">(Size, colors, logo)</span>
                 </div>
               </div>
               <div className="mt-8">
                 <span className="font-normal text-sm leading-4">Size</span>
                 <ul className="mt-4 flex items-center bg-[#F5F5F5] rounded-xl max-w-min h-12 p-1">
-                  {['Small', 'Medium', 'Large'].map((sizeType) => {
+                  {['SMALL', 'MEDIUM', 'LARGE'].map((sizeType) => {
                     return (
                       <li
                         key={sizeType}
-                        className={` px-[20px] py-[12px] flex justify-center items-center text-sm leading-4 text-center text-black rounded-[10px] `}
+                        className={` px-[20px] py-[12px] flex justify-center items-center text-sm leading-4 text-center text-black rounded-[10px] cursor-pointer
+                        ${
+                          formValues?.['size'] === sizeType
+                            ? 'bg-white'
+                            : 'text-[#777777]'
+                        }
+                        `}
                         // onClick={() => setCurrentPage(index + 1)}
+                        onClick={() => form.mutators.setValue('size', sizeType)}
                       >
                         {sizeType}
                       </li>
@@ -657,6 +673,7 @@ const Settings = (): JSX.Element => {
                 </button>
               </div>
               {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
+              {/* <pre>{JSON.stringify(formValues, 0, 2)}</pre> */}
               <FormStateFromRedux form="defaultForm" />
             </form>
           );

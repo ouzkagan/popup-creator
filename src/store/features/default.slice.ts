@@ -33,7 +33,7 @@ type HEX = `#${string}`;
 
 type Color = RGB | RGBA | HEX;
 
-export type PopupSizes = 'small' | 'medium' | 'large';
+export type PopupSizes = 'SMALL' | 'MEDIUM' | 'LARGE';
 export type PopupPositions =
   | 'TOP_CENTER'
   | 'TOP_RIGHT'
@@ -77,7 +77,7 @@ interface defaultStateInterface {
 export const initialState: defaultStateInterface = {
   template_id: 't1',
   // appearance
-  size: 'medium',
+  size: 'MEDIUM',
   position: 'CENTER_CENTER',
   color: '#F37C34',
   logo: null,
@@ -95,10 +95,6 @@ export const initialState: defaultStateInterface = {
   },
   browserLanguage: ['en-EN'],
   onExitIntent: true,
-
-  // move
-  pending: false,
-  error: false,
 };
 
 // This action is what we will call using the dispatch in order to trigger the API call.
