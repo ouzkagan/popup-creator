@@ -23,7 +23,7 @@ const Home: NextPage = ({
   popupTemplates,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const myState = useSelector((state: AppState) => state.defaultForm);
-  console.log(myState);
+  // console.log(myState);
 
   /* */
   return (

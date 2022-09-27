@@ -53,14 +53,8 @@ export type UrlSourceType = {
   exclude: string[];
   targetAll: boolean;
 };
-type Popup = {
-  template_id: string;
-  image: string;
-  content: null | [] | any;
-};
-interface defaultStateInterface {
-  popups: Popup[];
 
+interface defaultStateInterface {
   template_id: string;
   // appearance
   size: PopupSizes;
@@ -81,7 +75,6 @@ interface defaultStateInterface {
 }
 
 export const initialState: defaultStateInterface = {
-  popups: [],
   template_id: 't1',
   // appearance
   size: 'medium',
@@ -124,14 +117,11 @@ export const defaultFormSlice = createSlice({
   initialState,
   reducers: {
     UPDATE_FORM_STATE: (state, action) => {
-      state[action?.payload?.form] = action.payload.state;
+      const formName: string = action?.payload?.form;
+      console.log(action.payload.state);
+      state[formName] = action.payload.state;
     },
-    set_popups: (
-      state,
-      { payload }: PayloadAction<defaultStateInterface['popups']>
-    ) => {
-      state.popups = payload;
-    },
+
     set_template: (
       state,
       { payload }: PayloadAction<defaultStateInterface['template_id']>
@@ -145,15 +135,6 @@ export const defaultFormSlice = createSlice({
       state = {
         ...state,
         ...action.payload,
-      };
-    },
-  },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      console.log('HYDRATE', action.payload);
-      return {
-        ...state,
-        ...action.payload.defaultForm,
       };
     },
   },
@@ -175,18 +156,19 @@ export const defaultFormSlice = createSlice({
   // },
 });
 
-export const { UPDATE_FORM_STATE, set_template, set_popups } =
-  defaultFormSlice.actions;
+export const { UPDATE_FORM_STATE, set_template } = defaultFormSlice.actions;
 
 export const selectForm = (state: RootState, form: string) => {
-  return (state && state.defaultForm && state.defaultForm?.[form]) || {};
+  // console.log(state.defaultForm);
+
+  return (state && state.defaultForm && state.defaultForm[form]) || {};
 };
 
-export const popupValues = (state: RootState) => {
-  return (
-    (state && state.defaultForm && state.defaultForm.popupValues?.values) ||
-    (state && state.defaultForm && state.defaultForm)
-  );
-};
+// export const popupValues = (state: RootState) => {
+//   return (
+//     (state && state.defaultForm && state.defaultForm.popupValues?.values) ||
+//     (state && state.defaultForm && state.defaultForm)
+//   );
+// };
 
 export default defaultFormSlice;

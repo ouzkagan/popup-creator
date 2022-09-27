@@ -52,7 +52,7 @@ export const popupTemplatesSlice = createSlice({
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
-      console.log('HYDRATE', action.payload);
+      // console.log('HYDRATE', action.payload);
       return {
         ...state,
         ...action.payload.popupTemplates,

@@ -57,7 +57,7 @@ const MultiSelect = ({
   }, [selectedItems, items]);
 
   const onDropDownClicked = (newItem: Item) => {
-    console.log('on dropdown clicked called');
+    // console.log('on dropdown clicked called');
     setSelectedItems([...selectedItems, newItem]);
     setSelectedIds([...selectedIds, newItem.id]);
   };
