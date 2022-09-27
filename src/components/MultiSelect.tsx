@@ -24,7 +24,7 @@ const MultiSelect = ({
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [opened, setIsOpened] = useState(false);
   const wrapperRef = useRef<HTMLInputElement | null>(null);
-  const [wrapperClientHeight, setWrapperClientHeight] = useState(40);
+  const [, setWrapperClientHeight] = useState(40);
 
   const onClickWrapper = () => {
     setIsOpened(!opened);

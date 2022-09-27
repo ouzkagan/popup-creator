@@ -7,11 +7,12 @@ import {
 import { createWrapper } from 'next-redux-wrapper';
 import defaultForm from './features/default.slice';
 import dynamicForm from './features/dynamic.slice';
-
+import popupTemplates from './features/popupTemplates.slice';
 const rootReducer = combineReducers({
   // user: userReducer,
   [defaultForm.name]: defaultForm.reducer,
   [dynamicForm.name]: dynamicForm.reducer,
+  [popupTemplates.name]: popupTemplates.reducer,
 });
 
 const makeStore = () =>
@@ -31,4 +32,4 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   Action
 >;
 
-export const wrapper = createWrapper<AppStore>(makeStore);
+export const wrapper = createWrapper<AppStore>(makeStore, { debug: true });

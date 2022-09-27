@@ -1,6 +1,5 @@
 import type { RootState } from '@/store/index';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
 /*
@@ -54,8 +53,14 @@ export type UrlSourceType = {
   exclude: string[];
   targetAll: boolean;
 };
-
+type Popup = {
+  template_id: string;
+  image: string;
+  content: null | [] | any;
+};
 interface defaultStateInterface {
+  popups: Popup[];
+
   template_id: string;
   // appearance
   size: PopupSizes;
@@ -69,9 +74,14 @@ interface defaultStateInterface {
   urlBrowsing: UrlSourceType;
   browserLanguage: string[];
   onExitIntent: boolean;
+
+  // move
+  pending: boolean;
+  error: boolean;
 }
 
 export const initialState: defaultStateInterface = {
+  popups: [],
   template_id: 't1',
   // appearance
   size: 'medium',
@@ -92,7 +102,23 @@ export const initialState: defaultStateInterface = {
   },
   browserLanguage: ['en-EN'],
   onExitIntent: true,
+
+  // move
+  pending: false,
+  error: false,
 };
+
+// This action is what we will call using the dispatch in order to trigger the API call.
+// export const getPopupTemplates = createAsyncThunk(
+//   'defaultForm/popups',
+//   async () => {
+//     const res = await fetch('https://localhost:3000/api/popups');
+//     const popupTemplates = await res.json();
+
+//     return popupTemplates;
+//   }
+// );
+
 export const defaultFormSlice = createSlice({
   name: 'defaultForm',
   initialState,
@@ -100,26 +126,57 @@ export const defaultFormSlice = createSlice({
     UPDATE_FORM_STATE: (state, action) => {
       state[action?.payload?.form] = action.payload.state;
     },
+    set_popups: (
+      state,
+      { payload }: PayloadAction<defaultStateInterface['popups']>
+    ) => {
+      state.popups = payload;
+    },
     set_template: (
       state,
       { payload }: PayloadAction<defaultStateInterface['template_id']>
     ) => {
       state.template_id = payload;
     },
-  },
-  // Special reducer for hydrating the state. Special case for next-redux-wrapper
-  extraReducers: {
+    set_initial: (state, { payload }: PayloadAction<defaultStateInterface>) => {
+      state = payload;
+    },
     [HYDRATE]: (state, action) => {
-      return {
+      state = {
         ...state,
-        ...action.payload.state,
-        // state[action?.payload?.form]:{...action.payload.state},
+        ...action.payload,
       };
     },
   },
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      console.log('HYDRATE', action.payload);
+      return {
+        ...state,
+        ...action.payload.defaultForm,
+      };
+    },
+  },
+  // extraReducers: (builder) => {
+  //   builder
+  //     .addCase(getPopupTemplates.pending, (state) => {
+  //       state.pending = true;
+  //     })
+  //     .addCase(getPopupTemplates.fulfilled, (state, { payload }) => {
+  //       // When the API call is successful and we get some data,the data becomes the `fulfilled` action payload
+  //       state.pending = false;
+  //       state.popups = payload;
+  //       console.log('redux: ', state.popups);
+  //     })
+  //     .addCase(getPopupTemplates.rejected, (state) => {
+  //       state.pending = false;
+  //       state.error = true;
+  //     });
+  // },
 });
 
-export const { UPDATE_FORM_STATE, set_template } = defaultFormSlice.actions;
+export const { UPDATE_FORM_STATE, set_template, set_popups } =
+  defaultFormSlice.actions;
 
 export const selectForm = (state: RootState, form: string) => {
   return (state && state.defaultForm && state.defaultForm?.[form]) || {};

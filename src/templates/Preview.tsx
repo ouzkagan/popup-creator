@@ -1,8 +1,8 @@
 const Preview = (): JSX.Element => {
   return (
     <div className="relative mt-24">
-      <div className="sticky top-24 w-[800px] h-[468px] grid grid-cols-2  bg-white rounded-xl-[40px]   rounded-[40px]">
-        <div className="w-[300px]">
+      <div className="sticky top-24 w-[800px] h-[468px] grid grid-cols-2  bg-white shadow-xl   rounded-l-[40px]">
+        <div className="w-[300px] mx-auto">
           <div className="flex flex-col justify-center items-center  mx-auto">
             <h3 className="text-4xl	font-semibold  text-black leading-[3.375rem] mt-16">
               Sign up
@@ -59,7 +59,7 @@ const Preview = (): JSX.Element => {
             </span>
           </div>
           <div
-            className="bg-cover	h-full rounded-r-[40px]"
+            className="bg-cover	h-full "
             style={{
               backgroundImage: `url(/assets/default-popup.jpg)`,
             }}

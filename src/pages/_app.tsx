@@ -1,11 +1,18 @@
+import { wrapper } from '@/store';
 import '@/styles/globals.scss';
-import 'prismjs/themes/prism-dark.css';
-import { wrapper } from '../store/';
-
 import { AppProps } from 'next/app';
+import 'prismjs/themes/prism-dark.css';
+import { Provider } from 'react-redux';
+
 function App({ Component, pageProps }: AppProps): JSX.Element {
-  return <Component {...pageProps} />;
+  const { store, props } = wrapper.useWrappedStore({ ...pageProps });
+
+  return (
+    <Provider store={store}>
+      <Component {...props.pageProps} />
+    </Provider>
+  );
 }
 
 // export default App;
-export default wrapper.withRedux(App);
+export default App;
