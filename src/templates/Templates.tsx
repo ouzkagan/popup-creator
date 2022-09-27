@@ -63,7 +63,8 @@ const Templates = (): JSX.Element => {
                 <button
                   className="rounded-xl bg-white px-6 py-4 whitespace-nowrap  font-medium text-base leading-4 text-center text-purple-600 tracking-tight	"
                   onClick={() =>
-                    dispatch(set_template('t' + ((index % 3) + 1).toString()))
+                    // dispatch(set_template('t' + ((index % 3) + 1).toString()))
+                    dispatch(set_template('t' + (index + 1).toString()))
                   }
                 >
                   Select template

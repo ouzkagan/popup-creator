@@ -10,6 +10,8 @@ import {
 import deepEqual from 'fast-deep-equal';
 import { Field, Form, FormSpy } from 'react-final-form';
 import { useDispatch, useSelector } from 'react-redux';
+// types
+import { RootState } from '@/store';
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -36,11 +38,12 @@ const FormStateFromRedux = ({ form }) => {
 
 const Settings = (): JSX.Element => {
   const selected_template_id = useSelector(
-    (state: AppState) => state.defaultForm.template_id
+    (state: RootState) => state.defaultForm.template_id
   );
   const formValues =
-    useSelector((state) => selectForm(state, 'defaultForm').values) ||
-    initialGeneralSettings;
+    useSelector(
+      (state: RootState) => selectForm(state, 'defaultForm').values
+    ) || initialGeneralSettings;
   console.log('formvalues', formValues);
 
   // const initialGeneralSettings = useSelector(
@@ -48,78 +51,14 @@ const Settings = (): JSX.Element => {
   // );
 
   const popupTemplates = useSelector(
-    (state: AppState) => state.popupTemplates.popups
+    (state: RootState) => state.popupTemplates.popups
   );
 
-  const popupInputs = [
-    {
-      id: 't1',
-      image: 'image_url.com/image.png',
-      template: [
-        {
-          type: 'text',
-          name: 'popup_text_1',
-          value: 'Sign In',
-        },
-        {
-          type: 'text',
-          name: 'popup_text_2',
-          value: 'Our company is best',
-        },
-      ],
-    },
-    {
-      id: 't2',
-      image: 'image_url.com/image.png',
-      template: [
-        {
-          type: 'text',
-          name: 'popup_text_1',
-          value: 'Hello World',
-        },
-        {
-          type: 'text',
-          name: 'popup_text_2',
-          value: 'This is AMAZING!',
-        },
-        {
-          type: 'text',
-          name: 'popup_text_3',
-          value: 'Waow you are great dude!!',
-        },
-      ],
-    },
-    {
-      id: 't3',
-      image: 'image_url.com/image.png',
-      template: [
-        {
-          type: 'text',
-          name: 'popup_text_1',
-          value: 'ucuncu',
-        },
-        {
-          type: 'text',
-          name: 'popup_text_2',
-          value: 'ucuncu 2!',
-        },
-        {
-          type: 'text',
-          name: 'popup_text_3',
-          value: 'ucuncu 3!',
-        },
-      ],
-    },
-  ];
-
-  const filtered_template = (id: string) => {
+  const filtered_template = (id: string, type: string) => {
     // console.log(popupInputs.filter((popup) => popup.id === id)[0].template);
-    return popupTemplates.filter((popup) => popup.template_id === id)[0]
-      .content;
-  };
-  const filtered_settings = (id: string) => {
-    // console.log(popupInputs.filter((popup) => popup.id === id)[0].template);
-    return popupTemplates.filter((popup) => popup.template_id === id)[0];
+    return popupTemplates
+      .filter((popup) => popup.template_id === id)[0]
+      .content?.filter((c) => c.type === type);
   };
 
   const onSubmit = async (values) => {
@@ -142,7 +81,8 @@ const Settings = (): JSX.Element => {
         initialValues={{
           ...formValues,
           template_id: selected_template_id,
-          texts: [...filtered_template(selected_template_id)],
+          texts: [...filtered_template(selected_template_id, 'text')],
+          images: [...filtered_template(selected_template_id, 'image')],
           // texts: [
           //   {
           //     type: "text",

@@ -1,3 +1,4 @@
+import { PopupTemplate } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
@@ -26,13 +27,8 @@ browserLanguage: ['en-US', 'tr-TR']
 onExitIntent: {onExitIntentDegree: NONE|MEDIUM, overrideConditions:true}
 */
 
-type Popup = {
-  template_id: string;
-  image: string;
-  content: null | [];
-};
 interface defaultStateInterface {
-  popups: Popup[];
+  popups: PopupTemplate[];
 }
 
 export const initialState: defaultStateInterface = {

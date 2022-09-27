@@ -1,30 +1,29 @@
-export const popupTemplates = [
+import type { PopupTemplate } from './types';
+export const popupTemplates: PopupTemplate[] = [
   {
     template_id: 't1',
     image: '01 1.png',
     content: [
       {
-        identifier: 'headline',
+        name: 'headline',
         type: 'text',
         value: 'Security Code',
         color: '#000000',
       },
       {
-        identifier: 'description',
+        name: 'description',
         type: 'text',
         value: 'This code expires in 24 hours',
         color: '#000000',
       },
       {
-        identifier: 'button_text_1',
-        type: 'text',
         name: 'button_text_1',
+        type: 'text',
         value: 'Cancel',
       },
       {
-        identifier: 'button_text_2',
-        type: 'text',
         name: 'button_text_2',
+        type: 'text',
         value: 'Continue',
       },
     ],
@@ -34,27 +33,25 @@ export const popupTemplates = [
     image: '02 1.png',
     content: [
       {
-        identifier: 'headline',
+        name: 'headline',
         type: 'text',
         value: 'Install local now',
         color: '#000000',
       },
       {
-        identifier: 'description',
+        name: 'description',
         type: 'text',
         value: 'We’ve gone native, try it!',
         color: '#000000',
       },
       {
-        identifier: 'button_text_1',
-        type: 'text',
         name: 'button_text_1',
+        type: 'text',
         value: 'Continue',
       },
       {
-        identifier: 'button_text_2',
-        type: 'text',
         name: 'button_text_2',
+        type: 'text',
         value: 'Not Now',
       },
     ],
@@ -64,79 +61,73 @@ export const popupTemplates = [
     image: '03 1.png',
     content: [
       {
-        identifier: 'title',
+        name: 'title',
         type: 'text',
         value: 'Plans',
         color: '#000000',
       },
       {
-        identifier: 'headline',
+        name: 'headline',
         type: 'text',
         value: 'Choose best for you',
         color: '#000000',
       },
       {
-        identifier: 'description',
+        name: 'description',
         type: 'text',
         value: 'Only pay for the capacity that you use.',
         color: '#000000',
       },
 
       {
-        identifier: 'radio_name_1',
+        name: 'radio_name_1',
         type: 'text',
-        name: 'radio_text_1',
         value: 'Starter',
       },
 
       {
-        identifier: 'radio_description_1',
+        name: 'radio_description_1',
         type: 'text',
-        name: 'radio_text_1',
         value: '1 free (then $15 per meember / month)',
       },
       {
-        identifier: 'radio_name_2',
+        name: 'radio_name_2',
         type: 'text',
-        name: 'radio_text_2',
         value: 'Pro',
       },
 
       {
-        identifier: 'radio_description_2',
+        name: 'radio_description_2',
         type: 'text',
-        name: 'radio_text_2',
         value: '$19 per member/month',
       },
       {
-        identifier: 'radio_name_3',
+        name: 'radio_name_3',
         type: 'text',
-        name: 'radio_text_3',
         value: 'Business',
       },
 
       {
-        identifier: 'radio_description_3',
+        name: 'radio_description_3',
         type: 'text',
-        name: 'radio_text_3',
         value: '$29 per member/month',
       },
 
       {
-        identifier: 'button_text_1',
-        type: 'text',
         name: 'button_text_1',
+        type: 'text',
         value: 'Cancel',
       },
       {
-        identifier: 'button_text_2',
-        type: 'text',
         name: 'button_text_2',
+        type: 'text',
         value: 'Continue',
       },
     ],
   },
   // fill rest
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
   ...Array.from(Array(33), (_, x) => {
     // return `${('0' + (x + 1)).slice(-2)} 1.png`;
     if (x + 4 === 10) {
@@ -145,39 +136,37 @@ export const popupTemplates = [
         image: '10 1.png',
         content: [
           {
-            identifier: 'headline',
+            name: 'headline',
             type: 'text',
             value: 'Sign up',
             color: '#000000',
           },
           {
-            identifier: 'description',
+            name: 'description',
             type: 'text',
             value: 'Join the adventure',
             color: '#000000',
           },
           {
-            identifier: 'input_placeholder_1',
+            name: 'input_placeholder_1',
             type: 'text',
             value: 'Join the adventure',
             color: '#000000',
           },
           {
-            identifier: 'image_1',
+            name: 'image_1',
             type: 'image',
             value: '/assets/default-popup.jpg',
           },
           {
-            identifier: 'button_text_1',
-            type: 'text',
             name: 'button_text_1',
+            type: 'text',
             value: 'Signup',
             color: '#F37C34',
           },
           {
-            identifier: 'privacy_text_1',
+            name: 'privacy_text_1',
             type: 'text',
-            name: 'extra_text_2',
             value: 'By signing up, you agree to  Privacy Policy',
           },
         ],
