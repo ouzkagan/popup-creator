@@ -1,13 +1,20 @@
+import { AppState } from '@/store';
+import { set_template } from '@/store/features/default.slice';
 import Preview from '@/templates/Preview';
 import Settings from '@/templates/Settings';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 const popupImages = Array.from(
   Array(36),
   (_, x) => `${('0' + (x + 1)).slice(-2)} 1.png`
 );
 const Home = (): JSX.Element => {
+  const myState = useSelector((state: AppState) => state.defaultForm);
+  const dispatch = useDispatch();
+  console.log(myState);
   /* PAGINATION */
   // User is currently on this page
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -380,14 +387,19 @@ const Home = (): JSX.Element => {
           <div className="grid grid-cols-4 gap-[30px]">
             {/* <div className="border border-gray-300 border-solid h-48 bg-gray-200"></div> */}
 
-            {paginatedPopups.map((popupImage) => {
+            {paginatedPopups.map((popupImage, index) => {
               return (
                 <div
                   className="border border-[#EAEAEA] border-solid h-48 bg-[#F5F5F5] flex items-center justify-center relative group"
                   key={popupImage}
                 >
                   <div className="hidden absolute w-full h-full t-0 l-0 bg-[#7D4AEA]/25 z-10 group-hover:flex  items-center justify-center ">
-                    <button className="rounded-xl bg-white px-6 py-4 whitespace-nowrap  font-medium text-base leading-4 text-center text-purple-600 tracking-tight	">
+                    <button
+                      className="rounded-xl bg-white px-6 py-4 whitespace-nowrap  font-medium text-base leading-4 text-center text-purple-600 tracking-tight	"
+                      onClick={() =>
+                        dispatch(set_template('t' + index.toString()))
+                      }
+                    >
                       Select template
                     </button>
                   </div>
@@ -413,7 +425,7 @@ const Home = (): JSX.Element => {
               return (
                 <li
                   key={pageNumber}
-                  className={`w-10 h-10 flex justify-center items-center text-sm leading-4 text-center text-black rounded-[10px] ${
+                  className={`w-10 h-10 flex justify-center items-center text-sm leading-4 text-center text-black rounded-[10px] cursor-pointer ${
                     currentPage === index + 1 ? 'bg-white' : 'text-[#777777]'
                   }`}
                   onClick={() => setCurrentPage(index + 1)}
@@ -425,6 +437,7 @@ const Home = (): JSX.Element => {
           </ul>
         </div>
         {/* STEPS */}
+        <div>selected:{myState.template_id}</div>
         <div className="flex gap-[76px] h-[3500px]">
           <Settings />
 

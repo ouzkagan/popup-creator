@@ -6,5 +6,6 @@
     "html",
     "typescriptreact"
   ],
-  "editor.defaultFormatter": "esbenp.prettier-vscode" // Tell VSCode to use Prettier as default file formatter
+  "editor.defaultFormatter": "esbenp.prettier-vscode", // Tell VSCode to use Prettier as default file formatter
+  "prettier.endOfLine": "lf"
 }

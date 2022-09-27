@@ -62,17 +62,17 @@ const MultiSelect = ({
     setSelectedIds([...selectedIds, newItem.id]);
   };
 
-  console.log(
-    'selctedItems--',
-    wrapperRef && wrapperRef.current && wrapperRef.current?.clientHeight
-  );
+  // console.log(
+  //   'selctedItems--',
+  //   wrapperRef && wrapperRef.current && wrapperRef.current?.clientHeight
+  // );
 
-  console.log(
-    items,
-    items?.filter(
-      (item) => selectedItems.findIndex((sel) => sel.id === item.id) === -1
-    )
-  );
+  // console.log(
+  //   items,
+  //   items?.filter(
+  //     (item) => selectedItems.findIndex((sel) => sel.id === item.id) === -1
+  //   )
+  // );
   // const filteredItems = items?.filter(
   //   (item) => selectedItems.findIndex((sel) => sel.id === item.id) === -1
   // );
