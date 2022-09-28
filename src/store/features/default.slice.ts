@@ -91,13 +91,13 @@ export const initialState: defaultStateInterface = {
   size: 'MEDIUM',
   position: 'CENTER_CENTER',
   color: '#F37C34',
-  logo: null,
+  logo: '',
   // Targeting Rules
   visitorDevices: ['DESKTOP'],
   afterXSeconds: '12',
   afterScrollingXAmount: '50',
   urlBrowsing: {
-    domain: null,
+    domain: '',
     targetAll: true,
   },
   webHookUrl: '',
