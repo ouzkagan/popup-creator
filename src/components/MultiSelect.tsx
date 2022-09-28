@@ -56,7 +56,6 @@ const MultiSelect = ({
     if (selectedValues.length === items?.length) {
       setIsOpened(false);
     }
-    console.log(selectedValues, cachedItems);
   }, [selectedValues, cachedItems, items]);
 
   const onClickDeleteItem = (code: string) => {

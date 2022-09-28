@@ -150,13 +150,8 @@ export const popupTemplates: PopupTemplate[] = [
           {
             name: 'input_placeholder_1',
             type: 'text',
-            value: 'Join the adventure',
+            value: 'Enter full name',
             color: '#000000',
-          },
-          {
-            name: 'image_1',
-            type: 'image',
-            value: '/assets/default-popup.jpg',
           },
           {
             name: 'button_text_1',
@@ -168,6 +163,11 @@ export const popupTemplates: PopupTemplate[] = [
             name: 'privacy_text_1',
             type: 'text',
             value: 'By signing up, you agree to  Privacy Policy',
+          },
+          {
+            name: 'image_1',
+            type: 'image',
+            value: '/assets/default-popup.jpg',
           },
         ],
       };

@@ -1,10 +1,13 @@
 import { selectForm } from '@/store/features/default.slice';
 import { useSelector } from 'react-redux';
-const FormStateFromRedux = ({ form }) => {
-  const formValue = useSelector((state) => selectForm(state, form));
-  return <span>{JSON.stringify(formValue.values, 0, 2)}</span>;
-};
+// const FormStateFromRedux = ({ form }) => {
+//   const formValue = useSelector((state) => selectForm(state, form));
+//   return <span>{JSON.stringify(formValue.values, 0, 2)}</span>;
+// };
 const Preview = (): JSX.Element => {
+  const formValues = useSelector(
+    (state) => selectForm(state, 'defaultForm')?.values
+  );
   return (
     <div className="relative mt-24">
       <div className="sticky top-24 w-[800px] h-[468px] grid grid-cols-2  bg-white shadow-xl   rounded-l-[40px]">
@@ -72,9 +75,9 @@ const Preview = (): JSX.Element => {
           ></div>
         </div>
       </div>
-      <div className="sticky top-24 w-[800px] h-[468px] bg-white">
+      {/* <div className="sticky top-24 w-[800px] h-[468px] bg-white">
         <FormStateFromRedux form="defaultForm" />
-      </div>
+      </div> */}
     </div>
   );
 };

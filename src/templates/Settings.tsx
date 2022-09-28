@@ -1,6 +1,7 @@
 import CodeBlock from '@/components/CodeBlock';
 import MultiSelect from '@/components/MultiSelect';
 import Image from 'next/image';
+import { useDispatch, useSelector } from 'react-redux';
 // form
 import {
   initialState as initialGeneralSettings,
@@ -9,8 +10,10 @@ import {
   UPDATE_FORM_STATE,
 } from '@/store/features/default.slice';
 import deepEqual from 'fast-deep-equal';
+import arrayMutators from 'final-form-arrays';
 import { Field, Form, FormSpy } from 'react-final-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { FieldArray } from 'react-final-form-arrays';
+
 // types
 import { RootState } from '@/store';
 //
@@ -87,7 +90,7 @@ const Settings = (): JSX.Element => {
         // form={form}
         onSubmit={onSubmit}
         mutators={{
-          // ...arrayMutators,
+          ...arrayMutators,
           setValue: ([field, value], state, { changeValue }) => {
             changeValue(state, field, () => value);
           },
@@ -277,42 +280,25 @@ const Settings = (): JSX.Element => {
                 <span className="font-normal text-sm leading-4 ">
                   Edit your content
                 </span>
-                <div className="w-full mt-4">
-                  <input
-                    type="text"
-                    className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
-                    name=""
-                    id=""
-                    defaultValue="Sign up"
-                  />
-                </div>
-                <div className="w-full mt-4">
-                  <input
-                    type="text"
-                    className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
-                    name=""
-                    id=""
-                    defaultValue="Enter your email"
-                  />
-                </div>
-                <div className="w-full mt-4">
-                  <input
-                    type="text"
-                    className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
-                    name=""
-                    id=""
-                    defaultValue="Sign up"
-                  />
-                </div>
-                <div className="w-full mt-4">
-                  <input
-                    type="text"
-                    className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
-                    name=""
-                    id=""
-                    defaultValue="By signing up, you agree to Privacy Policy"
-                  />
-                </div>
+                <FieldArray name="texts">
+                  {({ fields }) =>
+                    fields.map((name, index) => {
+                      // console.log(name,index)
+                      return (
+                        // field typini switch case yap. zaten ya text input ya da image belki url input olacak!!!
+
+                        <div className="w-full mt-4" key={name}>
+                          <Field
+                            name={`${name}.value`}
+                            component={TextInput}
+                            className="rounded-xl border border-solid text-base leading-6  w-full h-[48px]  pl-3 focus:outline-[#7D4AEA] text-black"
+                            placeholder="Enter your own text"
+                          />
+                        </div>
+                      );
+                    })
+                  }
+                </FieldArray>
                 <div className="mt-8">
                   <span className="font-normal text-sm leading-4">
                     Upload Logo
