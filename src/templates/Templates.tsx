@@ -53,7 +53,7 @@ const Templates = (): JSX.Element => {
       <div className="grid grid-cols-4 gap-[30px]">
         {/* <div className="border border-gray-300 border-solid h-48 bg-gray-200"></div> */}
 
-        {paginatedPopups.map((popupTemplate, index) => {
+        {paginatedPopups.map((popupTemplate) => {
           return (
             <div
               className="border border-[#EAEAEA] border-solid h-48 bg-[#F5F5F5] flex items-center justify-center relative group"
@@ -64,7 +64,7 @@ const Templates = (): JSX.Element => {
                   className="rounded-xl bg-white px-6 py-4 whitespace-nowrap  font-medium text-base leading-4 text-center text-purple-600 tracking-tight	"
                   onClick={() =>
                     // dispatch(set_template('t' + ((index % 3) + 1).toString()))
-                    dispatch(set_template('t' + (index + 1).toString()))
+                    dispatch(set_template(popupTemplate.template_id))
                   }
                 >
                   Select template

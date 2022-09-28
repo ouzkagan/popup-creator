@@ -96,11 +96,11 @@ const Settings = (): JSX.Element => {
           },
         }}
         initialValues={{
-          ...formValues,
           template_id: selected_template_id,
-          texts: [...filtered_template(selected_template_id, 'text')],
+          content: [...filtered_template(selected_template_id, 'text')],
           images: [...filtered_template(selected_template_id, 'image')],
-          // texts: [
+          ...formValues,
+          // content: [
           //   {
           //     type: "text",
           //     name: "popup_text_1",
@@ -121,10 +121,10 @@ const Settings = (): JSX.Element => {
               <FormStateToRedux form="defaultForm" />
 
               <div className="buttons">
-                {/* <button type="button" onClick={() => push('texts', undefined)}>
+                {/* <button type="button" onClick={() => push('content', undefined)}>
                   Add Customer
                 </button>
-                <button type="button" onClick={() => pop('texts')}>
+                <button type="button" onClick={() => pop('content')}>
                   Remove Customer
                 </button> */}
               </div>
@@ -280,7 +280,7 @@ const Settings = (): JSX.Element => {
                 <span className="font-normal text-sm leading-4 ">
                   Edit your content
                 </span>
-                <FieldArray name="texts">
+                <FieldArray name="content">
                   {({ fields }) =>
                     fields.map((name, index) => {
                       // console.log(name,index)
@@ -584,7 +584,7 @@ const Settings = (): JSX.Element => {
                       placeholder="Select"
                       selectedValues={[...formValues.browserLanguage]}
                       setSelectedValues={(selectedCodes: string[]): void => {
-                        console.log(selectedCodes);
+                        // console.log(selectedCodes);
                         form.mutators.setValue('browserLanguage', [
                           ...selectedCodes,
                         ]);

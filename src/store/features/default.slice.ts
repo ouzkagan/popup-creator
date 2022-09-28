@@ -71,8 +71,8 @@ interface defaultStateInterface {
   browserLanguage: string[];
   onExitIntent: boolean;
   webHookUrl: string;
-  isFormSubmission: boolean;
-  isClickData: boolean;
+  // isFormSubmission: boolean;
+  // isClickData: boolean;
   webHookTypes: WebHookType[];
   inputStatus: {
     // Targeting Rules
@@ -86,7 +86,7 @@ interface defaultStateInterface {
 }
 
 export const initialState: defaultStateInterface = {
-  template_id: 't10',
+  template_id: 'POPUP_010',
   // appearance
   size: 'MEDIUM',
   position: 'CENTER_CENTER',

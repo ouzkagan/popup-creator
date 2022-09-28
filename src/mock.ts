@@ -1,7 +1,12 @@
 import type { PopupTemplate } from './types';
+function pad(num: number, size: number): string {
+  let newNum = num.toString();
+  while (newNum.length < size) newNum = '0' + newNum;
+  return newNum;
+}
 export const popupTemplates: PopupTemplate[] = [
   {
-    template_id: 't1',
+    template_id: 'POPUP_001',
     image: '01 1.png',
     content: [
       {
@@ -29,7 +34,7 @@ export const popupTemplates: PopupTemplate[] = [
     ],
   },
   {
-    template_id: 't2',
+    template_id: 'POPUP_002',
     image: '02 1.png',
     content: [
       {
@@ -57,7 +62,7 @@ export const popupTemplates: PopupTemplate[] = [
     ],
   },
   {
-    template_id: 't3',
+    template_id: 'POPUP_003',
     image: '03 1.png',
     content: [
       {
@@ -132,7 +137,7 @@ export const popupTemplates: PopupTemplate[] = [
     // return `${('0' + (x + 1)).slice(-2)} 1.png`;
     if (x + 4 === 10) {
       return {
-        template_id: 't10',
+        template_id: 'POPUP_010',
         image: '10 1.png',
         content: [
           {
@@ -173,7 +178,7 @@ export const popupTemplates: PopupTemplate[] = [
       };
     }
     return {
-      template_id: 't' + (x + 4),
+      template_id: 'POPUP_' + pad(x + 4, 3),
       image: `${('0' + (x + 4)).slice(-2)} 1.png`,
       content: [],
     };
