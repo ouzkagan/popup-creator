@@ -44,15 +44,17 @@ export type PopupPositions =
   | 'BOTTOM_CENTER'
   | 'BOTTOM_RIGHT'
   | 'BOTTOM_LEFT';
+export type DeviceType = 'DESKTOP' | 'MOBILE';
 export type VisitorDeviceType = {
   desktop: boolean;
   mobile: boolean;
 };
 export type UrlSourceType = {
-  include: string[];
-  exclude: string[];
+  domain: null | string;
   targetAll: boolean;
 };
+
+export type WebHookType = 'FORM' | 'CLICK';
 
 interface defaultStateInterface {
   template_id: string;
@@ -62,39 +64,55 @@ interface defaultStateInterface {
   color: Color;
   logo: null | string;
   // Targeting Rules
-  visitorDevices: VisitorDeviceType;
+  visitorDevices: DeviceType[];
   afterXSeconds: null | string;
   afterScrollingXAmount: null | string;
   urlBrowsing: UrlSourceType;
   browserLanguage: string[];
   onExitIntent: boolean;
-
-  // move
-  pending: boolean;
-  error: boolean;
+  webHookUrl: string;
+  isFormSubmission: boolean;
+  isClickData: boolean;
+  webHookTypes: WebHookType[];
+  inputStatus: {
+    // Targeting Rules
+    visitorDevices: boolean;
+    afterXSeconds: boolean;
+    afterScrollingXAmount: boolean;
+    urlBrowsing: boolean;
+    browserLanguage: boolean;
+    onExitIntent: boolean;
+  };
 }
 
 export const initialState: defaultStateInterface = {
-  template_id: 't1',
+  template_id: 't10',
   // appearance
   size: 'MEDIUM',
   position: 'CENTER_CENTER',
   color: '#F37C34',
   logo: null,
   // Targeting Rules
-  visitorDevices: {
-    desktop: true,
-    mobile: false,
-  },
-  afterXSeconds: null,
-  afterScrollingXAmount: null,
+  visitorDevices: ['DESKTOP'],
+  afterXSeconds: '12',
+  afterScrollingXAmount: '50',
   urlBrowsing: {
-    include: [],
-    exclude: [],
+    domain: null,
     targetAll: true,
   },
+  webHookUrl: '',
+  webHookTypes: [],
   browserLanguage: ['en-EN'],
   onExitIntent: true,
+  inputStatus: {
+    // Targeting Rules
+    visitorDevices: true,
+    afterXSeconds: true,
+    afterScrollingXAmount: true,
+    urlBrowsing: true,
+    browserLanguage: true,
+    onExitIntent: true,
+  },
 };
 
 // This action is what we will call using the dispatch in order to trigger the API call.
@@ -114,7 +132,7 @@ export const defaultFormSlice = createSlice({
   reducers: {
     UPDATE_FORM_STATE: (state, action) => {
       const formName: string = action?.payload?.form;
-      console.log(action.payload.state);
+      // console.log(action.payload.state);
       state[formName] = action.payload.state;
     },
 

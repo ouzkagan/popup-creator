@@ -1,3 +1,9 @@
+import { selectForm } from '@/store/features/default.slice';
+import { useSelector } from 'react-redux';
+const FormStateFromRedux = ({ form }) => {
+  const formValue = useSelector((state) => selectForm(state, form));
+  return <span>{JSON.stringify(formValue.values, 0, 2)}</span>;
+};
 const Preview = (): JSX.Element => {
   return (
     <div className="relative mt-24">
@@ -65,6 +71,9 @@ const Preview = (): JSX.Element => {
             }}
           ></div>
         </div>
+      </div>
+      <div className="sticky top-24 w-[800px] h-[468px] bg-white">
+        <FormStateFromRedux form="defaultForm" />
       </div>
     </div>
   );

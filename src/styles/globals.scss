@@ -3,3 +3,9 @@
 @tailwind utilities;
 
 @import './code.scss';
+
+@layer utilities {
+  .scrollbar-track-rounded::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+  }
+}

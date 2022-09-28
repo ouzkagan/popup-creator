@@ -4,6 +4,7 @@ import Image from 'next/image';
 // form
 import {
   initialState as initialGeneralSettings,
+  PopupPositions,
   selectForm,
   UPDATE_FORM_STATE,
 } from '@/store/features/default.slice';
@@ -12,13 +13,15 @@ import { Field, Form, FormSpy } from 'react-final-form';
 import { useDispatch, useSelector } from 'react-redux';
 // types
 import { RootState } from '@/store';
-
+//
+import TextInput from '@/components/TextInput';
+import { languages } from 'countries-list';
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const FormStateToRedux = ({ form }) => {
   const dispatch = useDispatch();
   const updateForm = (form, state) => {
-    console.log(form, state);
+    // console.log(form, state);
     dispatch(UPDATE_FORM_STATE({ form, state }));
   };
 
@@ -36,6 +39,17 @@ const FormStateFromRedux = ({ form }) => {
   return <pre>{JSON.stringify(formValue.values, 0, 2)}</pre>;
 };
 
+const possiblePositions: PopupPositions[] = [
+  'TOP_LEFT',
+  'TOP_CENTER',
+  'TOP_RIGHT',
+  'CENTER_LEFT',
+  'CENTER_CENTER',
+  'CENTER_RIGHT',
+  'BOTTOM_LEFT',
+  'BOTTOM_CENTER',
+  'BOTTOM_RIGHT',
+];
 const Settings = (): JSX.Element => {
   const selected_template_id = useSelector(
     (state: RootState) => state.defaultForm.template_id
@@ -44,7 +58,7 @@ const Settings = (): JSX.Element => {
     useSelector(
       (state: RootState) => selectForm(state, 'defaultForm').values
     ) || initialGeneralSettings;
-  console.log('formvalues', formValues);
+  // console.log('formvalues', formValues);
 
   // const initialGeneralSettings = useSelector(
   //   (state: AppState) => state.defaultForm
@@ -66,7 +80,7 @@ const Settings = (): JSX.Element => {
     // console.log(form);
     console.log(JSON.stringify(values, 0, 2));
   };
-  console.log('rerendered');
+  // console.log(languages);
   return (
     <div className="w-[378px] mt-24">
       <Form
@@ -148,11 +162,26 @@ const Settings = (): JSX.Element => {
               <div className="mt-8">
                 <span className="font-normal text-sm leading-4">Position</span>
                 <ul className="mt-4  grid grid-cols-3 box-border w-[82px] h-[55px]">
-                  {Array.from(Array(9).keys()).map((positionType) => {
+                  {Array.from(Array(9).keys()).map((positionType, index) => {
                     return (
                       <li
                         key={positionType}
-                        className="w-[24px] h-[15px] text-black border border-solid border-[#DDDDDD]"
+                        className={`w-[24px] h-[15px] text-black border border-solid border-[#DDDDDD] cursor-pointer
+                        ${
+                          possiblePositions[index] === formValues.position &&
+                          'bg-[#7D4AEA] border-[#7D4AEA]'
+                        }
+                        ${index == 0 && 'rounded-tl'}
+                        ${index == 2 && 'rounded-tr'}
+                        ${index == 6 && 'rounded-bl'}
+                        ${index == 8 && 'rounded-br'}
+                        `}
+                        onClick={() =>
+                          form.mutators.setValue(
+                            'position',
+                            possiblePositions[index]
+                          )
+                        }
                       ></li>
                     );
                   })}
@@ -160,15 +189,18 @@ const Settings = (): JSX.Element => {
               </div>
               <div className="mt-8">
                 <span className="font-normal text-sm leading-4">Colors</span>
-                <ul className="mt-4 flex gap-2.5 items-center bg-[#F5F5F5] rounded-xl max-w-min p-[3px]">
+                <ul className="mt-4 flex gap-2.5 items-center rounded-xl max-w-min p-[3px]">
                   {/* https://stackoverflow.com/questions/72481680/tailwinds-background-color-is-not-being-applied-when-added-dynamically */}
                   {['#000000', '#F37C34', '#777777', '#DDDDDD', '#FFFFFF'].map(
                     (colorType) => {
                       return (
                         <li
                           key={`color-${colorType}`}
-                          className={`w-[42px] h-[42px] text-white rounded-[10px] border border-solid  border-[#000000]/3 `}
+                          className={`w-[42px] h-[42px] text-white rounded-[10px] border border-solid  border-[#000000]/3 cursor-pointer `}
                           style={{ backgroundColor: `${colorType}` }}
+                          onClick={() =>
+                            form.mutators.setValue('color', colorType)
+                          }
                           // onClick={() => setCurrentPage(index + 1)}
                         ></li>
                       );
@@ -355,12 +387,19 @@ const Settings = (): JSX.Element => {
                 </div>
                 <div className="mt-5 flex gap-5 h-12 w-full">
                   <div className="flex items-center gap-[4px] bg-[#F5F5F5] rounded-xl grow">
-                    <input
+                    <Field<string>
+                      name="visitorDevices"
+                      component="input"
+                      type="checkbox"
+                      value="DESKTOP"
+                      className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500 ml-[15px] mr-[6px]"
+                    />{' '}
+                    {/* <input
                       type="checkbox"
                       name=""
                       id=""
                       className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500 ml-[15px] mr-[6px]"
-                    />
+                    /> */}
                     <svg
                       width="18"
                       height="18"
@@ -370,18 +409,29 @@ const Settings = (): JSX.Element => {
                     >
                       <path
                         d="M15 14.5C15.825 14.5 16.5 13.825 16.5 13V3.5C16.5 2.675 15.825 2 15 2H3C2.175 2 1.5 2.675 1.5 3.5V13C1.5 13.825 2.175 14.5 3 14.5H0V16H18V14.5H15ZM3 3.5H15V13H3V3.5Z"
-                        fill="#7D4AEA"
+                        fill={
+                          formValues.visitorDevices.includes('DESKTOP')
+                            ? '#7D4AEA'
+                            : '#999999'
+                        }
                       />
                     </svg>
                     Desktop
                   </div>
                   <div className="flex items-center gap-[4px] bg-[#F5F5F5] rounded-xl grow">
-                    <input
+                    <Field<string>
+                      name="visitorDevices"
+                      component="input"
+                      type="checkbox"
+                      value="MOBILE"
+                      className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500 ml-[15px] mr-[6px]"
+                    />{' '}
+                    {/* <input
                       type="checkbox"
                       name=""
                       id=""
                       className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500 ml-[15px] mr-[6px]"
-                    />
+                    /> */}
                     <svg
                       width="18"
                       height="18"
@@ -391,7 +441,12 @@ const Settings = (): JSX.Element => {
                     >
                       <path
                         d="M12.75 0.7575L5.25 0.75C4.425 0.75 3.75 1.425 3.75 2.25V15.75C3.75 16.575 4.425 17.25 5.25 17.25H12.75C13.575 17.25 14.25 16.575 14.25 15.75V2.25C14.25 1.425 13.575 0.7575 12.75 0.7575ZM12.75 14.25H5.25V3.75H12.75V14.25Z"
-                        fill="#999999"
+                        // fill="#999999"
+                        fill={
+                          formValues.visitorDevices.includes('MOBILE')
+                            ? '#7D4AEA'
+                            : '#999999'
+                        }
                       />
                     </svg>
                     Mobile
@@ -415,19 +470,19 @@ const Settings = (): JSX.Element => {
                     </div>
                   </div>
                   <div className="w-full mt-4">
-                    <input
+                    <Field
+                      name="afterXSeconds"
+                      component={TextInput}
+                      className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
+                      placeholder="12"
+                    />
+                    {/* <input
                       type="text"
                       className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
                       name=""
                       id=""
                       defaultValue="12"
-                    />
-                    <Field
-                      name="afterXSeconds"
-                      component="input"
-                      type="text"
-                      placeholder="12"
-                    />
+                    /> */}
                   </div>
                 </div>
                 <div className="mt-8">
@@ -448,12 +503,12 @@ const Settings = (): JSX.Element => {
                     </div>
                   </div>
                   <div className="w-full mt-4">
-                    <input
-                      type="text"
+                    <Field
+                      name="afterScrollingXAmount"
+                      component={TextInput}
                       className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
-                      name=""
-                      id=""
-                      defaultValue="50"
+                      placeholder="50"
+                      // % eklenebilir
                     />
                   </div>
                 </div>
@@ -475,12 +530,20 @@ const Settings = (): JSX.Element => {
                     </div>
                   </div>
                   <div className="w-full mt-4">
-                    <input
+                    {/* <input
                       type="text"
                       className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
                       name=""
                       id=""
                       placeholder="Enter your traffic source domain"
+                    /> */}
+                    <Field
+                      name="urlBrowsing.domain"
+                      component={TextInput}
+                      className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
+                      placeholder="Enter your traffic source domain"
+                      allowNull={true}
+                      // % eklenebilir
                     />
                   </div>
                 </div>
@@ -504,13 +567,44 @@ const Settings = (): JSX.Element => {
                   <div className="w-full mt-4">
                     <MultiSelect
                       items={[
-                        ...[
-                          { id: '1', value: 'turkeu' },
-                          { id: '3', value: 'english' },
-                          { id: '2', value: 'french' },
-                        ],
+                        // ...[
+                        //   { id: '1', code: 'tr', value: 'Turkish' },
+                        //   { id: '3', code: 'en-EN', value: 'English' },
+                        //   { id: '4', code: 'fr', value: 'French' },
+                        //   { id: '5', code: 'gr', value: 'German' },
+                        //   { id: '132', code: 'pl', value: 'Polish' },
+                        //   { id: '6', code: 'sp', value: 'Spanish' },
+                        //   { id: '1551', code: 'dt', value: 'Dutch' },
+                        //   { id: '15516', code: 'fn', value: 'Finnish' },
+                        //   { id: '7', code: 'bg', value: 'Bulgarian' },
+                        //   { id: '8', code: 'gr', value: 'Greek' },
+                        //   { id: '10', code: 'gr', value: 'Greek' },
+                        //   { id: '9', code: 'gr', value: 'Greek' },
+                        // ],
+                        ...Object.keys(languages).map((key, index) => {
+                          return {
+                            id: index,
+                            code:
+                              key +
+                              '-' +
+                              languages[key as keyof typeof languages]['name']
+                                .slice(0, 2)
+                                .toUpperCase(),
+                            value:
+                              languages[key as keyof typeof languages]['name'],
+                          };
+                        }),
                       ]}
                       placeholder="Select"
+                      selectedValues={[...formValues.browserLanguage]}
+                      setSelectedValues={(selectedCodes: string[]): void => {
+                        console.log(selectedCodes);
+                        form.mutators.setValue('browserLanguage', [
+                          ...selectedCodes,
+                        ]);
+                      }}
+                      name="Languages"
+                      defaultValue="en-EN"
                     />
                   </div>
                 </div>
@@ -556,30 +650,46 @@ const Settings = (): JSX.Element => {
                     You can create a simple one with make.com
                   </div>
                   <div className="w-full mt-4">
-                    <input
+                    {/* <input
                       type="text"
                       className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3"
                       name=""
                       id=""
                       placeholder="Enter your webhook URL"
+                    /> */}
+                    <Field
+                      name="webHookUrl"
+                      component={TextInput}
+                      className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
+                      placeholder="Enter your webhook URL"
+                      allowNull={true}
+                      // % eklenebilir
                     />
                   </div>
                   <div className="flex gap-[4px] grow mt-[15px]">
-                    <input
+                    {/* <input
                       type="checkbox"
                       name=""
                       id=""
                       className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500  mr-[6px]"
-                    />
+                    /> */}
+                    <Field<string>
+                      name="webHookTypes"
+                      component="input"
+                      type="checkbox"
+                      value="FORM"
+                      className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500  mr-[6px]"
+                    />{' '}
                     Send form submissions
                   </div>
                   <div className="flex gap-[4px] grow mt-[15px]">
-                    <input
+                    <Field<string>
+                      name="webHookTypes"
+                      component="input"
                       type="checkbox"
-                      name=""
-                      id=""
+                      value="CLICK"
                       className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500  mr-[6px]"
-                    />
+                    />{' '}
                     Send click data
                   </div>
                   <button className="rounded-xl bg-purple-600 whitespace-nowrap  font-medium text-lg leading-5 text-center text-white tracking-tight mt-[50px] py-5 px-8 ">
