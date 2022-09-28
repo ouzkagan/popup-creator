@@ -9,7 +9,6 @@ import {
   selectForm,
   UPDATE_FORM_STATE,
 } from '@/store/features/default.slice';
-import deepEqual from 'fast-deep-equal';
 import arrayMutators from 'final-form-arrays';
 import { Field, Form, FormSpy } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
@@ -37,10 +36,10 @@ const FormStateToRedux = ({ form }) => {
   );
 };
 
-const FormStateFromRedux = ({ form }) => {
-  const formValue = useSelector((state) => selectForm(state, form));
-  return <pre>{JSON.stringify(formValue.values, 0, 2)}</pre>;
-};
+// const FormStateFromRedux = ({ form }) => {
+//   const formValue = useSelector((state) => selectForm(state, form));
+//   return <pre>{JSON.stringify(formValue.values, 0, 2)}</pre>;
+// };
 
 const possiblePositions: PopupPositions[] = [
   'TOP_LEFT',
@@ -77,11 +76,20 @@ const Settings = (): JSX.Element => {
       .filter((popup) => popup.template_id === id)[0]
       .content?.filter((c) => c.type === type);
   };
-
+  // protect form fields on template change
+  const restOfFormValues = (_formValues) => {
+    const { template_id, content, ...rest } = _formValues;
+    // console.log(rest);
+    return rest;
+  };
   const onSubmit = async (values) => {
-    await sleep(300);
+    // await sleep(300);
     // console.log(form);
-    console.log(JSON.stringify(values, 0, 2));
+    const valueToCopy = `<script type="text/javascript" src="https://popupsmart.com/freechat.js"></script><script> window.start.init(${JSON.stringify(
+      values
+    )} )</script>`;
+    console.log(valueToCopy);
+    navigator.clipboard.writeText(valueToCopy);
   };
   // console.log(languages);
   return (
@@ -99,7 +107,7 @@ const Settings = (): JSX.Element => {
           template_id: selected_template_id,
           content: [...filtered_template(selected_template_id, 'text')],
           images: [...filtered_template(selected_template_id, 'image')],
-          ...formValues,
+          ...restOfFormValues(formValues),
           // content: [
           //   {
           //     type: "text",
@@ -113,7 +121,8 @@ const Settings = (): JSX.Element => {
           //   },
           // ],
         }}
-        initialValuesEqual={deepEqual}
+        // initialValuesEqual={deepEqual}
+        initialValuesEqual={(a, b) => a.template_id == b.template_id}
         subscription={{ submitting: true, pristine: true }}
         render={({ handleSubmit, pristine, form, submitting, values }) => {
           return (
@@ -682,21 +691,33 @@ const Settings = (): JSX.Element => {
                     Get your Code
                   </button>
                   <div className="relative mt-[30px]">
-                    <div className="rounded-[8px] bg-[#333333] not-italic font-light text-xs leading-4 text-white font-robotomono p-[15px] pb-[57px]">
+                    {/* <div className="rounded-[8px] bg-[#333333] not-italic font-light text-xs leading-4 text-white font-robotomono p-[15px] pb-[57px]">
                       <CodeBlock
                         codeString={
                           '<script type="text/javascript" src="https://popupsmart.com/freechat.js"></script><script> window.start.init({ title: "Hi there :v:", message: "How may we help you? Just send us a message now to get assistance.", color: "#FA764F", position: "right", placeholder: "Enter your message", withText: "Write with", viaWhatsapp: "Or write us directly via Whatsapp", gty: "Go to your", awu: "and write us", connect: "Connect now", button: "Write us", device: "everywhere", services: [{"name":"whatsapp","content":null}]})</script>'
                         }
                       />
+                    </div> */}
+                    <div className="rounded-[8px] bg-[#333333] not-italic font-light text-xs leading-4 text-white font-robotomono p-[15px] pb-[57px]">
+                      <CodeBlock
+                        codeString={`<script type="text/javascript" src="https://popupsmart.com/freechat.js"></script><script> window.start.init({${JSON.stringify(
+                          formValues,
+                          undefined,
+                          2
+                        )} })</script>`}
+                      />
                     </div>
-                    <button className=" absolute rounded-xl bg-purple-600 whitespace-nowrap  font-medium text-sm leading-5 text-center text-white tracking-tight mt-[50px] py-[4px] px-[15px] bottom-[10px] right-[10px] drop-shadow-md hover:drop-shadow-xl ">
+                    <button
+                      className=" absolute rounded-xl bg-purple-600 whitespace-nowrap  font-medium text-sm leading-5 text-center text-white tracking-tight mt-[50px] py-[4px] px-[15px] bottom-[10px] right-[10px] drop-shadow-md hover:drop-shadow-xl"
+                      type="submit"
+                    >
                       Get your Code
                     </button>
                   </div>
                 </div>
               </div>
 
-              <div className="buttons">
+              {/* <div className="buttons">
                 <button type="submit" disabled={submitting || pristine}>
                   Submit
                 </button>
@@ -707,10 +728,10 @@ const Settings = (): JSX.Element => {
                 >
                   Reset
                 </button>
-              </div>
+              </div> */}
               {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
               {/* <pre>{JSON.stringify(formValues, 0, 2)}</pre> */}
-              <FormStateFromRedux form="defaultForm" />
+              {/* <FormStateFromRedux form="defaultForm" /> */}
             </form>
           );
         }}

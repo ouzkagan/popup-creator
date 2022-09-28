@@ -13,6 +13,7 @@ const Components = {
 
 // eslint-disable-next-line react/display-name
 export default (popupData) => {
+  console.log('rerender');
   // component does exist
   if (typeof Components[popupData.template_id] !== 'undefined') {
     return React.createElement(Components[popupData.template_id], {

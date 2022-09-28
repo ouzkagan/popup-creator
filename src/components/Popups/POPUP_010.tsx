@@ -1,9 +1,6 @@
-export default function POPUP_010({ key, popupData }) {
+export default function POPUP_010({ popupData }) {
   return (
-    <div
-      className="w-[740px] h-[468px] grid grid-cols-2  bg-white shadow-xl   rounded-l-[40px]"
-      key={key}
-    >
+    <div className="w-[740px] h-[468px] grid grid-cols-2  bg-white shadow-xl   rounded-l-[40px]">
       <div className="w-[300px] mx-auto">
         <div className="flex flex-col justify-center items-center  mx-auto">
           <h3 className="text-4xl	font-semibold  text-black leading-[3.375rem] mt-16">
