@@ -6,9 +6,9 @@ import { InferGetStaticPropsType } from 'next/types';
 import { wrapper } from '@/store';
 import { set_popups } from '@/store/features/popupTemplates.slice';
 import Templates from '@/templates/Templates';
+import { MyResponse } from '@/utils/componentConverter';
 import type { NextPage } from 'next';
 import { useSelector } from 'react-redux';
-
 export const getStaticProps = wrapper.getStaticProps((store) => async () => {
   const res = await fetch(`http://localhost:3000/api/popups`);
   const popupTemplates = await res.json();
@@ -28,6 +28,7 @@ const Home: NextPage = ({
   /* */
   return (
     <div className=" bg-white">
+      {MyResponse}
       <div className="bg-gradient-to-b from-white to-gray-200 w-full">
         <section className="container mx-auto px-32 font-inter ">
           <nav className="w-full flex justify-between items-center mt-6">
@@ -361,7 +362,6 @@ const Home: NextPage = ({
 
         <Templates popupTemplates={popupTemplates} />
         {/* STEPS */}
-        <div>selected:{myState.template_id}</div>
         <div className="flex gap-[76px] h-[3500px]">
           <Settings />
 

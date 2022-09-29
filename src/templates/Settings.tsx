@@ -16,6 +16,7 @@ import { FieldArray } from 'react-final-form-arrays';
 // types
 import { RootState } from '@/store';
 //
+import FileInput from '@/components/FileInput';
 import TextInput from '@/components/TextInput';
 import { languages } from 'countries-list';
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -70,12 +71,13 @@ const Settings = (): JSX.Element => {
     (state: RootState) => state.popupTemplates.popups
   );
 
-  const filtered_template = (id: string, type: string) => {
+  const get_content = (id: string, type: string) => {
     // console.log(popupInputs.filter((popup) => popup.id === id)[0].template);
     return popupTemplates
       .filter((popup) => popup.template_id === id)[0]
       .content?.filter((c) => c.type === type);
   };
+
   // protect form fields on template change
   const restOfFormValues = (_formValues) => {
     const { template_id, content, ...rest } = _formValues;
@@ -83,19 +85,14 @@ const Settings = (): JSX.Element => {
     return rest;
   };
   const onSubmit = async (values) => {
-    // await sleep(300);
-    // console.log(form);
     const valueToCopy = `<script type="text/javascript" src="https://popupsmart.com/freechat.js"></script><script> window.start.init(${JSON.stringify(
       values
     )} )</script>`;
-    console.log(valueToCopy);
     navigator.clipboard.writeText(valueToCopy);
   };
-  // console.log(languages);
   return (
     <div className="w-[378px] mt-24">
       <Form
-        // form={form}
         onSubmit={onSubmit}
         mutators={{
           ...arrayMutators,
@@ -105,21 +102,9 @@ const Settings = (): JSX.Element => {
         }}
         initialValues={{
           template_id: selected_template_id,
-          content: [...filtered_template(selected_template_id, 'text')],
-          images: [...filtered_template(selected_template_id, 'image')],
+          content: [...get_content(selected_template_id, 'text')],
+          images: [...get_content(selected_template_id, 'image')],
           ...restOfFormValues(formValues),
-          // content: [
-          //   {
-          //     type: "text",
-          //     name: "popup_text_1",
-          //     value: "Sign In!asdsa",
-          //   },
-          //   {
-          //     type: "text",
-          //     name: "popup_text_2",
-          //     value: "Our company is best",
-          //   },
-          // ],
         }}
         // initialValuesEqual={deepEqual}
         initialValuesEqual={(a, b) => a.template_id == b.template_id}
@@ -143,7 +128,7 @@ const Settings = (): JSX.Element => {
                   2
                 </span>
                 <div className="font-semibold text-lg leading-9 text-black tracking-half-tighter ">
-                  Appearance {selected_template_id}
+                  Appearance
                   <span className="font-normal">(Size, colors, logo)</span>
                 </div>
               </div>
@@ -298,10 +283,34 @@ const Settings = (): JSX.Element => {
 
                         <div className="w-full mt-4" key={name}>
                           <Field
+                            parse={(x) => x}
                             name={`${name}.value`}
+                            // defaultValue=""
                             component={TextInput}
                             className="rounded-xl border border-solid text-base leading-6  w-full h-[48px]  pl-3 focus:outline-[#7D4AEA] text-black"
                             placeholder="Enter your own text"
+                            // allowNull={true}
+                          />
+                        </div>
+                      );
+                    })
+                  }
+                </FieldArray>
+                <FieldArray name="images">
+                  {({ fields }) =>
+                    fields.map((name, index) => {
+                      // console.log(name,index)
+                      return (
+                        // field typini switch case yap. zaten ya text input ya da image belki url input olacak!!!
+                        <div className="w-full mt-4" key={name}>
+                          <Field
+                            // parse={(x) => x}
+                            name={`${name}.value`}
+                            // defaultValue=""
+                            component={FileInput}
+                            // className="rounded-xl border border-solid text-base leading-6  w-full h-[48px]  pl-3 focus:outline-[#7D4AEA] text-black"
+                            // placeholder="Enter your own text"
+                            // allowNull={true}
                           />
                         </div>
                       );
@@ -466,6 +475,7 @@ const Settings = (): JSX.Element => {
                   </div>
                   <div className="w-full mt-4">
                     <Field
+                      parse={(x) => x}
                       name="afterXSeconds"
                       component={TextInput}
                       className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
@@ -499,6 +509,7 @@ const Settings = (): JSX.Element => {
                   </div>
                   <div className="w-full mt-4">
                     <Field
+                      parse={(x) => x}
                       name="afterScrollingXAmount"
                       component={TextInput}
                       className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
@@ -533,6 +544,7 @@ const Settings = (): JSX.Element => {
                       placeholder="Enter your traffic source domain"
                     /> */}
                     <Field
+                      parse={(x) => x}
                       name="urlBrowsing.domain"
                       component={TextInput}
                       className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
@@ -653,6 +665,7 @@ const Settings = (): JSX.Element => {
                       placeholder="Enter your webhook URL"
                     /> */}
                     <Field
+                      parse={(x) => x}
                       name="webHookUrl"
                       component={TextInput}
                       className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"

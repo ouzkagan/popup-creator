@@ -1,42 +1,69 @@
+import { colorPicker } from '@/utils/helpers';
+
+const valuePicker = (data, id) => {
+  if (data == null) return '$' + id;
+  const { content } = data;
+  // console.log(content);
+  return content?.filter((item) => item.name == id)[0].value;
+};
+const imagePicker = (data, id) => {
+  if (data == null) return '$' + id;
+  const { images } = data;
+  // console.log(content);
+  return images?.filter((item) => item.name == id)[0].value;
+};
+
 export default function POPUP_010({ popupData }) {
   return (
     <div className="w-[740px] h-[468px] grid grid-cols-2  bg-white shadow-xl   rounded-l-[40px]">
       <div className="w-[300px] mx-auto">
         <div className="flex flex-col justify-center items-center  mx-auto">
           <h3 className="text-4xl	font-semibold  text-black leading-[3.375rem] mt-16">
-            {popupData['content']?.[0].value}
+            {/* {popupData?.content?.[0]?.value || '$headline'} */}
+            {valuePicker(popupData, 'headline')}
           </h3>
 
           <p className="max-w-[459px] mt-2 font-[400] text-base leading-6 tracking-tigher">
-            Join new adventure
+            {valuePicker(popupData, 'description')}
           </p>
           <div className="w-full mt-8">
             <input
               type="text"
-              className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3"
+              className={
+                'rounded-xl border border-solid text-base leading-6  text-gray-600 w-full h-[48px]  pl-3 ' +
+                colorPicker(popupData?.color)?.focusOutline
+              }
               name=""
               id=""
-              placeholder="Enter full name"
+              placeholder={valuePicker(popupData, 'input_placeholder_1')}
             />
           </div>
           <div className="w-full mt-4">
             <input
               type="text"
-              className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3"
+              className={`rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 ${
+                colorPicker(popupData?.color)?.focusOutline
+              }`}
               name=""
               id=""
-              placeholder="Enter your email"
+              placeholder={valuePicker(popupData, 'input_placeholder_2')}
             />
           </div>
-          <button className="rounded-xl bg-black py-3 px-24 whitespace-nowrap  font-medium text-base leading-4 text-center text-white tracking-tight	w-full h-[48px] mt-4 ">
-            Sign up
+          <button
+            className={
+              'rounded-xl py-3 px-24 whitespace-nowrap  font-medium text-base leading-4 text-center text-white tracking-tight	w-full h-[48px] mt-4 ' +
+              colorPicker(popupData?.color)?.bg
+            }
+            // x={colorPicker(popupData?.color)}
+            style={{
+              backgroundColor: popupData?.color,
+            }}
+          >
+            {valuePicker(popupData, 'button_text_1')}
           </button>
         </div>
         <span className="font-light leading-3 text-gray-600 text-[10px] mt-4 ">
-          By signing up, you agree to{' '}
-          <a href="#" className="font-normal">
-            Privacy Policy
-          </a>
+          {valuePicker(popupData, 'privacy_text_1')}
         </span>
       </div>
       <div className="relative  ">
@@ -60,7 +87,7 @@ export default function POPUP_010({ popupData }) {
         <div
           className="bg-cover	h-full "
           style={{
-            backgroundImage: `url(/assets/default-popup.jpg)`,
+            backgroundImage: `url(${imagePicker(popupData, 'image_1')})`,
           }}
         ></div>
       </div>

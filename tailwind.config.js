@@ -26,6 +26,12 @@ module.exports = {
         'half-tighter': '-0.03em',
         tigher: '-0.015em',
       },
+      colors: {
+        '[#777777]': '[#777777]',
+        '[#F37C34]': '[#F37C34]',
+        '[#000000]': '[#000000]',
+        '[#FFFFFF]': '[#FFFFFF]',
+      },
     },
   },
   plugins: [require('tailwind-scrollbar')],

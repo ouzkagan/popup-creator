@@ -159,9 +159,15 @@ export const popupTemplates: PopupTemplate[] = [
             color: '#000000',
           },
           {
+            name: 'input_placeholder_2',
+            type: 'text',
+            value: 'Enter you email',
+            color: '#000000',
+          },
+          {
             name: 'button_text_1',
             type: 'text',
-            value: 'Signup',
+            value: 'Sign up',
             color: '#F37C34',
           },
           {
