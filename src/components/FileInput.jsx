@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 function FileInput({ required, input, dropZoneProps, ...props }) {
@@ -18,6 +18,7 @@ function FileInput({ required, input, dropZoneProps, ...props }) {
   const files = acceptedFiles.map((file) => (
     <span key={file.path}>
       {file.path} - {file.size} bytes
+      <img src={URL.createObjectURL(file)} alt="" />
     </span>
   ));
 

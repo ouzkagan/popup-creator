@@ -296,31 +296,41 @@ const Settings = (): JSX.Element => {
                     })
                   }
                 </FieldArray>
-                <FieldArray name="images">
-                  {({ fields }) =>
-                    fields.map((name, index) => {
-                      // console.log(name,index)
-                      return (
-                        // field typini switch case yap. zaten ya text input ya da image belki url input olacak!!!
-                        <div className="w-full mt-4" key={name}>
-                          <Field
-                            // parse={(x) => x}
-                            name={`${name}.value`}
-                            // defaultValue=""
-                            component={FileInput}
-                            // className="rounded-xl border border-solid text-base leading-6  w-full h-[48px]  pl-3 focus:outline-[#7D4AEA] text-black"
-                            // placeholder="Enter your own text"
-                            // allowNull={true}
-                          />
-                        </div>
-                      );
-                    })
-                  }
-                </FieldArray>
+
                 <div className="mt-8">
                   <span className="font-normal text-sm leading-4">
                     Upload Logo
                   </span>
+                  <FieldArray name="images">
+                    {({ fields }) =>
+                      fields.map((name, index) => {
+                        // console.log(name,index)
+                        return (
+                          // field typini switch case yap. zaten ya text input ya da image belki url input olacak!!!
+                          <div className="w-full mt-4" key={name}>
+                            <Field
+                              // parse={(x) => x}
+                              name={`${name}.value`}
+                              // defaultValue=""
+                              component={FileInput}
+                              // className="rounded-xl border border-solid text-base leading-6  w-full h-[48px]  pl-3 focus:outline-[#7D4AEA] text-black"
+                              // placeholder="Enter your own text"
+                              // allowNull={true}
+                              // onchange setValue((values)=> UploadImage(values.files[0]))? ??
+                              className=""
+                            />
+                            <Field
+                              name={`${name}.value`}
+                              subscribe={{ touched: true, error: true }}
+                              render={({ meta: { touched, error } }) =>
+                                touched && error ? <span>{error}</span> : null
+                              }
+                            />
+                          </div>
+                        );
+                      })
+                    }
+                  </FieldArray>
                   <div className="border border-[#DDDDDD] border-dashed border-color py-8 flex justify-center items-center flex-col gap-5 mt-4">
                     <div className="w-20 h-20 rounded-xl bg-opacity-10 bg-[#7D4AEA] flex justify-center items-center">
                       <Image
