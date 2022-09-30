@@ -4,13 +4,13 @@ const valuePicker = (data, id) => {
   if (data == null) return '$' + id;
   const { content } = data;
   // console.log(content);
-  return content?.filter((item) => item.name == id)[0].value;
+  return content?.filter((item) => item.name == id)?.[0]?.value;
 };
 const imagePicker = (data, id) => {
   if (data == null) return '$' + id;
   const { images } = data;
   // console.log(content);
-  return images?.filter((item) => item.name == id)[0].value;
+  return images?.filter((item) => item.name == id)?.[0]?.value;
 };
 
 export default function POPUP_010({ popupData }) {
