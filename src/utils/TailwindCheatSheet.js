@@ -1405,6 +1405,7 @@ const CheatSheet = [
           ['.m-px', 'margin: 1px;', ''],
           ['.my-0', 'margin-top: 0;\nmargin-bottom: 0;', ''],
           ['.mx-0', 'margin-left: 0;\nmargin-right: 0;', ''],
+          ['.mx-auto', 'margin-left: auto;\nmargin-right: auto;', ''],
           ['.my-0.5', 'margin-top: 0.125rem;\nmargin-bottom: 0.125rem;', '2px'],
           ['.mx-0.5', 'margin-left: 0.125rem;\nmargin-right: 0.125rem;', '2px'],
           ['.my-1', 'margin-top: 0.25rem;\nmargin-bottom: 0.25rem;', '4px'],
@@ -1493,6 +1494,7 @@ const CheatSheet = [
           ['.mr-0', 'margin-right: 0;', ''],
           ['.mb-0', 'margin-bottom: 0;', ''],
           ['.ml-0', 'margin-left: 0;', ''],
+          ['.ml-auto', 'margin-left: auto;', ''],
           ['.mt-0.5', 'margin-top: 0.125rem;', '2px'],
           ['.mr-0.5', 'margin-right: 0.125rem;', '2px'],
           ['.mb-0.5', 'margin-bottom: 0.125rem;', '2px'],
@@ -5721,6 +5723,11 @@ const CheatSheet = [
             '',
           ],
           [
+            '.rounded-l',
+            'border-top-left-radius: 0.25rem;\nborder-bottom-left-radius: 0.25rem;',
+            '4px',
+          ],
+          [
             '.rounded-t-sm',
             'border-top-left-radius: 0.125rem;\nborder-top-right-radius: 0.125rem;',
             '2px',
@@ -5740,6 +5747,7 @@ const CheatSheet = [
             'border-top-left-radius: 0.125rem;\nborder-bottom-left-radius: 0.125rem;',
             '2px',
           ],
+
           [
             '.rounded-t',
             'border-top-left-radius: 0.25rem;\nborder-top-right-radius: 0.25rem;',
