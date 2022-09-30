@@ -1,5 +1,6 @@
 import POPUP_010 from '@/components/Popups/POPUP_010';
 import * as ReactDOMServer from 'react-dom/server';
+import { tailwindHtmlToInline } from './tailwindToInline';
 const formValues = {
   template_id: 'POPUP_010',
   content: [
@@ -47,4 +48,7 @@ const formValues = {
     onExitIntent: true,
   },
 };
-export const MyResponse = ReactDOMServer.renderToString(POPUP_010(formValues));
+// export const MyResponse = ReactDOMServer.renderToString(POPUP_010(formValues));
+export const MyResponse = tailwindHtmlToInline(
+  ReactDOMServer.renderToString(POPUP_010(formValues))
+);

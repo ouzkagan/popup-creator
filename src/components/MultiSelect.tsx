@@ -229,7 +229,7 @@ const MultiSelect = ({
       </span>
       {items?.length > 0 && (
         <ul
-          className={`absolute w-full  left-0 rounded-md p-1 ${
+          className={`absolute w-full  leftop-0 rounded-md p-1 ${
             opened ? 'opacity-1 visible' : 'opacity-0 invisible'
           } duration-200 transition-all ease-linear pb-[16px]  border border-[#DDDDDD] bg-white z-10`}
           style={{

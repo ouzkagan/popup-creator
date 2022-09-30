@@ -27,5 +27,5 @@ const colorsConfig = {
 };
 
 export const colorPicker = (hex: string) => {
-  return colorsConfig[hex];
+  return colorsConfig[hex] ? colorsConfig[hex] : '';
 };

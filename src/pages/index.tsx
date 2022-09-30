@@ -235,7 +235,7 @@ const Home: NextPage = ({
           </div>
           <div className="relative  ">
             {/* <img src="/51951afc5aa43fb6d90f01eeeec2b12c.png" alt="me" /> */}
-            <div className="absolute w-full h-full t-0 l-0 ">
+            <div className="absolute w-full h-full top-0 left-0 ">
               <span className="w-10 h-10 ml-auto rounded-full bg-white 	flex justify-center items-center mt-6 mr-6">
                 <svg
                   width="24"
@@ -343,7 +343,7 @@ const Home: NextPage = ({
               </p>
             </div>
             <div>
-              <p className=" font-semibold text-4xl tracking-tigher">
+              <p className=" font-semibold text-4xl tracking-tighter">
                 Popupsmart meets all your business needs.
               </p>
             </div>
@@ -354,7 +354,7 @@ const Home: NextPage = ({
         <h2 className="font-semibold text-4xl text-black leading-[48px] tracking-half-tighter	mt-24">
           Modal Card Generator
         </h2>
-        <p className="max-w-[459px] mt-4 font-[400] text-base leading-6 tracking-tigher">
+        <p className="max-w-[459px] mt-4 font-[400] text-base leading-6 tracking-tighter">
           Measure your return on email marketing efforts easier and faster by
           using thebest online tools. Popupsmart is ready to help you build an
           efficient email list!

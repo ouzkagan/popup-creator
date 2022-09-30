@@ -23,7 +23,7 @@ export default function POPUP_010({ popupData }) {
             {valuePicker(popupData, 'headline')}
           </h3>
 
-          <p className="max-w-[459px] mt-2 font-[400] text-base leading-6 tracking-tigher">
+          <p className="max-w-[459px] mt-2 font-[400] text-base leading-6 tracking-tighter">
             {valuePicker(popupData, 'description')}
           </p>
           <div className="w-full mt-8">
@@ -31,7 +31,9 @@ export default function POPUP_010({ popupData }) {
               type="text"
               className={
                 'rounded-xl border border-solid text-base leading-6  text-gray-600 w-full h-[48px]  pl-3 ' +
-                colorPicker(popupData?.color)?.focusOutline
+                colorPicker(popupData?.color)
+                  ? colorPicker(popupData?.color).focusOutline
+                  : ''
               }
               name=""
               id=""
@@ -42,7 +44,9 @@ export default function POPUP_010({ popupData }) {
             <input
               type="text"
               className={`rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 ${
-                colorPicker(popupData?.color)?.focusOutline
+                colorPicker(popupData?.color)
+                  ? colorPicker(popupData?.color).focusOutline
+                  : ''
               }`}
               name=""
               id=""
@@ -52,11 +56,11 @@ export default function POPUP_010({ popupData }) {
           <button
             className={
               'rounded-xl py-3 px-24 whitespace-nowrap  font-medium text-base leading-4 text-center text-white tracking-tight	w-full h-[48px] mt-4 ' +
-              colorPicker(popupData?.color)?.bg
+              (colorPicker(popupData?.color)?.bg || '')
             }
             // x={colorPicker(popupData?.color)}
             style={{
-              backgroundColor: popupData?.color,
+              backgroundColor: popupData?.color || '$color',
             }}
           >
             {valuePicker(popupData, 'button_text_1')}
@@ -68,7 +72,7 @@ export default function POPUP_010({ popupData }) {
       </div>
       <div className="relative  ">
         {/* <img src="/51951afc5aa43fb6d90f01eeeec2b12c.png" alt="me" /> */}
-        <div className="absolute w-full h-full t-0 l-0 ">
+        <div className="absolute w-full h-full top-0 left-0 ">
           <span className="w-10 h-10 ml-auto rounded-full bg-black/30 	flex justify-center items-center mt-6 mr-6">
             <svg
               width="24"

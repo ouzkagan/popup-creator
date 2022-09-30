@@ -24,7 +24,7 @@ module.exports = {
       },
       letterSpacing: {
         'half-tighter': '-0.03em',
-        tigher: '-0.015em',
+        tighter: '-0.015em',
       },
       colors: {
         '[#777777]': '[#777777]',

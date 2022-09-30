@@ -59,7 +59,7 @@ const Templates = (): JSX.Element => {
               className="border border-[#EAEAEA] border-solid h-48 bg-[#F5F5F5] flex items-center justify-center relative group"
               key={popupTemplate.template_id}
             >
-              <div className="hidden absolute w-full h-full t-0 l-0 bg-[#7D4AEA]/25 z-10 group-hover:flex  items-center justify-center ">
+              <div className="hidden absolute w-full h-full top-0 left-0 bg-[#7D4AEA]/25 z-10 group-hover:flex  items-center justify-center ">
                 <button
                   className="rounded-xl bg-white px-6 py-4 whitespace-nowrap  font-medium text-base leading-4 text-center text-purple-600 tracking-tight	"
                   onClick={() =>
