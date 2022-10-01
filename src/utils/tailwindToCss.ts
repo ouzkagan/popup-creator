@@ -19,8 +19,15 @@ const arbitrarySupportedClasses = {
   left: 'left',
   right: 'right',
   bg: 'background',
-  text: 'color',
-  font: 'font-weigth',
+  // text: 'color',
+  text: (value: string) => {
+    if (value.includes('px')) {
+      return `font-size: ${value}`;
+    }
+    return `color: ${value}`;
+  },
+
+  font: 'font-weight',
   'max-w': 'max-width',
   'min-w': 'min-width',
   leading: 'line-height',
@@ -71,13 +78,14 @@ const convertToCss = (classNames: string[]) => {
           let index = transparentClassColor.indexOf(list[1]);
           leftover.splice(leftover.indexOf(transparentClasses[index]), 1);
           const semicolon = list[0][list[0].length - 1] !== ';' ? ';' : '';
-
-          cssCode += list[0]
-            .replace('rgb', 'rgba')
-            .replace(
-              ')',
-              ', 0.' + transparentClassColorPercent[index] + ')' + semicolon
-            );
+          cssCode +=
+            list[2].split(' ')[0] +
+            list[0]
+              .replace('rgb', 'rgba')
+              .replace(
+                ')',
+                ', 0.' + transparentClassColorPercent[index] + ')' + semicolon
+              );
         }
       });
     });
@@ -102,6 +110,7 @@ const convertToCss = (classNames: string[]) => {
       }
     }
   });
+  // console.warn('Some classes left over: ', leftover);
 
   return cssCode;
 };
@@ -125,7 +134,7 @@ export const getConvertedClasses = (input) => {
   const breakpoints = CheatSheet[0].content[3].table;
 
   const hoverClasses = getHoverClass(input);
-
+  console.log(hoverClasses.length, convertToCss(hoverClasses));
   const smClasses = getBreakPoints(input, 'sm');
   const mdClasses = getBreakPoints(input, 'md');
   const lgClasses = getBreakPoints(input, 'lg');

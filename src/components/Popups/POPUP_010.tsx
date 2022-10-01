@@ -1,13 +1,14 @@
 import { colorPicker } from '@/utils/helpers';
 
 const valuePicker = (data, id) => {
-  if (data == null) return '$' + id;
   const { content } = data;
+  if (data == null || content?.length == 0) return '$' + id;
   // console.log(content);
   return content?.filter((item) => item.name == id)?.[0]?.value;
 };
 const imagePicker = (data, id) => {
-  if (data == null) return '$' + id;
+  if (data == null || data?.images.length == 0 || data?.images == undefined)
+    return '$' + id;
   const { images } = data;
   // console.log(content);
   return images?.filter((item) => item.name == id)?.[0]?.value;
@@ -15,8 +16,8 @@ const imagePicker = (data, id) => {
 
 export default function POPUP_010({ popupData }) {
   return (
-    <div className="w-[740px] h-[468px] grid grid-cols-2  bg-white shadow-xl   rounded-l-[40px]">
-      <div className="w-[300px] mx-auto">
+    <div className="w-[740px] h-[468px] grid grid-cols-2  bg-white shadow-xl   rounded-l-[40px] max-w-full max-h-full">
+      <div className="w-[300px] mx-auto max-w-full">
         <div className="flex flex-col justify-center items-center  mx-auto">
           <h3 className="text-4xl	font-semibold  text-black leading-[3.375rem] mt-16">
             {/* {popupData?.content?.[0]?.value || '$headline'} */}
@@ -26,45 +27,46 @@ export default function POPUP_010({ popupData }) {
           <p className="max-w-[459px] mt-2 font-[400] text-base leading-6 tracking-tighter">
             {valuePicker(popupData, 'description')}
           </p>
-          <div className="w-full mt-8">
-            <input
-              type="text"
+          <form id="webhookForm" className="w-full">
+            <div className="w-full mt-8">
+              <input
+                type="text"
+                className={`rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 ${
+                  colorPicker(popupData?.color)
+                    ? colorPicker(popupData?.color).focusOutline
+                    : ''
+                }`}
+                name="input_1"
+                placeholder={valuePicker(popupData, 'input_1')}
+              />
+            </div>
+            <div className="w-full mt-4">
+              <input
+                type="text"
+                className={`rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 ${
+                  colorPicker(popupData?.color)
+                    ? colorPicker(popupData?.color).focusOutline
+                    : ''
+                }`}
+                name="input_2"
+                placeholder={valuePicker(popupData, 'input_2')}
+              />
+            </div>
+            <button
+              id="submit-button"
+              type="submit"
               className={
-                'rounded-xl border border-solid text-base leading-6  text-gray-600 w-full h-[48px]  pl-3 ' +
-                colorPicker(popupData?.color)
-                  ? colorPicker(popupData?.color).focusOutline
-                  : ''
+                'rounded-xl py-3 px-24 whitespace-nowrap  font-medium text-base leading-4 text-center text-white tracking-tight	w-full h-[48px] mt-4  border-0 cursor-pointer ' +
+                (colorPicker(popupData?.color)?.bg || '')
               }
-              name=""
-              id=""
-              placeholder={valuePicker(popupData, 'input_placeholder_1')}
-            />
-          </div>
-          <div className="w-full mt-4">
-            <input
-              type="text"
-              className={`rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 ${
-                colorPicker(popupData?.color)
-                  ? colorPicker(popupData?.color).focusOutline
-                  : ''
-              }`}
-              name=""
-              id=""
-              placeholder={valuePicker(popupData, 'input_placeholder_2')}
-            />
-          </div>
-          <button
-            className={
-              'rounded-xl py-3 px-24 whitespace-nowrap  font-medium text-base leading-4 text-center text-white tracking-tight	w-full h-[48px] mt-4 ' +
-              (colorPicker(popupData?.color)?.bg || '')
-            }
-            // x={colorPicker(popupData?.color)}
-            style={{
-              backgroundColor: popupData?.color || '$color',
-            }}
-          >
-            {valuePicker(popupData, 'button_text_1')}
-          </button>
+              // x={colorPicker(popupData?.color)}
+              style={{
+                backgroundColor: popupData?.color || '$color',
+              }}
+            >
+              {valuePicker(popupData, 'button_text_1')}
+            </button>
+          </form>
         </div>
         <span className="font-light leading-3 text-gray-600 text-[10px] mt-4 ">
           {valuePicker(popupData, 'privacy_text_1')}
@@ -73,7 +75,10 @@ export default function POPUP_010({ popupData }) {
       <div className="relative  ">
         {/* <img src="/51951afc5aa43fb6d90f01eeeec2b12c.png" alt="me" /> */}
         <div className="absolute w-full h-full top-0 left-0 ">
-          <span className="w-10 h-10 ml-auto rounded-full bg-black/30 	flex justify-center items-center mt-6 mr-6">
+          <span
+            className="w-10 h-10 ml-auto rounded-full bg-black/30 	flex justify-center items-center mt-6 mr-6 cursor-pointer hover:bg-black/20"
+            id="close-button"
+          >
             <svg
               width="24"
               height="24"

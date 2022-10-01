@@ -8,4 +8,8 @@ export type PopupTemplate = {
   template_id: string;
   image: string;
   content: Content[];
+  settings?: {
+    font: string;
+    fontLink: string;
+  };
 };

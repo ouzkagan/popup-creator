@@ -64,10 +64,10 @@ interface defaultStateInterface {
   color: Color;
   logo: null | string;
   // Targeting Rules
-  visitorDevices: DeviceType[];
+  visitorDevice: DeviceType;
   afterXSeconds: null | string;
   afterScrollingXAmount: null | string;
-  urlBrowsing: UrlSourceType;
+  urlBrowsing: null | string;
   browserLanguage: string[];
   onExitIntent: boolean;
   webHookUrl: string;
@@ -76,7 +76,7 @@ interface defaultStateInterface {
   webHookTypes: WebHookType[];
   inputStatus: {
     // Targeting Rules
-    visitorDevices: boolean;
+    visitorDevice: boolean;
     afterXSeconds: boolean;
     afterScrollingXAmount: boolean;
     urlBrowsing: boolean;
@@ -93,20 +93,17 @@ export const initialState: defaultStateInterface = {
   color: '#F37C34',
   logo: '',
   // Targeting Rules
-  visitorDevices: ['DESKTOP'],
+  visitorDevice: 'DESKTOP',
   afterXSeconds: '12',
   afterScrollingXAmount: '50',
-  urlBrowsing: {
-    domain: '',
-    targetAll: true,
-  },
+  urlBrowsing: '',
   webHookUrl: '',
   webHookTypes: [],
   browserLanguage: ['en-EN'],
   onExitIntent: true,
   inputStatus: {
     // Targeting Rules
-    visitorDevices: true,
+    visitorDevice: true,
     afterXSeconds: true,
     afterScrollingXAmount: true,
     urlBrowsing: true,

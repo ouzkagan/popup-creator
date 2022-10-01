@@ -7,6 +7,11 @@ function pad(num: number, size: number): string {
 export const popupTemplates: PopupTemplate[] = [
   {
     template_id: 'POPUP_001',
+    settings: {
+      font: 'Inter',
+      fontLink:
+        'https://fonts.googleapis.com/css2?family=Inter:wght@200;300;500;600;700;800;900&display=swap',
+    },
     image: '01 1.png',
     content: [
       {
@@ -35,6 +40,11 @@ export const popupTemplates: PopupTemplate[] = [
   },
   {
     template_id: 'POPUP_002',
+    settings: {
+      font: 'Inter',
+      fontLink:
+        'https://fonts.googleapis.com/css2?family=Inter:wght@200;300;500;600;700;800;900&display=swap',
+    },
     image: '02 1.png',
     content: [
       {
@@ -63,6 +73,11 @@ export const popupTemplates: PopupTemplate[] = [
   },
   {
     template_id: 'POPUP_003',
+    settings: {
+      font: 'Inter',
+      fontLink:
+        'https://fonts.googleapis.com/css2?family=Inter:wght@200;300;500;600;700;800;900&display=swap',
+    },
     image: '03 1.png',
     content: [
       {
@@ -138,6 +153,11 @@ export const popupTemplates: PopupTemplate[] = [
     if (x + 4 === 10) {
       return {
         template_id: 'POPUP_010',
+        settings: {
+          font: 'Inter',
+          fontLink:
+            'https://fonts.googleapis.com/css2?family=Inter:wght@200;300;500;600;700;800;900&display=swap',
+        },
         image: '10 1.png',
         content: [
           {
@@ -153,13 +173,13 @@ export const popupTemplates: PopupTemplate[] = [
             color: '#000000',
           },
           {
-            name: 'input_placeholder_1',
+            name: 'input_1',
             type: 'text',
             value: 'Enter full name',
             color: '#000000',
           },
           {
-            name: 'input_placeholder_2',
+            name: 'input_2',
             type: 'text',
             value: 'Enter you email',
             color: '#000000',

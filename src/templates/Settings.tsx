@@ -18,8 +18,8 @@ import { RootState } from '@/store';
 //
 import FileInput from '@/components/FileInput';
 import TextInput from '@/components/TextInput';
+import ToggleInput from '@/components/toggleInput';
 import { languages } from 'countries-list';
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const FormStateToRedux = ({ form }) => {
   const dispatch = useDispatch();
@@ -84,10 +84,17 @@ const Settings = (): JSX.Element => {
     // console.log(rest);
     return rest;
   };
+  const asAString = (_formValues) => {
+    const processedValues = { ..._formValues };
+    processedValues.content.concat(processedValues?.images);
+    delete processedValues?.images;
+
+    const stringValues = JSON.stringify(processedValues);
+    const valueToCopy = `<script type="text/javascript" src="https://popupsmart.com/freechat.js"></script><script> window.start.init(${stringValues})</script>`;
+    return valueToCopy;
+  };
   const onSubmit = async (values) => {
-    const valueToCopy = `<script type="text/javascript" src="https://popupsmart.com/freechat.js"></script><script> window.start.init(${JSON.stringify(
-      values
-    )} )</script>`;
+    const valueToCopy = asAString(values);
     navigator.clipboard.writeText(valueToCopy);
   };
   return (
@@ -388,32 +395,34 @@ const Settings = (): JSX.Element => {
                     <span>Visitor Device</span>
                   </div>
                   <div>
-                    <label className="inline-flex relative items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        value=""
-                        id="default-toggle"
-                        className="sr-only peer "
-                      />
-                      <div className="w-[33px] h-[18px] bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-[160px] peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-[12px] after:w-[12px] after:transition-all dark:border-gray-600 peer-checked:bg-[#7D4AEA] peer-checked:after:left-[6px]"></div>
-                    </label>
+                    <Field
+                      name="inputStatus.visitorDevice"
+                      type="checkbox"
+                      component={ToggleInput}
+                      // checked={!formValues.inputStatus.visitorDevice}
+                      defaultValue={true}
+                    />
                   </div>
                 </div>
                 <div className="mt-5 flex gap-5 h-12 w-full">
                   <div className="flex items-center gap-[4px] bg-[#F5F5F5] rounded-xl grow">
-                    <Field<string>
-                      name="visitorDevices"
-                      component="input"
+                    <input
+                      name="visitorDevice"
+                      // component="input"
                       type="checkbox"
                       value="DESKTOP"
+                      checked={formValues.visitorDevice.includes('DESKTOP')}
                       className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500 ml-[15px] mr-[6px]"
+                      disabled={!formValues.inputStatus.visitorDevice}
+                      onChange={() => {
+                        console.log(formValues.visitorDevice);
+                        if (formValues.visitorDevice !== 'DESKTOP') {
+                          form.mutators.setValue('visitorDevice', 'DESKTOP');
+                        } else {
+                          form.mutators.setValue('visitorDevice', 'MOBILE');
+                        }
+                      }}
                     />{' '}
-                    {/* <input
-                      type="checkbox"
-                      name=""
-                      id=""
-                      className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500 ml-[15px] mr-[6px]"
-                    /> */}
                     <svg
                       width="18"
                       height="18"
@@ -424,7 +433,7 @@ const Settings = (): JSX.Element => {
                       <path
                         d="M15 14.5C15.825 14.5 16.5 13.825 16.5 13V3.5C16.5 2.675 15.825 2 15 2H3C2.175 2 1.5 2.675 1.5 3.5V13C1.5 13.825 2.175 14.5 3 14.5H0V16H18V14.5H15ZM3 3.5H15V13H3V3.5Z"
                         fill={
-                          formValues.visitorDevices.includes('DESKTOP')
+                          formValues.visitorDevice.includes('DESKTOP')
                             ? '#7D4AEA'
                             : '#999999'
                         }
@@ -433,12 +442,22 @@ const Settings = (): JSX.Element => {
                     Desktop
                   </div>
                   <div className="flex items-center gap-[4px] bg-[#F5F5F5] rounded-xl grow">
-                    <Field<string>
-                      name="visitorDevices"
-                      component="input"
+                    <input
+                      name="visitorDevice"
+                      // component="input"
                       type="checkbox"
                       value="MOBILE"
-                      className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500 ml-[15px] mr-[6px]"
+                      checked={formValues.visitorDevice.includes('MOBILE')}
+                      className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500 ml-[15px] mr-[6px] rounded-none"
+                      disabled={!formValues.inputStatus.visitorDevice}
+                      onChange={() => {
+                        console.log(formValues.visitorDevice);
+                        if (formValues.visitorDevice !== 'MOBILE') {
+                          form.mutators.setValue('visitorDevice', 'MOBILE');
+                        } else {
+                          form.mutators.setValue('visitorDevice', 'DESKTOP');
+                        }
+                      }}
                     />{' '}
                     {/* <input
                       type="checkbox"
@@ -457,7 +476,7 @@ const Settings = (): JSX.Element => {
                         d="M12.75 0.7575L5.25 0.75C4.425 0.75 3.75 1.425 3.75 2.25V15.75C3.75 16.575 4.425 17.25 5.25 17.25H12.75C13.575 17.25 14.25 16.575 14.25 15.75V2.25C14.25 1.425 13.575 0.7575 12.75 0.7575ZM12.75 14.25H5.25V3.75H12.75V14.25Z"
                         // fill="#999999"
                         fill={
-                          formValues.visitorDevices.includes('MOBILE')
+                          formValues.visitorDevice.includes('MOBILE')
                             ? '#7D4AEA'
                             : '#999999'
                         }
@@ -723,11 +742,11 @@ const Settings = (): JSX.Element => {
                     </div> */}
                     <div className="rounded-[8px] bg-[#333333] not-italic font-light text-xs leading-4 text-white font-robotomono p-[15px] pb-[57px]">
                       <CodeBlock
-                        codeString={`<script type="text/javascript" src="https://popupsmart.com/freechat.js"></script><script> window.start.init({${JSON.stringify(
+                        codeString={`<script type="text/javascript" src="https://!.com/bundle.js"></script><script> window.start.init(${JSON.stringify(
                           formValues,
                           undefined,
                           2
-                        )} })</script>`}
+                        )})</script>`}
                       />
                     </div>
                     <button
