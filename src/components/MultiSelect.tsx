@@ -14,6 +14,7 @@ type MultiSelectProps = {
   name: string;
   setSelectedValues: (selectedCodes: string[]) => void;
   defaultValue: string;
+  disabled: boolean;
 };
 
 const MultiSelect = ({
@@ -24,6 +25,7 @@ const MultiSelect = ({
   setSelectedValues,
   name,
   defaultValue,
+  disabled,
 }: MultiSelectProps) => {
   const [cachedItems, setCachedItems] = useState<Item[]>([
     ...items.filter((item) => selectedValues.includes(item.code)),
@@ -119,87 +121,88 @@ const MultiSelect = ({
         {selectedValues.length === 0 && (
           <span className="pl-[12px]">{placeholder} </span>
         )}
-        {selectedValues.map((code) => (
-          <span
-            className={` rounded-[8px] m-[3px] mr-0 flex items-center
+        {!disabled &&
+          selectedValues.map((code) => (
+            <span
+              className={` rounded-[8px] m-[3px] mr-0 flex items-center
             ${
               defaultValue == code
                 ? 'bg-gray-200'
                 : 'bg-white border-[#EA0F0F] border-[1px]'
             }
             `}
-            key={code}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {' '}
-            <span className="mr-[3px] font-[400] text-[14px] leading-4 text-black pl-[12px] pr-[11px] py-[7px]">
-              {items.filter((item) => item.code == code)?.[0]?.value}
-            </span>
-            <span
-              onClick={(e) => {
-                e.stopPropagation();
-                onClickDeleteItem(code);
-              }}
-              className="pr-[8px] cursor-pointer"
+              key={code}
+              onClick={(e) => e.stopPropagation()}
             >
-              {defaultValue === code ? (
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 18 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clipPath="url(#clip0_48_374)">
-                    <path
-                      d="M12.5 11.515L11.515 12.5L9 9.985L6.485 12.5L5.5 11.515L8.015 9L5.5 6.485L6.485 5.5L9 8.015L11.515 5.5L12.5 6.485L9.985 9L12.5 11.515Z"
-                      fill="black"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_48_374">
-                      <rect
-                        width="12"
-                        height="12"
-                        fill="white"
-                        transform="translate(3 3)"
+              {' '}
+              <span className="mr-[3px] font-[400] text-[14px] leading-4 text-black pl-[12px] pr-[11px] py-[7px]">
+                {items.filter((item) => item.code == code)?.[0]?.value}
+              </span>
+              <span
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClickDeleteItem(code);
+                }}
+                className="pr-[8px] cursor-pointer"
+              >
+                {defaultValue === code ? (
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g clipPath="url(#clip0_48_374)">
+                      <path
+                        d="M12.5 11.515L11.515 12.5L9 9.985L6.485 12.5L5.5 11.515L8.015 9L5.5 6.485L6.485 5.5L9 8.015L11.515 5.5L12.5 6.485L9.985 9L12.5 11.515Z"
+                        fill="black"
                       />
-                    </clipPath>
-                  </defs>
-                </svg>
-              ) : (
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 18 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="9" cy="9" r="9" fill="#EA0F0F" />
-                  <g clip-path="url(#clip0_48_366)">
-                    <path
-                      d="M12.5 11.515L11.515 12.5L9 9.985L6.485 12.5L5.5 11.515L8.015 9L5.5 6.485L6.485 5.5L9 8.015L11.515 5.5L12.5 6.485L9.985 9L12.5 11.515Z"
-                      fill="white"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_48_366">
-                      <rect
-                        width="12"
-                        height="12"
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_48_374">
+                        <rect
+                          width="12"
+                          height="12"
+                          fill="white"
+                          transform="translate(3 3)"
+                        />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                ) : (
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle cx="9" cy="9" r="9" fill="#EA0F0F" />
+                    <g clip-path="url(#clip0_48_366)">
+                      <path
+                        d="M12.5 11.515L11.515 12.5L9 9.985L6.485 12.5L5.5 11.515L8.015 9L5.5 6.485L6.485 5.5L9 8.015L11.515 5.5L12.5 6.485L9.985 9L12.5 11.515Z"
                         fill="white"
-                        transform="translate(3 3)"
                       />
-                    </clipPath>
-                  </defs>
-                </svg>
-              )}
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_48_366">
+                        <rect
+                          width="12"
+                          height="12"
+                          fill="white"
+                          transform="translate(3 3)"
+                        />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                )}
+              </span>
             </span>
-          </span>
-        ))}
+          ))}
       </div>
       <span className="inline-block w-5">
-        {opened ? (
+        {opened && disabled ? (
           <svg
             width="19"
             height="18"
@@ -227,7 +230,7 @@ const MultiSelect = ({
           </svg>
         )}
       </span>
-      {items?.length > 0 && (
+      {items?.length > 0 && !disabled && (
         <ul
           className={`absolute w-full  leftop-0 rounded-md p-1 ${
             opened ? 'opacity-1 visible' : 'opacity-0 invisible'

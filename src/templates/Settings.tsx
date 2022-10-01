@@ -491,15 +491,13 @@ const Settings = (): JSX.Element => {
                       <span>After X Seconds</span>
                     </div>
                     <div>
-                      <label className="inline-flex relative items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          value=""
-                          id="default-toggle"
-                          className="sr-only peer "
-                        />
-                        <div className="w-[33px] h-[18px] bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-[160px] peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-[12px] after:w-[12px] after:transition-all dark:border-gray-600 peer-checked:bg-[#7D4AEA] peer-checked:after:left-[6px]"></div>
-                      </label>
+                      <Field
+                        name="inputStatus.afterXSeconds"
+                        type="checkbox"
+                        component={ToggleInput}
+                        // checked={!formValues.inputStatus.visitorDevice}
+                        defaultValue={true}
+                      />
                     </div>
                   </div>
                   <div className="w-full mt-4">
@@ -509,6 +507,7 @@ const Settings = (): JSX.Element => {
                       component={TextInput}
                       className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
                       placeholder="12"
+                      disabled={!formValues.inputStatus.afterXSeconds}
                     />
                     {/* <input
                       type="text"
@@ -525,15 +524,13 @@ const Settings = (): JSX.Element => {
                       <span>After % Scroll</span>
                     </div>
                     <div>
-                      <label className="inline-flex relative items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          value=""
-                          id="default-toggle"
-                          className="sr-only peer "
-                        />
-                        <div className="w-[33px] h-[18px] bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-[160px] peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-[12px] after:w-[12px] after:transition-all dark:border-gray-600 peer-checked:bg-[#7D4AEA] peer-checked:after:left-[6px]"></div>
-                      </label>
+                      <Field
+                        name="inputStatus.afterScrollingXAmount"
+                        type="checkbox"
+                        component={ToggleInput}
+                        // checked={!formValues.inputStatus.visitorDevice}
+                        defaultValue={true}
+                      />
                     </div>
                   </div>
                   <div className="w-full mt-4">
@@ -543,6 +540,7 @@ const Settings = (): JSX.Element => {
                       component={TextInput}
                       className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
                       placeholder="50"
+                      disabled={!formValues.inputStatus.afterScrollingXAmount}
                       // % eklenebilir
                     />
                   </div>
@@ -553,15 +551,13 @@ const Settings = (): JSX.Element => {
                       <span>Traffic Source</span>
                     </div>
                     <div>
-                      <label className="inline-flex relative items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          value=""
-                          id="default-toggle"
-                          className="sr-only peer "
-                        />
-                        <div className="w-[33px] h-[18px] bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-[160px] peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-[12px] after:w-[12px] after:transition-all dark:border-gray-600 peer-checked:bg-[#7D4AEA] peer-checked:after:left-[6px]"></div>
-                      </label>
+                      <Field
+                        name="inputStatus.urlBrowsing"
+                        type="checkbox"
+                        component={ToggleInput}
+                        // checked={!formValues.inputStatus.visitorDevice}
+                        defaultValue={true}
+                      />
                     </div>
                   </div>
                   <div className="w-full mt-4">
@@ -579,6 +575,7 @@ const Settings = (): JSX.Element => {
                       className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
                       placeholder="Enter your traffic source domain"
                       allowNull={true}
+                      disabled={!formValues.inputStatus.urlBrowsing}
                       // % eklenebilir
                     />
                   </div>
@@ -589,15 +586,13 @@ const Settings = (): JSX.Element => {
                       <span className="font-semibold">Browser Language</span>
                     </div>
                     <div>
-                      <label className="inline-flex relative items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          value=""
-                          id="default-toggle"
-                          className="sr-only peer "
-                        />
-                        <div className="w-[33px] h-[18px] bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-[160px] peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-[12px] after:w-[12px] after:transition-all dark:border-gray-600 peer-checked:bg-[#7D4AEA] peer-checked:after:left-[6px]"></div>
-                      </label>
+                      <Field
+                        name="inputStatus.browserLanguage"
+                        type="checkbox"
+                        component={ToggleInput}
+                        // checked={!formValues.inputStatus.visitorDevice}
+                        defaultValue={true}
+                      />
                     </div>
                   </div>
                   <div className="w-full mt-4">
@@ -641,6 +636,7 @@ const Settings = (): JSX.Element => {
                       }}
                       name="Languages"
                       defaultValue="en-EN"
+                      disabled={!formValues.inputStatus.browserLanguage}
                     />
                   </div>
                 </div>
@@ -652,15 +648,13 @@ const Settings = (): JSX.Element => {
                       </span>
                     </div>
                     <div>
-                      <label className="inline-flex relative items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          value=""
-                          id="default-toggle"
-                          className="sr-only peer "
-                        />
-                        <div className="w-[33px] h-[18px] bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-[160px] peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-[12px] after:w-[12px] after:transition-all dark:border-gray-600 peer-checked:bg-[#7D4AEA] peer-checked:after:left-[6px]"></div>
-                      </label>
+                      <Field
+                        name="inputStatus.exitIntentTargeting"
+                        type="checkbox"
+                        component={ToggleInput}
+                        // checked={!formValues.inputStatus.visitorDevice}
+                        defaultValue={true}
+                      />
                     </div>
                   </div>
                 </div>
