@@ -72,7 +72,8 @@ const Templates = (): JSX.Element => {
               </div>
               <div className="flex justify-center items-center w-full h-full">
                 <Image
-                  src={`/assets/popups/${popupTemplate.image}`}
+                  src={`${popupTemplate.image}`}
+                  loader={() => popupTemplate.image}
                   alt="image"
                   loading="lazy"
                   // layout="responsive"

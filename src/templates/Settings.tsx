@@ -1,6 +1,5 @@
 import CodeBlock from '@/components/CodeBlock';
 import MultiSelect from '@/components/MultiSelect';
-import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 // form
 import {
@@ -19,7 +18,9 @@ import { RootState } from '@/store';
 import FileInput from '@/components/FileInput';
 import TextInput from '@/components/TextInput';
 import ToggleInput from '@/components/toggleInput';
+import axios from 'axios';
 import { languages } from 'countries-list';
+import { setIn } from 'final-form';
 
 const FormStateToRedux = ({ form }) => {
   const dispatch = useDispatch();
@@ -61,6 +62,11 @@ const Settings = (): JSX.Element => {
     useSelector(
       (state: RootState) => selectForm(state, 'defaultForm').values
     ) || initialGeneralSettings;
+  const dispatch = useDispatch();
+  const updateForm = (form, state) => {
+    // console.log(form, state);
+    dispatch(UPDATE_FORM_STATE({ form, state }));
+  };
   // console.log('formvalues', formValues);
 
   // const initialGeneralSettings = useSelector(
@@ -97,6 +103,37 @@ const Settings = (): JSX.Element => {
     const valueToCopy = asAString(values);
     navigator.clipboard.writeText(valueToCopy);
   };
+  const uploadFile = async (file) => {
+    //here, we are creatingng a new FormData object; this lets you compile a set of key/value pairs.
+    let data = new FormData();
+    // we are appending a new value onto an existing key inside a FormData object. the keys here are what is required for the upload by the cloudinary endpoint. the value in line 7 is your upload preset
+    data.append('upload_preset', 'ntlolkzu');
+    // URL.createObjectURL(file)
+    data.append('file', file);
+    // return await new Promise((resolve) => setTimeout(resolve, 1000)).then(
+    //   () => {
+    //     // updateForm('defaultForm', )
+    //     return 'https://res.cloudinary.com/dcezcpyg1/image/upload/v1664649998/sqkaua0fahf6rvsjnk1g.png';
+    //   }
+    // );
+
+    // return 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80';
+    try {
+      //making a post request to the cloudinary endpoint
+      return await axios
+        .post(
+          `https://api.cloudinary.com/v1_1/${process.env.CDN_USERNAME}/upload`,
+          data
+        )
+        .then((response) => response.data.secure_url);
+    } catch (e) {
+      //logthe error if any here. you can as well display them to the users
+      console.log(e.response);
+      // set the state of loading to 0 if there is an error
+      // setLoading(0);
+    }
+  };
+
   return (
     <div className="w-[378px] mt-24">
       <Form
@@ -105,6 +142,20 @@ const Settings = (): JSX.Element => {
           ...arrayMutators,
           setValue: ([field, value], state, { changeValue }) => {
             changeValue(state, field, () => value);
+          },
+          setImage: async ([field, value], state, { changeValue }) => {
+            await uploadFile(value).then((image) => {
+              changeValue(state, field, () => image);
+              const newValues = setIn(
+                state.lastFormState?.values,
+                field,
+                image
+              );
+              const newState = { ...state.lastFormState, values: newValues };
+              updateForm('defaultForm', newState);
+              return image;
+            });
+            return 1;
           },
         }}
         initialValues={{
@@ -283,7 +334,7 @@ const Settings = (): JSX.Element => {
                 </span>
                 <FieldArray name="content">
                   {({ fields }) =>
-                    fields.map((name, index) => {
+                    fields.map((name) => {
                       // console.log(name,index)
                       return (
                         // field typini switch case yap. zaten ya text input ya da image belki url input olacak!!!
@@ -310,13 +361,13 @@ const Settings = (): JSX.Element => {
                   </span>
                   <FieldArray name="images">
                     {({ fields }) =>
-                      fields.map((name, index) => {
+                      fields.map((name) => {
                         // console.log(name,index)
                         return (
                           // field typini switch case yap. zaten ya text input ya da image belki url input olacak!!!
                           <div className="w-full mt-4" key={name}>
                             <Field
-                              // parse={(x) => x}
+                              parse={(x) => x}
                               name={`${name}.value`}
                               // defaultValue=""
                               component={FileInput}
@@ -324,7 +375,15 @@ const Settings = (): JSX.Element => {
                               // placeholder="Enter your own text"
                               // allowNull={true}
                               // onchange setValue((values)=> UploadImage(values.files[0]))? ??
-                              className=""
+                              // onChange={(files) => console.log('"files', files)}
+                              getFiles={(files) =>
+                                form.mutators.setImage(
+                                  `${name}.value`,
+                                  files[0]
+                                )
+                              }
+                              // className=""
+                              // defaultValue={''}
                             />
                             <Field
                               name={`${name}.value`}
@@ -338,7 +397,7 @@ const Settings = (): JSX.Element => {
                       })
                     }
                   </FieldArray>
-                  <div className="border border-[#DDDDDD] border-dashed border-color py-8 flex justify-center items-center flex-col gap-5 mt-4">
+                  {/* <div className="border border-[#DDDDDD] border-dashed border-color py-8 flex justify-center items-center flex-col gap-5 mt-4">
                     <div className="w-20 h-20 rounded-xl bg-opacity-10 bg-[#7D4AEA] flex justify-center items-center">
                       <Image
                         src="/assets/placeholder-image.png"
@@ -378,7 +437,7 @@ const Settings = (): JSX.Element => {
                         </a>
                       </span>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="mt-24">
@@ -734,7 +793,7 @@ const Settings = (): JSX.Element => {
                         }
                       />
                     </div> */}
-                    <div className="rounded-[8px] bg-[#333333] not-italic font-light text-xs leading-4 text-white font-robotomono p-[15px] pb-[57px]">
+                    <div className="rounded-[8px] bg-[#333333] not-italic font-light text-xs leading-4 text-white font-robotomono p-[15px] pb-[57px] overflow-hidden">
                       <CodeBlock
                         codeString={`<script type="text/javascript" src="https://!.com/bundle.js"></script><script> window.start.init(${JSON.stringify(
                           formValues,

@@ -12,7 +12,7 @@ export const popupTemplates: PopupTemplate[] = [
       fontLink:
         'https://fonts.googleapis.com/css2?family=Inter:wght@200;300;500;600;700;800;900&display=swap',
     },
-    image: '01 1.png',
+    image: process.env.BASE_URL + '/assets/popups/01 1.png',
     content: [
       {
         name: 'headline',
@@ -45,7 +45,7 @@ export const popupTemplates: PopupTemplate[] = [
       fontLink:
         'https://fonts.googleapis.com/css2?family=Inter:wght@200;300;500;600;700;800;900&display=swap',
     },
-    image: '02 1.png',
+    image: process.env.BASE_URL + '/assets/popups/02 1.png',
     content: [
       {
         name: 'headline',
@@ -78,7 +78,7 @@ export const popupTemplates: PopupTemplate[] = [
       fontLink:
         'https://fonts.googleapis.com/css2?family=Inter:wght@200;300;500;600;700;800;900&display=swap',
     },
-    image: '03 1.png',
+    image: process.env.BASE_URL + '/assets/popups/03 1.png',
     content: [
       {
         name: 'title',
@@ -158,7 +158,7 @@ export const popupTemplates: PopupTemplate[] = [
           fontLink:
             'https://fonts.googleapis.com/css2?family=Inter:wght@200;300;500;600;700;800;900&display=swap',
         },
-        image: '10 1.png',
+        image: process.env.BASE_URL + '/assets/popups/10 1.png',
         content: [
           {
             name: 'headline',
@@ -198,14 +198,16 @@ export const popupTemplates: PopupTemplate[] = [
           {
             name: 'image_1',
             type: 'image',
-            value: '/assets/default-popup.jpg',
+            value: `${process.env.BASE_URL}/assets/default-popup.jpg`,
           },
         ],
       };
     }
     return {
       template_id: 'POPUP_' + pad(x + 4, 3),
-      image: `${('0' + (x + 4)).slice(-2)} 1.png`,
+      image: `${process.env.BASE_URL}/assets/popups/${('0' + (x + 4)).slice(
+        -2
+      )} 1.png`,
       content: [],
     };
   }),

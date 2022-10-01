@@ -7,7 +7,6 @@ import { wrapper } from '@/store';
 import { set_popups } from '@/store/features/popupTemplates.slice';
 import Templates from '@/templates/Templates';
 import type { NextPage } from 'next';
-import Link from 'next/link';
 import { useSelector } from 'react-redux';
 export const getStaticProps = wrapper.getStaticProps((store) => async () => {
   const res = await fetch(`http://localhost:3000/api/popups`);
@@ -29,9 +28,6 @@ const Home: NextPage = ({
   return (
     <div className=" bg-white">
       {/* {MyResponse} */}
-      <Link href="http://127.0.0.1:5500/">
-        <a>GO TO PAGE</a>
-      </Link>
       <div className="bg-gradient-to-b from-white to-gray-200 w-full">
         <section className="container mx-auto px-32 font-inter ">
           <nav className="w-full flex justify-between items-center mt-6">
