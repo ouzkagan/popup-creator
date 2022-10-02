@@ -12,7 +12,7 @@ function FileInput({ required, input, getFiles, ...props }: Props) {
   const [acceptedFiles, setacceptedFiles] = useState<FileWithPath[] | null>(
     null
   );
-  console.log(props);
+
   const file = acceptedFiles?.map((file) => (
     // <span key={file.path}>
     //   {file.path} - {file.size} bytes
@@ -39,6 +39,7 @@ function FileInput({ required, input, getFiles, ...props }: Props) {
     getFiles(files);
     onDrop(files);
   };
+  console.log(props.meta.initial);
   return (
     <Dropzone
       onDrop={(acceptedFiles) => handleFiles(acceptedFiles)}
