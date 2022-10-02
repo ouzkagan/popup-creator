@@ -1,9 +1,17 @@
 import Image from 'next/image';
 import { useCallback, useState } from 'react';
+import type { FileWithPath } from 'react-dropzone';
 import Dropzone from 'react-dropzone';
+import type { FieldRenderProps } from 'react-final-form';
 
-function FileInput({ required, input, getFiles, ...props }) {
-  const [acceptedFiles, setacceptedFiles] = useState(null);
+interface Props extends FieldRenderProps<string, HTMLElement> {
+  getFiles: (files: FileWithPath[]) => void;
+}
+
+function FileInput({ required, input, getFiles, ...props }: Props) {
+  const [acceptedFiles, setacceptedFiles] = useState<FileWithPath[] | null>(
+    null
+  );
 
   const file = acceptedFiles?.map((file) => (
     // <span key={file.path}>
@@ -19,18 +27,19 @@ function FileInput({ required, input, getFiles, ...props }) {
     />
   ));
   const onDrop = useCallback(
-    (files) => {
+    (files: FileWithPath[]) => {
       // input.onChange(URL.createObjectURL(files[files.length - 1]));
       console.log(files);
       // console.log(acceptedFiles);
     },
     [input]
   );
-  const handleFiles = (files) => {
+  const handleFiles = (files: FileWithPath[]) => {
     setacceptedFiles(files);
     getFiles(files);
     onDrop(files);
   };
+  console.log(props.meta.initial);
   return (
     <Dropzone
       onDrop={(acceptedFiles) => handleFiles(acceptedFiles)}
@@ -41,16 +50,38 @@ function FileInput({ required, input, getFiles, ...props }) {
           className="border border-[#DDDDDD] border-dashed border-color py-8 flex justify-center items-center flex-col gap-5 mt-4"
           {...getRootProps()}
         >
-          <input {...getInputProps()} multiple={false} />
+          <input {...getInputProps()} multiple={false} required={required} />
           <div className="w-20 h-20 rounded-xl bg-opacity-10 bg-[#7D4AEA] flex justify-center items-center">
             {file == null ? (
-              <Image
-                src={props.meta.initial}
-                loader={() => props.meta.initial}
-                width={72}
-                height={80}
-                alt="placeholder"
-              />
+              props.meta.initial == '' ? (
+                <svg
+                  width="36"
+                  height="36"
+                  viewBox="0 0 36 36"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g clipPath="url(#clip0_79_9814)">
+                    <path
+                      d="M28.5 7.5V28.5H7.5V7.5H28.5ZM28.5 4.5H7.5C5.85 4.5 4.5 5.85 4.5 7.5V28.5C4.5 30.15 5.85 31.5 7.5 31.5H28.5C30.15 31.5 31.5 30.15 31.5 28.5V7.5C31.5 5.85 30.15 4.5 28.5 4.5ZM21.21 17.79L16.71 23.595L13.5 19.71L9 25.5H27L21.21 17.79Z"
+                      fill="#7D4AEA"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_79_9814">
+                      <rect width="36" height="36" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              ) : (
+                <Image
+                  src={props.meta.initial || ''}
+                  loader={() => props.meta.initial || ''}
+                  width={72}
+                  height={80}
+                  alt="placeholder"
+                />
+              )
             ) : (
               file
             )}

@@ -18,9 +18,10 @@ import { RootState } from '@/store';
 import FileInput from '@/components/FileInput';
 import TextInput from '@/components/TextInput';
 import ToggleInput from '@/components/toggleInput';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { languages } from 'countries-list';
 import { setIn } from 'final-form';
+import { FileWithPath } from 'react-dropzone';
 
 const FormStateToRedux = ({ form }) => {
   const dispatch = useDispatch();
@@ -126,9 +127,13 @@ const Settings = (): JSX.Element => {
           data
         )
         .then((response) => response.data.secure_url);
-    } catch (e) {
+    } catch (e: unknown) {
       //logthe error if any here. you can as well display them to the users
-      console.log(e.response);
+      if (e instanceof AxiosError) {
+        // Inside this block, err is known to be a ValidationError
+        console.log(e);
+      }
+
       // set the state of loading to 0 if there is an error
       // setLoading(0);
     }
@@ -267,6 +272,29 @@ const Settings = (): JSX.Element => {
                 <span className="font-normal text-sm leading-4">
                   Upload Logo
                 </span>
+                <Field
+                  parse={(x) => x}
+                  name={`logo`}
+                  // defaultValue=""
+                  component={FileInput}
+                  // className="rounded-xl border border-solid text-base leading-6  w-full h-[48px]  pl-3 focus:outline-[#7D4AEA] text-black"
+                  // placeholder="Enter your own text"
+                  // allowNull={true}
+                  // onchange setValue((values)=> UploadImage(values.files[0]))? ??
+                  // onChange={(files) => console.log('"files', files)}
+                  getFiles={(files: FileWithPath[]) =>
+                    form.mutators.setImage(`logo`, files[0])
+                  }
+                  // className=""
+                  // defaultValue={''}
+                />
+                <Field
+                  name={`logo`}
+                  subscribe={{ touched: true, error: true }}
+                  render={({ meta: { touched, error } }) =>
+                    touched && error ? <span>{error}</span> : null
+                  }
+                />
                 <div className="border border-[#DDDDDD] border-dashed border-color py-8 flex justify-center items-center flex-col gap-5 mt-4">
                   <div className="w-20 h-20 rounded-xl bg-opacity-10 bg-[#7D4AEA] flex justify-center items-center">
                     <svg
