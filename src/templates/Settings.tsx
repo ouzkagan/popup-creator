@@ -2,6 +2,9 @@ import CodeBlock from '@/components/CodeBlock';
 import MultiSelect from '@/components/MultiSelect';
 import { useDispatch, useSelector } from 'react-redux';
 // form
+import FileInput from '@/components/FileInput';
+import TextInput from '@/components/TextInput';
+import ToggleInput from '@/components/toggleInput';
 import {
   formStateInterface,
   initialState as initialGeneralSettings,
@@ -11,17 +14,17 @@ import {
 } from '@/store/features/default.slice';
 import arrayMutators from 'final-form-arrays';
 import { Field, Form, FormSpy } from 'react-final-form';
-import { FieldArray } from 'react-final-form-arrays';
+import * as Yup from 'yup';
 
+import { FieldArray } from 'react-final-form-arrays';
 // types
 import { RootState } from '@/store';
+// import type {Validation}
 //
-import FileInput from '@/components/FileInput';
-import TextInput from '@/components/TextInput';
-import ToggleInput from '@/components/toggleInput';
+
 import axios, { AxiosError } from 'axios';
 import { languages } from 'countries-list';
-import { FormState, MutableState, setIn } from 'final-form';
+import { FormState, MutableState, setIn, ValidationErrors } from 'final-form';
 import { FileWithPath } from 'react-dropzone';
 const FormStateToRedux = ({ form }: { form: string }) => {
   const dispatch = useDispatch();
@@ -60,6 +63,7 @@ const possiblePositions: PopupPositions[] = [
   'BOTTOM_RIGHT',
 ];
 const Settings = (): JSX.Element => {
+  // redux selectors and functions
   const selected_template_id = useSelector(
     (state: RootState) => state.defaultForm.template_id
   );
@@ -75,16 +79,12 @@ const Settings = (): JSX.Element => {
     console.log(form, state);
     dispatch(UPDATE_FORM_STATE({ form, state }));
   };
-  // console.log('formvalues', formValues);
-
-  // const initialGeneralSettings = useSelector(
-  //   (state: AppState) => state.defaultForm
-  // );
 
   const popupTemplates = useSelector(
     (state: RootState) => state.popupTemplates.popups
   );
 
+  // utils
   const get_content = (id: string, type: string) => {
     // console.log(popupInputs.filter((popup) => popup.id === id)[0].template);
     return popupTemplates
@@ -109,6 +109,8 @@ const Settings = (): JSX.Element => {
     const valueToCopy = `<script type="text/javascript" src="https://popupsmart.com/freechat.js"></script><script> window.start.init(${stringValues})</script>`;
     return valueToCopy;
   };
+
+  // submit
   const onSubmit = async (values: formStateInterface) => {
     const valueToCopy = asAString(values);
     navigator.clipboard.writeText(valueToCopy);
@@ -148,10 +150,106 @@ const Settings = (): JSX.Element => {
     }
   };
 
+  // const validationSchema: Yup.SchemaOf<formStateInterface> = Yup.object().shape(
+  const validationSchema = Yup.object().shape({
+    afterXSeconds: Yup.string().required().min(3, 'EN az bir karakter'),
+  });
+  const validate = (
+    values: formStateInterface
+  ): ValidationErrors | undefined => {
+    validationSchema.validate(values, { abortEarly: true }).then((what) => {
+      console.log(what);
+      return true;
+    });
+  };
+
+  // .catch((error: Yup.ValidationError) => {
+  //   console.log(values);
+  //   const errors: { [value: string]: string } = {};
+  //   error.inner.forEach((e) => {
+  //     if (e.path) {
+  //       errors[e.path] = e.message;
+  //     }
+  //   });
+  //   return errors;
+  // })
+  // .catch((errors) => {
+  //   console.log(errors);
+  // });
+
+  const minValue = (min) => (value) =>
+    isNaN(value) || value >= min ? undefined : `Should be greater than ${min}`;
   return (
     <div className="w-[378px] mt-24">
       <Form
         onSubmit={onSubmit}
+        // validate={(values: formStateInterface) => {
+        //   const errors = {} as formStateInterface;
+        //   validationSchema
+        //     .validate(values, { abortEarly: true })
+        //     .then(() => {
+        //       console.log('done');
+        //       return {};
+        //     })
+        //     .catch((error: Yup.ValidationError) => {
+        //       console.log(JSON.stringify(error));
+        //       const pathOfError = error['path'];
+        //       if (pathOfError != undefined) {
+        //         errors[pathOfError] = error.message;
+        //       }
+        //       console.log(errors);
+        //       // return {error['path']}
+        //     });
+        //   return errors;
+        // }}
+        validate={(values: formStateInterface) => {
+          const errors: { [value: string]: string } = {};
+          try {
+            validationSchema.validateSync(values, {
+              abortEarly: false,
+            });
+          } catch (error: unknown) {
+            // console.log(
+            //   JSON.stringify(error, undefined, 2),
+            //   error['inner'][0].message
+            // );
+            // errors.afterXSeconds = error['inner'][1].message;
+            if (error instanceof Yup.ValidationError) {
+              error.inner.forEach((item) => {
+                console.log(item);
+                const path = item?.path || 'unknownError';
+                errors[path] = item.message;
+              });
+            }
+          }
+          // let res =
+          //   .catch((error) => {
+          //     console.log(error);
+          //   });
+          // console.log(res);
+          // validationSchema
+          //   .validate(values, { abortEarly: true })
+          //   .then(() => {
+          //     console.log('done');
+          //     return undefined;
+          //   })
+          //   .catch((error: Yup.ValidationError) => {
+          //     console.log(JSON.stringify(error));
+          //     const pathOfError = error['path'];
+          //     if (pathOfError != undefined) {
+          //       errors[error.path] = error.message;
+          //       // return errors;
+          //     }
+          //     // console.log(errors);
+          //     // return {error['path']}
+          //   });
+          // if (!values.afterXSeconds) {
+          //   errors.afterXSeconds = 'Required';
+          // }
+          // console.log(errors);
+
+          return errors;
+        }}
         mutators={{
           ...arrayMutators,
           setValue: ([field, value], state, { changeValue }) => {
@@ -570,6 +668,7 @@ const Settings = (): JSX.Element => {
                         component={ToggleInput}
                         // checked={!formValues.inputStatus.visitorDevice}
                         defaultValue={true}
+                        // validate={minValue(18)}
                       />
                     </div>
                   </div>

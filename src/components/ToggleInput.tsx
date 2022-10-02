@@ -1,10 +1,10 @@
 import { FieldRenderProps } from 'react-final-form';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Props = FieldRenderProps<string, any>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ToggleInput = ({ input, meta, ...rest }: Props): JSX.Element => {
-  // console.log('META', meta);
-  // return <input type="text"  />;
   return (
     <label className="inline-flex relative items-center cursor-pointer">
       <input

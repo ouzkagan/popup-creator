@@ -77,6 +77,7 @@ function FileInput({ required, input, getFiles, ...props }: Props) {
                 <Image
                   src={props.meta.initial || ''}
                   loader={() => props.meta.initial || ''}
+                  unoptimized
                   width={72}
                   height={80}
                   alt="placeholder"
