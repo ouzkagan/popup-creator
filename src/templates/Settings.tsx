@@ -20,7 +20,6 @@ import { FieldArray } from 'react-final-form-arrays';
 // types
 import { RootState } from '@/store';
 // import type {Validation}
-//
 
 import axios, { AxiosError } from 'axios';
 import { languages } from 'countries-list';
@@ -32,7 +31,6 @@ const FormStateToRedux = ({ form }: { form: string }) => {
     form: string,
     state: MutableState<formStateInterface, Partial<formStateInterface>>
   ) => {
-    console.log(form, state);
     dispatch(UPDATE_FORM_STATE({ form, state }));
     return 1;
   };
@@ -150,35 +148,67 @@ const Settings = (): JSX.Element => {
     }
   };
 
-  // const validationSchema: Yup.SchemaOf<formStateInterface> = Yup.object().shape(
-  const validationSchema = Yup.object().shape({
-    afterXSeconds: Yup.string().required().min(3, 'EN az bir karakter'),
-  });
-  const validate = (
-    values: formStateInterface
-  ): ValidationErrors | undefined => {
-    validationSchema.validate(values, { abortEarly: true }).then((what) => {
-      console.log(what);
-      return true;
-    });
+  const validationSchema: Yup.SchemaOf<formStateInterface> = Yup.object().shape(
+    {
+      // const validationSchema = Yup.object().shape({
+      afterXSeconds: Yup.string()
+        .min(3, 'En az 3 karakter')
+        .required(`Bu alan gerekli`),
+      afterScrollingXAmount: Yup.string()
+        .required(`Bu alan gerekli`)
+        .max(100, 'Bu alan 100`den büyük olmamalı'),
+      logo: Yup.string()
+        .test('filePresence', 'Lütfen logonuzu yükleyin', (value) => {
+          // console.log(value !== '');
+          return value !== '';
+          // if (user?.image) return true;
+          // if (value.length == 0) return false; // attachment is optional
+          // return true;
+        })
+        .required(`Bu alan gerekli`),
+      visitorDevice: Yup.string().required(`Bu alan gerekli`),
+      browserLanguage: Yup.string().required(`Bu alan gerekli`),
+      onExitIntent: Yup.string().required(`Bu alan gerekli`),
+      webHookTypes: Yup.string().required(`Bu alan gerekli`),
+      urlBrowsing: Yup.string().required(`Bu alan gerekli`),
+      webHookUrl: Yup.string().required(`Bu alan gerekli`),
+      content: Yup.array().of(
+        Yup.object().shape({
+          value: Yup.string().required().min(1),
+        })
+      ),
+    }
+  );
+
+  const validate = (values: formStateInterface): ValidationErrors => {
+    const errors: { [value: string]: string } = {};
+    try {
+      validationSchema.validateSync(values, {
+        abortEarly: false,
+      });
+    } catch (error: unknown) {
+      // console.log(
+      //   JSON.stringify(error, undefined, 2),
+      //   error['inner'][0].message
+      // );
+      // errors.afterXSeconds = error['inner'][1].message;
+      if (error instanceof Yup.ValidationError) {
+        error.inner.forEach((item) => {
+          // if (item.path.includes('privacy_text')) {
+          //   console.log(error);
+          // }
+          if (
+            values.inputStatus[item.path as keyof typeof values.inputStatus]
+          ) {
+            const path = item?.path || 'unknownError';
+            errors[path] = item.message;
+          }
+        });
+      }
+    }
+
+    return errors;
   };
-
-  // .catch((error: Yup.ValidationError) => {
-  //   console.log(values);
-  //   const errors: { [value: string]: string } = {};
-  //   error.inner.forEach((e) => {
-  //     if (e.path) {
-  //       errors[e.path] = e.message;
-  //     }
-  //   });
-  //   return errors;
-  // })
-  // .catch((errors) => {
-  //   console.log(errors);
-  // });
-
-  const minValue = (min) => (value) =>
-    isNaN(value) || value >= min ? undefined : `Should be greater than ${min}`;
   return (
     <div className="w-[378px] mt-24">
       <Form
@@ -202,54 +232,7 @@ const Settings = (): JSX.Element => {
         //     });
         //   return errors;
         // }}
-        validate={(values: formStateInterface) => {
-          const errors: { [value: string]: string } = {};
-          try {
-            validationSchema.validateSync(values, {
-              abortEarly: false,
-            });
-          } catch (error: unknown) {
-            // console.log(
-            //   JSON.stringify(error, undefined, 2),
-            //   error['inner'][0].message
-            // );
-            // errors.afterXSeconds = error['inner'][1].message;
-            if (error instanceof Yup.ValidationError) {
-              error.inner.forEach((item) => {
-                console.log(item);
-                const path = item?.path || 'unknownError';
-                errors[path] = item.message;
-              });
-            }
-          }
-          // let res =
-          //   .catch((error) => {
-          //     console.log(error);
-          //   });
-          // console.log(res);
-          // validationSchema
-          //   .validate(values, { abortEarly: true })
-          //   .then(() => {
-          //     console.log('done');
-          //     return undefined;
-          //   })
-          //   .catch((error: Yup.ValidationError) => {
-          //     console.log(JSON.stringify(error));
-          //     const pathOfError = error['path'];
-          //     if (pathOfError != undefined) {
-          //       errors[error.path] = error.message;
-          //       // return errors;
-          //     }
-          //     // console.log(errors);
-          //     // return {error['path']}
-          //   });
-          // if (!values.afterXSeconds) {
-          //   errors.afterXSeconds = 'Required';
-          // }
-          // console.log(errors);
-
-          return errors;
-        }}
+        validate={validate}
         mutators={{
           ...arrayMutators,
           setValue: ([field, value], state, { changeValue }) => {
@@ -395,6 +378,7 @@ const Settings = (): JSX.Element => {
                   getFiles={(files: FileWithPath[]) =>
                     form.mutators.setImage(`logo`, files[0])
                   }
+                  // onChange={(file) => console.log('ONCHANGE: ', file)}
                   // className=""
                   // defaultValue={''}
                 />
@@ -553,7 +537,7 @@ const Settings = (): JSX.Element => {
                       className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500 ml-[15px] mr-[6px]"
                       disabled={!formValues.inputStatus.visitorDevice}
                       onChange={() => {
-                        console.log(formValues.visitorDevice);
+                        // console.log(formValues.visitorDevice);
                         if (formValues.visitorDevice !== 'DESKTOP') {
                           form.mutators.setValue('visitorDevice', 'DESKTOP');
                         } else {
@@ -589,7 +573,7 @@ const Settings = (): JSX.Element => {
                       className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500 ml-[15px] mr-[6px] rounded-none"
                       disabled={!formValues.inputStatus.visitorDevice}
                       onChange={() => {
-                        console.log(formValues.visitorDevice);
+                        // console.log(formValues.visitorDevice);
                         if (formValues.visitorDevice !== 'MOBILE') {
                           form.mutators.setValue('visitorDevice', 'MOBILE');
                         } else {
