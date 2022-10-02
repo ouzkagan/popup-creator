@@ -14,6 +14,7 @@ import { FieldArray } from 'react-final-form-arrays';
 
 // types
 import { RootState } from '@/store';
+import type { settingsFormState } from '@/store/features/default.slice';
 //
 import FileInput from '@/components/FileInput';
 import TextInput from '@/components/TextInput';
@@ -55,6 +56,17 @@ const possiblePositions: PopupPositions[] = [
   'BOTTOM_CENTER',
   'BOTTOM_RIGHT',
 ];
+// interface FormValues {
+//   firstName?: string;
+//   lastName?: string;
+//   employed: boolean;
+//   favoriteColor?: string;
+//   toppings?: string[];
+//   sauces?: string[];
+//   stooge: Stooge;
+//   notes?: string;
+// }
+
 const Settings = (): JSX.Element => {
   const selected_template_id = useSelector(
     (state: RootState) => state.defaultForm.template_id
@@ -64,8 +76,8 @@ const Settings = (): JSX.Element => {
       (state: RootState) => selectForm(state, 'defaultForm').values
     ) || initialGeneralSettings;
   const dispatch = useDispatch();
-  const updateForm = (form, state) => {
-    // console.log(form, state);
+  const updateForm = (form: string, state: settingsFormState) => {
+    console.log(form, state);
     dispatch(UPDATE_FORM_STATE({ form, state }));
   };
   // console.log('formvalues', formValues);
@@ -86,12 +98,13 @@ const Settings = (): JSX.Element => {
   };
 
   // protect form fields on template change
-  const restOfFormValues = (_formValues) => {
+  const restOfFormValues = (_formValues: settingsFormState) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { template_id, content, ...rest } = _formValues;
     // console.log(rest);
     return rest;
   };
-  const asAString = (_formValues) => {
+  const asAString = (_formValues: settingsFormState) => {
     const processedValues = { ..._formValues };
     processedValues.content.concat(processedValues?.images);
     delete processedValues?.images;
@@ -100,24 +113,18 @@ const Settings = (): JSX.Element => {
     const valueToCopy = `<script type="text/javascript" src="https://popupsmart.com/freechat.js"></script><script> window.start.init(${stringValues})</script>`;
     return valueToCopy;
   };
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: settingsFormState) => {
+    console.log(values);
     const valueToCopy = asAString(values);
     navigator.clipboard.writeText(valueToCopy);
   };
-  const uploadFile = async (file) => {
+  const uploadFile = async (file: File) => {
     //here, we are creatingng a new FormData object; this lets you compile a set of key/value pairs.
-    let data = new FormData();
+    const data = new FormData();
     // we are appending a new value onto an existing key inside a FormData object. the keys here are what is required for the upload by the cloudinary endpoint. the value in line 7 is your upload preset
     data.append('upload_preset', 'ntlolkzu');
     // URL.createObjectURL(file)
     data.append('file', file);
-    // return await new Promise((resolve) => setTimeout(resolve, 1000)).then(
-    //   () => {
-    //     // updateForm('defaultForm', )
-    //     return 'https://res.cloudinary.com/dcezcpyg1/image/upload/v1664649998/sqkaua0fahf6rvsjnk1g.png';
-    //   }
-    // );
-
     // return 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80';
     try {
       //making a post request to the cloudinary endpoint
@@ -131,7 +138,7 @@ const Settings = (): JSX.Element => {
       //logthe error if any here. you can as well display them to the users
       if (e instanceof AxiosError) {
         // Inside this block, err is known to be a ValidationError
-        console.log(e);
+        console.error(e);
       }
 
       // set the state of loading to 0 if there is an error
@@ -385,7 +392,7 @@ const Settings = (): JSX.Element => {
 
                 <div className="mt-8">
                   <span className="font-normal text-sm leading-4">
-                    Upload Logo
+                    Upload Images
                   </span>
                   <FieldArray name="images">
                     {({ fields }) =>
@@ -404,7 +411,7 @@ const Settings = (): JSX.Element => {
                               // allowNull={true}
                               // onchange setValue((values)=> UploadImage(values.files[0]))? ??
                               // onChange={(files) => console.log('"files', files)}
-                              getFiles={(files) =>
+                              getFiles={(files: FileWithPath[]) =>
                                 form.mutators.setImage(
                                   `${name}.value`,
                                   files[0]
@@ -502,7 +509,6 @@ const Settings = (): JSX.Element => {
                       className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500 ml-[15px] mr-[6px]"
                       disabled={!formValues.inputStatus.visitorDevice}
                       onChange={() => {
-                        console.log(formValues.visitorDevice);
                         if (formValues.visitorDevice !== 'DESKTOP') {
                           form.mutators.setValue('visitorDevice', 'DESKTOP');
                         } else {
@@ -538,7 +544,6 @@ const Settings = (): JSX.Element => {
                       className="w-[18px] h-[18px] border-blue-500 checked:bg-blue-500 ml-[15px] mr-[6px] rounded-none"
                       disabled={!formValues.inputStatus.visitorDevice}
                       onChange={() => {
-                        console.log(formValues.visitorDevice);
                         if (formValues.visitorDevice !== 'MOBILE') {
                           form.mutators.setValue('visitorDevice', 'MOBILE');
                         } else {
@@ -657,7 +662,7 @@ const Settings = (): JSX.Element => {
                     /> */}
                     <Field
                       parse={(x) => x}
-                      name="urlBrowsing.domain"
+                      name="urlBrowsing"
                       component={TextInput}
                       className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 focus:outline-[#7D4AEA]"
                       placeholder="Enter your traffic source domain"
