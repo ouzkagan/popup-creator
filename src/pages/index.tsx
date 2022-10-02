@@ -1,11 +1,10 @@
 import Preview from '@/templates/Preview';
 import Settings from '@/templates/Settings';
-import { InferGetStaticPropsType } from 'next/types';
 
 import { wrapper } from '@/store';
 import { set_popups } from '@/store/features/popupTemplates.slice';
 import Templates from '@/templates/Templates';
-import type { NextPage } from 'next';
+import { PopupTemplate } from '@/types';
 export const getStaticProps = wrapper.getStaticProps((store) => async () => {
   const res = await fetch(`${process.env.BASE_URL}/api/popups`);
   const popupTemplates = await res.json();
@@ -15,10 +14,11 @@ export const getStaticProps = wrapper.getStaticProps((store) => async () => {
   // Pass data to the page via props
   return { props: { popupTemplates } };
 });
+interface Props {
+  popupTemplates: PopupTemplate[];
+}
 
-const Home: NextPage = ({
-  popupTemplates,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Home = ({ popupTemplates }: Props) => {
   // console.log(myState);
 
   /* */
@@ -356,7 +356,7 @@ const Home: NextPage = ({
           efficient email list!
         </p>
 
-        <Templates popupTemplates={popupTemplates} />
+        <Templates />
         {/* STEPS */}
         <div className="flex gap-[76px] h-[3500px]">
           <Settings />

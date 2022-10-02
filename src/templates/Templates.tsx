@@ -3,10 +3,6 @@ import { set_template } from '@/store/features/settings.slice';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-const popupImages = Array.from(
-  Array(36),
-  (_, x) => `${('0' + (x + 1)).slice(-2)} 1.png`
-);
 
 const Templates = (): JSX.Element => {
   const popupTemplates = useSelector(
@@ -22,7 +18,7 @@ const Templates = (): JSX.Element => {
   const [recordsPerPage] = useState<number>(12);
   // How many pages there are
   const [paginationRange] = useState<number>(
-    Math.ceil(popupImages.length / recordsPerPage)
+    Math.ceil(popupTemplates.length / recordsPerPage)
   );
   // make array from pagination range
   const pageNumbers = [...Array.from(Array(paginationRange + 1).keys())].slice(
