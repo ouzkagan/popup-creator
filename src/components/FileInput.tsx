@@ -14,10 +14,6 @@ function FileInput({ required, input, meta, getFiles, ...props }: Props) {
   );
 
   const file = acceptedFiles?.map((file) => (
-    // <span key={file.path}>
-    //   {file.path} - {file.size} bytes
-    //   <img src={URL.createObjectURL(file)} alt="" />
-    // </span>
     <Image
       src={URL.createObjectURL(file)}
       key={file.path}
@@ -29,8 +25,6 @@ function FileInput({ required, input, meta, getFiles, ...props }: Props) {
   const onDrop = useCallback(
     (files: FileWithPath[]) => {
       input.onChange(URL.createObjectURL(files[files.length - 1]));
-      // console.log(files);
-      // console.log(acceptedFiles);
     },
     [input]
   );
@@ -74,14 +68,16 @@ function FileInput({ required, input, meta, getFiles, ...props }: Props) {
                   </defs>
                 </svg>
               ) : (
-                <Image
-                  src={meta.initial || ''}
-                  loader={() => meta.initial || ''}
-                  unoptimized
-                  width={72}
-                  height={80}
-                  alt="placeholder"
-                />
+                <span className="min-w-[72px]">
+                  <Image
+                    src={meta.initial || ''}
+                    loader={() => meta.initial || ''}
+                    unoptimized
+                    width={72}
+                    height={80}
+                    alt="placeholder"
+                  />
+                </span>
               )
             ) : (
               file

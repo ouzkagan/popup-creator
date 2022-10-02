@@ -1,5 +1,5 @@
 import Popups from '@/components/Popups';
-import { selectForm } from '@/store/features/default.slice';
+import { selectForm } from '@/store/features/settings.slice';
 import { useSelector } from 'react-redux';
 // const FormStateFromRedux = ({ form }) => {
 //   const formValue = useSelector((state) => selectForm(state, form));

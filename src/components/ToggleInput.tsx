@@ -1,16 +1,19 @@
 import { FieldRenderProps } from 'react-final-form';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Props = FieldRenderProps<string, any>;
+type Props = FieldRenderProps<boolean, HTMLInputElement>;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ToggleInput = ({ input, meta, ...rest }: Props): JSX.Element => {
+const ToggleInput = ({ input, meta, ...rest }: Props) => {
   return (
     <label className="inline-flex relative items-center cursor-pointer">
       <input
-        {...input}
-        {...rest}
         type="checkbox"
+        name={input.name}
+        onChange={input.onChange}
+        checked={input.checked}
+        // {...input}
+        {...rest}
         className="sr-only peer "
         // onClick={() => console.log(formValues.inputStatus)}
       />

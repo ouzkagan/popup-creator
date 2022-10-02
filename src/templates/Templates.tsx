@@ -1,5 +1,5 @@
 import { AppState } from '@/store';
-import { set_template } from '@/store/features/default.slice';
+import { set_template } from '@/store/features/settings.slice';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

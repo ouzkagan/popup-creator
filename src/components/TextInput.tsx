@@ -5,7 +5,7 @@ const TextInput = ({
   meta,
   ...rest
 }: FieldRenderProps<string, HTMLInputElement>): JSX.Element => {
-  // console.log(meta.error);
+  // console.log(meta.error, meta.touched, meta.dirty);
   return (
     <div>
       <input

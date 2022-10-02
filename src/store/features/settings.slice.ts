@@ -2,31 +2,6 @@ import type { RootState } from '@/store/index';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
-/*
-template_id: int? | string?
-// Appearance
-size: small | medium | large,
-position: CENTER_CENTER,
-colors: #000000 | ... [option to pick custom?]
-logo: image_url,
-
-// Targeting Rules
-visitorDevice: {
-  desktop: true,
-  mobile: false
-}
-// visitorBehaviour
-afterXSeconds: null,
-afterScrollingXAmount: null,
-urlBrowsing: { 
-  include: ['google.com'],
-  exclude: ['mywebsite.com'],
-  targetAll: false //true first
-}
-browserLanguage: ['en-US', 'tr-TR']
-onExitIntent: {onExitIntentDegree: NONE|MEDIUM, overrideConditions:true}
-*/
-
 type RGB = `rgb(${number}, ${number}, ${number})`;
 type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
 type HEX = `#${string}`;
@@ -112,7 +87,7 @@ export const initialState: formStateInterface = {
   afterScrollingXAmount: '50',
   urlBrowsing: '',
   webHookUrl: '',
-  webHookTypes: [],
+  webHookTypes: ['FORM'],
   // content: [],
   // images: [],
   browserLanguage: ['en-EN'],
