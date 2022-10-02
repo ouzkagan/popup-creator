@@ -74,6 +74,7 @@ const Templates = (): JSX.Element => {
                 <Image
                   src={`${popupTemplate.image}`}
                   loader={() => popupTemplate.image}
+                  unoptimized
                   alt="image"
                   loading="lazy"
                   // layout="responsive"

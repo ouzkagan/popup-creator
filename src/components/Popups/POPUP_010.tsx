@@ -27,7 +27,11 @@ export default function POPUP_010({ popupData }) {
           <p className="max-w-[459px] mt-2 font-[400] text-base leading-6 tracking-tighter">
             {valuePicker(popupData, 'description')}
           </p>
-          <form id="webhookForm" className="w-full">
+          <form
+            id="webhookForm"
+            className="w-full"
+            onSubmit={(e) => e.preventDefault()}
+          >
             <div className="w-full mt-8">
               <input
                 type="text"

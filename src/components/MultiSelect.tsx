@@ -179,7 +179,7 @@ const MultiSelect = ({
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <circle cx="9" cy="9" r="9" fill="#EA0F0F" />
-                    <g clip-path="url(#clip0_48_366)">
+                    <g clipPath="url(#clip0_48_366)">
                       <path
                         d="M12.5 11.515L11.515 12.5L9 9.985L6.485 12.5L5.5 11.515L8.015 9L5.5 6.485L6.485 5.5L9 8.015L11.515 5.5L12.5 6.485L9.985 9L12.5 11.515Z"
                         fill="white"

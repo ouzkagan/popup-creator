@@ -55,8 +55,20 @@ export type UrlSourceType = {
 };
 
 export type WebHookType = 'FORM' | 'CLICK';
+export interface Content {
+  name: string;
+  type: string;
+  value: string;
+  color?: string;
+}
 
-interface defaultStateInterface {
+export interface ContentImage {
+  name: string;
+  type: string;
+  value: string;
+}
+
+export interface formStateInterface {
   template_id: string;
   // appearance
   size: PopupSizes;
@@ -74,6 +86,8 @@ interface defaultStateInterface {
   // isFormSubmission: boolean;
   // isClickData: boolean;
   webHookTypes: WebHookType[];
+  content?: Content[];
+  images?: ContentImage[];
   inputStatus: {
     // Targeting Rules
     visitorDevice: boolean;
@@ -85,7 +99,7 @@ interface defaultStateInterface {
   };
 }
 
-export const initialState: defaultStateInterface = {
+export const initialState: formStateInterface = {
   template_id: 'POPUP_010',
   // appearance
   size: 'MEDIUM',
@@ -99,6 +113,8 @@ export const initialState: defaultStateInterface = {
   urlBrowsing: '',
   webHookUrl: '',
   webHookTypes: [],
+  // content: [],
+  // images: [],
   browserLanguage: ['en-EN'],
   onExitIntent: true,
   inputStatus: {
@@ -135,11 +151,11 @@ export const defaultFormSlice = createSlice({
 
     set_template: (
       state,
-      { payload }: PayloadAction<defaultStateInterface['template_id']>
+      { payload }: PayloadAction<formStateInterface['template_id']>
     ) => {
       state.template_id = payload;
     },
-    set_initial: (state, { payload }: PayloadAction<defaultStateInterface>) => {
+    set_initial: (state, { payload }: PayloadAction<formStateInterface>) => {
       state = payload;
     },
     [HYDRATE]: (state, action) => {
