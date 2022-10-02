@@ -5,13 +5,11 @@ import {
   ThunkAction,
 } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
-import defaultForm from './features/default.slice';
-import dynamicForm from './features/dynamic.slice';
 import popupTemplates from './features/popupTemplates.slice';
+import settingsSLice from './features/settings.slice';
 const rootReducer = combineReducers({
   // user: userReducer,
-  [defaultForm.name]: defaultForm.reducer,
-  [dynamicForm.name]: dynamicForm.reducer,
+  [settingsSLice.name]: settingsSLice.reducer,
   [popupTemplates.name]: popupTemplates.reducer,
 });
 

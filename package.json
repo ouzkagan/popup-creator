@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",
+    "@types/cors": "^2.8.12",
     "axios": "^0.27.2",
     "cloudinary-react": "^1.8.1",
     "cors": "^2.8.5",
@@ -30,7 +31,8 @@
     "react-markdown": "^8.0.3",
     "react-prism": "^4.3.2",
     "react-redux": "^8.0.4",
-    "sass": "^1.55.0"
+    "sass": "^1.55.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/next": "^9.0.0",

@@ -2,44 +2,6 @@ import type { RootState } from '@/store/index';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
-/*
-template_id: int? | string?
-// Appearance
-size: small | medium | large,
-position: CENTER_CENTER,
-colors: #000000 | ... [option to pick custom?]
-logo: image_url,
-
-// Targeting Rules
-visitorDevice: {
-  desktop: true,
-  mobile: false
-}
-// visitorBehaviour
-afterXSeconds: null,
-afterScrollingXAmount: null,
-urlBrowsing: { 
-  include: ['google.com'],
-  exclude: ['mywebsite.com'],
-  targetAll: false //true first
-}
-browserLanguage: ['en-US', 'tr-TR']
-onExitIntent: {onExitIntentDegree: NONE|MEDIUM, overrideConditions:true}
-*/
-
-export interface Content {
-  name: string;
-  type: string;
-  value: string;
-  color?: string;
-}
-
-export interface Image {
-  name: string;
-  type: string;
-  value: string;
-}
-
 type RGB = `rgb(${number}, ${number}, ${number})`;
 type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
 type HEX = `#${string}`;
@@ -68,22 +30,25 @@ export type UrlSourceType = {
 };
 
 export type WebHookType = 'FORM' | 'CLICK';
-export interface InputStatus {
-  visitorDevice: boolean;
-  afterXSeconds: boolean;
-  afterScrollingXAmount: boolean;
-  urlBrowsing: boolean;
-  browserLanguage: boolean;
-  onExitIntent: boolean;
-  exitIntentTargeting: boolean;
+export interface Content {
+  name: string;
+  type: string;
+  value: string;
+  color?: string;
 }
 
-export interface settingsFormState {
+export interface ContentImage {
+  name: string;
+  type: string;
+  value: string;
+}
+
+export interface formStateInterface {
   template_id: string;
   // appearance
   size: PopupSizes;
   position: PopupPositions;
-  color: Color;
+  color?: Color;
   logo: null | string;
   // Targeting Rules
   visitorDevice: DeviceType;
@@ -98,10 +63,22 @@ export interface settingsFormState {
   // isFormSubmission: boolean;
   // isClickData: boolean;
   webHookTypes: WebHookType[];
-  inputStatus: InputStatus;
+  content?: Content[];
+  images?: ContentImage[];
+  inputStatus: {
+    // Targeting Rules
+    visitorDevice: boolean;
+    afterXSeconds: boolean;
+    afterScrollingXAmount: boolean;
+    urlBrowsing: boolean;
+    browserLanguage: boolean;
+    onExitIntent: boolean;
+    exitIntentTargeting: boolean;
+  };
+  settingsForm?: any;
 }
 
-export const initialState: settingsFormState = {
+export const initialState: formStateInterface = {
   template_id: 'POPUP_010',
   // appearance
   size: 'MEDIUM',
@@ -114,7 +91,9 @@ export const initialState: settingsFormState = {
   afterScrollingXAmount: '50',
   urlBrowsing: '',
   webHookUrl: '',
-  webHookTypes: [],
+  webHookTypes: ['FORM'],
+  // content: [],
+  // images: [],
   browserLanguage: ['en-EN'],
   onExitIntent: true,
   content: [],
@@ -129,11 +108,12 @@ export const initialState: settingsFormState = {
     onExitIntent: true,
     exitIntentTargeting: true,
   },
+  settingsForm: {},
 };
 
 // This action is what we will call using the dispatch in order to trigger the API call.
 // export const getPopupTemplates = createAsyncThunk(
-//   'defaultForm/popups',
+//   'settings/popups',
 //   async () => {
 //     const res = await fetch('https://localhost:3000/api/popups');
 //     const popupTemplates = await res.json();
@@ -142,23 +122,23 @@ export const initialState: settingsFormState = {
 //   }
 // );
 
-export const defaultFormSlice = createSlice({
-  name: 'defaultForm',
+export const settingsSlice = createSlice({
+  name: 'settings',
   initialState,
   reducers: {
     UPDATE_FORM_STATE: (state, action) => {
       const formName: string = action?.payload?.form;
       // console.log(action.payload.state);
-      state[formName] = action.payload.state;
+      state.settingsForm = action.payload.state;
     },
 
     set_template: (
       state,
-      { payload }: PayloadAction<settingsFormState['template_id']>
+      { payload }: PayloadAction<formStateInterface['template_id']>
     ) => {
       state.template_id = payload;
     },
-    set_initial: (state, { payload }: PayloadAction<settingsFormState>) => {
+    set_initial: (state, { payload }: PayloadAction<formStateInterface>) => {
       state = payload;
     },
     [HYDRATE]: (state, action) => {
@@ -186,19 +166,23 @@ export const defaultFormSlice = createSlice({
   // },
 });
 
-export const { UPDATE_FORM_STATE, set_template } = defaultFormSlice.actions;
+export const { UPDATE_FORM_STATE, set_template } = settingsSlice.actions;
 
 export const selectForm = (state: RootState, form: string) => {
-  // console.log(state.defaultForm);
-
-  return (state && state.defaultForm && state.defaultForm[form]) || {};
+  // console.log(state.settings);
+  return (
+    (state &&
+      state.settings &&
+      state.settings[form as keyof typeof state.settings]) ||
+    undefined
+  );
 };
 
 // export const popupValues = (state: RootState) => {
 //   return (
-//     (state && state.defaultForm && state.defaultForm.popupValues?.values) ||
-//     (state && state.defaultForm && state.defaultForm)
+//     (state && state.settings && state.settings.popupValues?.values) ||
+//     (state && state.settings && state.settings)
 //   );
 // };
 
-export default defaultFormSlice;
+export default settingsSlice;

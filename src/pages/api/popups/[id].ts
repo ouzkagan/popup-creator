@@ -49,9 +49,16 @@ export default async function handler(
   // Rest of the API logic
   // res.json({ message: 'Hello Everyone!' })
   const { id } = req.query;
+  let pid: string;
+  if (typeof id === 'string') {
+    pid = id;
+  } else {
+    pid = 'POPUP_010';
+  }
+
   const settings = popups.find((popup) => popup.template_id == id)?.settings;
 
   // console.log(id);
-  res.status(200).json({ template: MyResponse(id), settings: settings });
+  res.status(200).json({ template: MyResponse(pid), settings: settings });
   // res.status(200).json(MyResponse(id));
 }

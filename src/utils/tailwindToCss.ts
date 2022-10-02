@@ -1,7 +1,32 @@
-// https://github.com/Devzstudio/tailwind_to_css/blob/main/libs/helpers.ts
+// base code retrieved from https://github.com/Devzstudio/tailwind_to_css/blob/main/libs/helpers.ts
 import CheatSheet from './TailwindCheatSheet';
 
-const arbitrarySupportedClasses = {
+type ArbitraryClass = {
+  [key: string]: string | ((value: string) => string);
+};
+type ArbitraryFunction = {
+  [key: string]: (value: string) => string;
+};
+
+// seperating from other function because function names are dynamic
+const arbitrarySupportedClassFunctions: ArbitraryFunction = {
+  text: (value: string) => {
+    if (value.includes('px')) {
+      return `font-size: ${value}`;
+    }
+    return `color: ${value}`;
+  },
+  'rounded-l': (value: string) =>
+    `border-bottom-left-radius:${value};border-top-left-radius:${value}`,
+  'rounded-tl': (value: string) => `border-top-left-radius:${value}`,
+  'rounded-tr': (value: string) => `border-top-right-radius:${value}`,
+  'rounded-bl': (value: string) => `border-bottom-left-radius:${value}`,
+  'rounded-br': (value: string) => `border-bottom-right-radius:${value}`,
+  'rounded-r': (value: string) =>
+    `border-bottom-right-radius:${value};border-top-right-radius:${value}`,
+};
+
+const arbitrarySupportedClasses: ArbitraryClass = {
   pt: 'padding-top',
   pb: 'padding-bottom',
   pl: 'padding-left',
@@ -19,31 +44,17 @@ const arbitrarySupportedClasses = {
   left: 'left',
   right: 'right',
   bg: 'background',
-  // text: 'color',
-  text: (value: string) => {
-    if (value.includes('px')) {
-      return `font-size: ${value}`;
-    }
-    return `color: ${value}`;
-  },
 
   font: 'font-weight',
   'max-w': 'max-width',
   'min-w': 'min-width',
   leading: 'line-height',
-  'rounded-l': (value: string) =>
-    `border-bottom-left-radius:${value};border-top-left-radius:${value}`,
-  'rounded-tl': (value: string) => `border-top-left-radius:${value}`,
-  'rounded-tr': (value: string) => `border-top-right-radius:${value}`,
-  'rounded-bl': (value: string) => `border-bottom-left-radius:${value}`,
-  'rounded-br': (value: string) => `border-bottom-right-radius:${value}`,
-  'rounded-r': (value: string) =>
-    `border-bottom-right-radius:${value};border-top-right-radius:${value}`,
+  ...arbitrarySupportedClassFunctions,
 };
 
 const convertToCss = (classNames: string[]) => {
   // console.log(classNames)
-  let leftover = classNames;
+  const leftover = classNames;
   let cssCode = ``;
   CheatSheet.forEach((element) => {
     element.content.forEach((content) => {
@@ -75,7 +86,7 @@ const convertToCss = (classNames: string[]) => {
 
         // TURN /50 -> 0.50 by string manipulation | rgb(,,,) -> rgba(,,,0.50)
         if (transparentClassColor.includes(list[1])) {
-          let index = transparentClassColor.indexOf(list[1]);
+          const index = transparentClassColor.indexOf(list[1]);
           leftover.splice(leftover.indexOf(transparentClasses[index]), 1);
           const semicolon = list[0][list[0].length - 1] !== ';' ? ';' : '';
           cssCode +=
@@ -98,13 +109,16 @@ const convertToCss = (classNames: string[]) => {
 
   arbitraryClasses.forEach((className: string) => {
     const property: string = className.split('-[')[0].replace('.', '');
-    const propertyValue = className?.match(/(?<=\[)[^\][]*(?=])/g)?.[0];
+    const propertyValue = className?.match(/(?<=\[)[^\][]*(?=])/g)?.[0] || '';
     if (arbitrarySupportedClasses[property]) {
       leftover.splice(leftover.indexOf(className), 1);
 
       if (typeof arbitrarySupportedClasses[property] === 'function') {
         // leftover.splice(leftover.indexOf(list[1]))
-        cssCode += `${arbitrarySupportedClasses[property](propertyValue)};\n`;
+        cssCode += `${
+          typeof arbitrarySupportedClasses[property] === 'function' &&
+          arbitrarySupportedClassFunctions[property](propertyValue)
+        };\n`;
       } else {
         cssCode += `${arbitrarySupportedClasses[property]}: ${propertyValue};\n`;
       }
@@ -129,12 +143,12 @@ const getHoverClass = (input: string) => {
     .map((i) => i.replace('hover:', '.'));
 };
 
-export const getConvertedClasses = (input) => {
+export const getConvertedClasses = (input: string) => {
   const classNames = input.split(/\s+/).map((i) => '.' + i.trim());
   const breakpoints = CheatSheet[0].content[3].table;
 
   const hoverClasses = getHoverClass(input);
-  console.log(hoverClasses.length, convertToCss(hoverClasses));
+  // console.log(hoverClasses.length, convertToCss(hoverClasses));
   const smClasses = getBreakPoints(input, 'sm');
   const mdClasses = getBreakPoints(input, 'md');
   const lgClasses = getBreakPoints(input, 'lg');

@@ -8,16 +8,12 @@ interface Props extends FieldRenderProps<string, HTMLElement> {
   getFiles: (files: FileWithPath[]) => void;
 }
 
-function FileInput({ required, input, getFiles, ...props }: Props) {
+function FileInput({ required, input, meta, getFiles, ...props }: Props) {
   const [acceptedFiles, setacceptedFiles] = useState<FileWithPath[] | null>(
     null
   );
-  console.log(props);
+  // console.log(props);
   const file = acceptedFiles?.map((file) => (
-    // <span key={file.path}>
-    //   {file.path} - {file.size} bytes
-    //   <img src={URL.createObjectURL(file)} alt="" />
-    // </span>
     <Image
       src={URL.createObjectURL(file)}
       key={file.path}
@@ -28,9 +24,7 @@ function FileInput({ required, input, getFiles, ...props }: Props) {
   ));
   const onDrop = useCallback(
     (files: FileWithPath[]) => {
-      // input.onChange(URL.createObjectURL(files[files.length - 1]));
-      console.log(files);
-      // console.log(acceptedFiles);
+      input.onChange(URL.createObjectURL(files[files.length - 1]));
     },
     [input]
   );
@@ -39,6 +33,7 @@ function FileInput({ required, input, getFiles, ...props }: Props) {
     getFiles(files);
     onDrop(files);
   };
+  // console.log(meta.error);
   return (
     <Dropzone
       onDrop={(acceptedFiles) => handleFiles(acceptedFiles)}
@@ -52,7 +47,7 @@ function FileInput({ required, input, getFiles, ...props }: Props) {
           <input {...getInputProps()} multiple={false} required={required} />
           <div className="w-20 h-20 rounded-xl bg-opacity-10 bg-[#7D4AEA] flex justify-center items-center">
             {file == null ? (
-              props.meta.initial == '' ? (
+              meta.initial == '' ? (
                 <svg
                   width="36"
                   height="36"
@@ -73,13 +68,16 @@ function FileInput({ required, input, getFiles, ...props }: Props) {
                   </defs>
                 </svg>
               ) : (
-                <Image
-                  src={props.meta.initial || ''}
-                  loader={() => props.meta.initial || ''}
-                  width={72}
-                  height={80}
-                  alt="placeholder"
-                />
+                <span className="min-w-[72px]">
+                  <Image
+                    src={meta.initial || ''}
+                    loader={() => meta.initial || ''}
+                    unoptimized
+                    width={72}
+                    height={80}
+                    alt="placeholder"
+                  />
+                </span>
               )
             ) : (
               file
@@ -119,6 +117,10 @@ function FileInput({ required, input, getFiles, ...props }: Props) {
               </span>
             </span>
           </div>
+          {meta.error && (
+            // !rest?.disabled &&
+            <div className="text-red-500 p-2">{meta.error}</div>
+          )}
         </div>
       )}
     </Dropzone>
