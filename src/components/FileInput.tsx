@@ -12,7 +12,7 @@ function FileInput({ required, input, meta, getFiles, ...props }: Props) {
   const [acceptedFiles, setacceptedFiles] = useState<FileWithPath[] | null>(
     null
   );
-
+  // console.log(props);
   const file = acceptedFiles?.map((file) => (
     <Image
       src={URL.createObjectURL(file)}

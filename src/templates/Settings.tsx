@@ -70,7 +70,6 @@ const Settings = (): JSX.Element => {
     data.append('upload_preset', 'ntlolkzu');
     // URL.createObjectURL(file)
     data.append('file', file);
-
     // return 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80';
     try {
       //making a post request to the cloudinary endpoint
@@ -84,7 +83,7 @@ const Settings = (): JSX.Element => {
       //logthe error if any here. you can as well display them to the users
       if (e instanceof AxiosError) {
         // Inside this block, err is known to be a ValidationError
-        console.log(e);
+        console.error(e);
       }
     }
   };

@@ -58,6 +58,8 @@ export interface formStateInterface {
   browserLanguage: string[];
   onExitIntent: boolean;
   webHookUrl: string;
+  // content: Content[];
+  // images: Image[];
   // isFormSubmission: boolean;
   // isClickData: boolean;
   webHookTypes: WebHookType[];
@@ -71,6 +73,7 @@ export interface formStateInterface {
     urlBrowsing: boolean;
     browserLanguage: boolean;
     onExitIntent: boolean;
+    exitIntentTargeting: boolean;
   };
   settingsForm?: any;
 }
@@ -93,6 +96,8 @@ export const initialState: formStateInterface = {
   // images: [],
   browserLanguage: ['en-EN'],
   onExitIntent: true,
+  content: [],
+  images: [],
   inputStatus: {
     // Targeting Rules
     visitorDevice: true,
@@ -101,6 +106,7 @@ export const initialState: formStateInterface = {
     urlBrowsing: true,
     browserLanguage: true,
     onExitIntent: true,
+    exitIntentTargeting: true,
   },
   settingsForm: {},
 };
