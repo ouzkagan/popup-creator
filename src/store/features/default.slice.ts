@@ -27,6 +27,19 @@ browserLanguage: ['en-US', 'tr-TR']
 onExitIntent: {onExitIntentDegree: NONE|MEDIUM, overrideConditions:true}
 */
 
+export interface Content {
+  name: string;
+  type: string;
+  value: string;
+  color?: string;
+}
+
+export interface Image {
+  name: string;
+  type: string;
+  value: string;
+}
+
 type RGB = `rgb(${number}, ${number}, ${number})`;
 type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
 type HEX = `#${string}`;
@@ -55,8 +68,17 @@ export type UrlSourceType = {
 };
 
 export type WebHookType = 'FORM' | 'CLICK';
+export interface InputStatus {
+  visitorDevice: boolean;
+  afterXSeconds: boolean;
+  afterScrollingXAmount: boolean;
+  urlBrowsing: boolean;
+  browserLanguage: boolean;
+  onExitIntent: boolean;
+  exitIntentTargeting: boolean;
+}
 
-interface defaultStateInterface {
+export interface settingsFormState {
   template_id: string;
   // appearance
   size: PopupSizes;
@@ -71,21 +93,15 @@ interface defaultStateInterface {
   browserLanguage: string[];
   onExitIntent: boolean;
   webHookUrl: string;
+  // content: Content[];
+  // images: Image[];
   // isFormSubmission: boolean;
   // isClickData: boolean;
   webHookTypes: WebHookType[];
-  inputStatus: {
-    // Targeting Rules
-    visitorDevice: boolean;
-    afterXSeconds: boolean;
-    afterScrollingXAmount: boolean;
-    urlBrowsing: boolean;
-    browserLanguage: boolean;
-    onExitIntent: boolean;
-  };
+  inputStatus: InputStatus;
 }
 
-export const initialState: defaultStateInterface = {
+export const initialState: settingsFormState = {
   template_id: 'POPUP_010',
   // appearance
   size: 'MEDIUM',
@@ -101,6 +117,8 @@ export const initialState: defaultStateInterface = {
   webHookTypes: [],
   browserLanguage: ['en-EN'],
   onExitIntent: true,
+  content: [],
+  images: [],
   inputStatus: {
     // Targeting Rules
     visitorDevice: true,
@@ -109,6 +127,7 @@ export const initialState: defaultStateInterface = {
     urlBrowsing: true,
     browserLanguage: true,
     onExitIntent: true,
+    exitIntentTargeting: true,
   },
 };
 
@@ -135,11 +154,11 @@ export const defaultFormSlice = createSlice({
 
     set_template: (
       state,
-      { payload }: PayloadAction<defaultStateInterface['template_id']>
+      { payload }: PayloadAction<settingsFormState['template_id']>
     ) => {
       state.template_id = payload;
     },
-    set_initial: (state, { payload }: PayloadAction<defaultStateInterface>) => {
+    set_initial: (state, { payload }: PayloadAction<settingsFormState>) => {
       state = payload;
     },
     [HYDRATE]: (state, action) => {
