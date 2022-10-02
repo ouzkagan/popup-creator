@@ -1,4 +1,9 @@
-const colorsConfig = {
+import { formStateInterface } from '@/store/features/settings.slice';
+import { PopupTemplate } from '@/types';
+
+const colorsConfig: {
+  [key: string]: string | { bg: string; color: string; focusOutline: string };
+} = {
   // Colors
   '#777777': {
     bg: 'bg-[#777777]',
@@ -28,4 +33,33 @@ const colorsConfig = {
 
 export const colorPicker = (hex: string) => {
   return colorsConfig[hex] ? colorsConfig[hex] : '';
+};
+
+export const getContent = (
+  popupTemplates: PopupTemplate[],
+  id: string,
+  type: string
+) => {
+  // console.log(popupInputs.filter((popup) => popup.id === id)[0].template);
+  return popupTemplates
+    .filter((popup) => popup.template_id === id)[0]
+    .content?.filter((c) => c.type === type);
+};
+
+// protect form fields on template change
+export const restOfFormValues = (_formValues: formStateInterface) => {
+  const { template_id, content, ...rest } = _formValues;
+  // console.log(rest);
+  return rest;
+};
+export const asAString = (_formValues: formStateInterface) => {
+  const processedValues = { content: [], ..._formValues };
+  processedValues.content = [
+    ...processedValues?.content?.concat(processedValues?.images || []),
+  ];
+  delete processedValues?.images;
+
+  const stringValues = JSON.stringify(processedValues);
+  const valueToCopy = `<script type="text/javascript" src="https://popupsmart.com/freechat.js"></script><script> window.start.init(${stringValues})</script>`;
+  return valueToCopy;
 };

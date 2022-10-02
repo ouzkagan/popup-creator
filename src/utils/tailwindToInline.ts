@@ -1,18 +1,28 @@
 import { parser } from 'posthtml-parser';
 import { render } from 'posthtml-render';
 import { getConvertedClasses } from './tailwindToCss';
+// types
+import type { Node } from 'posthtml-render';
 
-function iter(o) {
-  Object.keys(o).forEach(function (k) {
-    if (o[k] !== null && typeof o[k] === 'object') {
-      iter(o[k]);
+type Parsed = Node[] & {
+  style: string;
+  class: string;
+};
+function iter(o: Parsed) {
+  Object.keys(o).forEach(function (k: string) {
+    if (
+      o[k as keyof typeof o] !== null &&
+      typeof o[k as keyof typeof o] === 'object'
+    ) {
+      iter(o[k as keyof typeof o] as Parsed);
       return;
     }
     // console.log(o[k])
     if (k === 'class') {
-      let inlineCSS = ';' + getConvertedClasses(o[k]).trim().replace(/\n/g, '');
+      let inlineCSS =
+        ';' + getConvertedClasses(o['class']).trim().replace(/\n/g, '');
       // console.log(inlineCSS)
-      let oldStyles = o['style'];
+      let oldStyles = o['style' as keyof typeof o];
       // console.log("oldstyles:", oldStyles)
       o['style'] = '';
       o['style'] = oldStyles ? oldStyles + ' ' + inlineCSS : ' ' + inlineCSS;
@@ -25,7 +35,7 @@ function iter(o) {
 }
 
 export function tailwindHtmlToInline(html: string) {
-  const parsed = parser(html);
+  const parsed = parser(html) as Parsed;
   iter(parsed);
   const rendered = render(parsed);
   return rendered;

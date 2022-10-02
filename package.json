@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",
+    "@types/cors": "^2.8.12",
     "axios": "^0.27.2",
     "cloudinary-react": "^1.8.1",
     "cors": "^2.8.5",

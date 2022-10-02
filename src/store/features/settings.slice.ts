@@ -48,7 +48,7 @@ export interface formStateInterface {
   // appearance
   size: PopupSizes;
   position: PopupPositions;
-  color: Color;
+  color?: Color;
   logo: null | string;
   // Targeting Rules
   visitorDevice: DeviceType;

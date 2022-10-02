@@ -1,27 +1,25 @@
-import MultiSelect from '@/components/MultiSelect';
-import { useDispatch, useSelector } from 'react-redux';
 // form
 import FileInput from '@/components/FileInput';
+import MultiSelect from '@/components/MultiSelect';
 import TextInput from '@/components/TextInput';
 import ToggleInput from '@/components/ToggleInput';
+import { languages } from 'countries-list';
+import { FormState, setIn, ValidationErrors } from 'final-form';
+import arrayMutators from 'final-form-arrays';
+import { FileWithPath } from 'react-dropzone';
+import { Field, Form } from 'react-final-form';
+import { FieldArray } from 'react-final-form-arrays';
+import * as Yup from 'yup';
+// state
+import FormStateToRedux from '@/components/FormStateToRedux';
+import { RootState } from '@/store';
 import {
   formStateInterface,
   initialState as initialGeneralSettings,
   selectForm,
   UPDATE_FORM_STATE,
 } from '@/store/features/settings.slice';
-import arrayMutators from 'final-form-arrays';
-import { Field, Form, FormSpy } from 'react-final-form';
-import { FieldArray } from 'react-final-form-arrays';
-import * as Yup from 'yup';
-// types
-import { RootState } from '@/store';
-// import type {Validation}
-
-import axios, { AxiosError } from 'axios';
-import { languages } from 'countries-list';
-import { FormState, setIn, ValidationErrors } from 'final-form';
-import { FileWithPath } from 'react-dropzone';
+import { useDispatch, useSelector } from 'react-redux';
 
 // setting components
 import CodeSectionSetting from '@/components/Settings/CodeSection.setting';
@@ -29,22 +27,10 @@ import ColorSetting from '@/components/Settings/Color.setting';
 import DeviceSetting from '@/components/Settings/Device.setting';
 import GeneralSetting from '@/components/Settings/General.setting';
 import PositionSetting from '@/components/Settings/Position.setting';
-import SizeSetting from '@/components/Settings/Size.Setting';
-const FormStateToRedux = ({ form }: { form: string }) => {
-  const dispatch = useDispatch();
-  const updateForm = (form: string, state: FormState<formStateInterface>) => {
-    dispatch(UPDATE_FORM_STATE({ form, state }));
-    return 1;
-  };
-
-  return (
-    <FormSpy
-      onChange={(state: FormState<formStateInterface>) => {
-        return updateForm(form, state);
-      }}
-    />
-  );
-};
+import SizeSetting from '@/components/Settings/Size.setting';
+// UTILS
+import { asAString, getContent, restOfFormValues } from '@/utils/helpers';
+import axios, { AxiosError } from 'axios';
 
 // const FormStateFromRedux = ({ form }) => {
 //   const formValue = useSelector((state) => selectForm(state, form));
@@ -62,7 +48,7 @@ const Settings = (): JSX.Element => {
     ) || initialGeneralSettings;
   const dispatch = useDispatch();
   const updateForm = (form: string, state: FormState<formStateInterface>) => {
-    console.log(form, state);
+    // console.log(form, state);
     dispatch(UPDATE_FORM_STATE({ form, state }));
   };
 
@@ -71,30 +57,6 @@ const Settings = (): JSX.Element => {
   );
 
   // utils
-  const get_content = (id: string, type: string) => {
-    // console.log(popupInputs.filter((popup) => popup.id === id)[0].template);
-    return popupTemplates
-      .filter((popup) => popup.template_id === id)[0]
-      .content?.filter((c) => c.type === type);
-  };
-
-  // protect form fields on template change
-  const restOfFormValues = (_formValues: formStateInterface) => {
-    const { template_id, content, ...rest } = _formValues;
-    // console.log(rest);
-    return rest;
-  };
-  const asAString = (_formValues: formStateInterface) => {
-    const processedValues = { content: [], ..._formValues };
-    processedValues.content = [
-      ...processedValues?.content?.concat(processedValues?.images || []),
-    ];
-    delete processedValues?.images;
-
-    const stringValues = JSON.stringify(processedValues);
-    const valueToCopy = `<script type="text/javascript" src="https://popupsmart.com/freechat.js"></script><script> window.start.init(${stringValues})</script>`;
-    return valueToCopy;
-  };
 
   // submit
   const onSubmit = async (values: formStateInterface) => {
@@ -124,9 +86,6 @@ const Settings = (): JSX.Element => {
         // Inside this block, err is known to be a ValidationError
         console.log(e);
       }
-
-      // set the state of loading to 0 if there is an error
-      // setLoading(0);
     }
   };
 
@@ -138,11 +97,7 @@ const Settings = (): JSX.Element => {
       .max(100, 'Bu alan 100`den büyük olmamalı'),
     logo: Yup.string()
       .test('filePresence', 'Lütfen logonuzu yükleyin', (value) => {
-        // console.log(value !== '');
         return value !== '';
-        // if (user?.image) return true;
-        // if (value.length == 0) return false; // attachment is optional
-        // return true;
       })
       .required(`Bu alan gerekli`),
     visitorDevice: Yup.string().required(`Bu alan gerekli`),
@@ -174,16 +129,8 @@ const Settings = (): JSX.Element => {
         abortEarly: false,
       });
     } catch (error: unknown) {
-      // console.log(
-      //   JSON.stringify(error, undefined, 2),
-      //   error['inner'][0].message
-      // );
-      // errors.afterXSeconds = error['inner'][1].message;
       if (error instanceof Yup.ValidationError) {
         error.inner.forEach((item) => {
-          // if (item.path.includes('privacy_text')) {
-          //   console.log(error);
-          // }
           if (
             values.inputStatus[item.path as keyof typeof values.inputStatus]
           ) {
@@ -230,8 +177,12 @@ const Settings = (): JSX.Element => {
         }}
         initialValues={{
           template_id: selected_template_id,
-          content: [...get_content(selected_template_id, 'text')],
-          images: [...get_content(selected_template_id, 'image')],
+          content: [
+            ...getContent(popupTemplates, selected_template_id, 'text'),
+          ],
+          images: [
+            ...getContent(popupTemplates, selected_template_id, 'image'),
+          ],
           ...restOfFormValues(formValues),
         }}
         // initialValuesEqual={deepEqual}
