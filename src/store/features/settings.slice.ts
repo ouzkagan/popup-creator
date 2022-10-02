@@ -72,6 +72,7 @@ export interface formStateInterface {
     browserLanguage: boolean;
     onExitIntent: boolean;
   };
+  settingsForm?: any;
 }
 
 export const initialState: formStateInterface = {
@@ -101,11 +102,12 @@ export const initialState: formStateInterface = {
     browserLanguage: true,
     onExitIntent: true,
   },
+  settingsForm: {},
 };
 
 // This action is what we will call using the dispatch in order to trigger the API call.
 // export const getPopupTemplates = createAsyncThunk(
-//   'defaultForm/popups',
+//   'settings/popups',
 //   async () => {
 //     const res = await fetch('https://localhost:3000/api/popups');
 //     const popupTemplates = await res.json();
@@ -114,14 +116,14 @@ export const initialState: formStateInterface = {
 //   }
 // );
 
-export const defaultFormSlice = createSlice({
-  name: 'defaultForm',
+export const settingsSlice = createSlice({
+  name: 'settings',
   initialState,
   reducers: {
     UPDATE_FORM_STATE: (state, action) => {
       const formName: string = action?.payload?.form;
       // console.log(action.payload.state);
-      state[formName] = action.payload.state;
+      state.settingsForm = action.payload.state;
     },
 
     set_template: (
@@ -158,19 +160,23 @@ export const defaultFormSlice = createSlice({
   // },
 });
 
-export const { UPDATE_FORM_STATE, set_template } = defaultFormSlice.actions;
+export const { UPDATE_FORM_STATE, set_template } = settingsSlice.actions;
 
 export const selectForm = (state: RootState, form: string) => {
-  // console.log(state.defaultForm);
-
-  return (state && state.defaultForm && state.defaultForm[form]) || {};
+  // console.log(state.settings);
+  return (
+    (state &&
+      state.settings &&
+      state.settings[form as keyof typeof state.settings]) ||
+    undefined
+  );
 };
 
 // export const popupValues = (state: RootState) => {
 //   return (
-//     (state && state.defaultForm && state.defaultForm.popupValues?.values) ||
-//     (state && state.defaultForm && state.defaultForm)
+//     (state && state.settings && state.settings.popupValues?.values) ||
+//     (state && state.settings && state.settings)
 //   );
 // };
 
-export default defaultFormSlice;
+export default settingsSlice;

@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 // };
 const Preview = (): JSX.Element => {
   const formValues: formStateInterface = useSelector(
-    (state: AppState) => selectForm(state, 'defaultForm')?.values
+    (state: AppState) => selectForm(state, 'settingsForm')?.values
   );
   return (
     <div className="relative mt-24 mx-auto">

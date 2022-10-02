@@ -12,7 +12,7 @@ import { FieldArray } from 'react-final-form-arrays';
 import * as Yup from 'yup';
 // state
 import FormStateToRedux from '@/components/FormStateToRedux';
-import { RootState } from '@/store';
+import { AppState, RootState } from '@/store';
 import {
   formStateInterface,
   initialState as initialGeneralSettings,
@@ -40,11 +40,11 @@ import axios, { AxiosError } from 'axios';
 const Settings = (): JSX.Element => {
   // redux selectors and functions
   const selected_template_id = useSelector(
-    (state: RootState) => state.defaultForm.template_id
+    (state: AppState) => state.settings.template_id
   );
   const formValues =
     useSelector(
-      (state: RootState) => selectForm(state, 'defaultForm').values
+      (state: RootState) => (selectForm(state, 'settingsForm') as any)?.values
     ) || initialGeneralSettings;
   const dispatch = useDispatch();
   const updateForm = (form: string, state: FormState<formStateInterface>) => {
@@ -168,7 +168,7 @@ const Settings = (): JSX.Element => {
                   ...state.lastFormState,
                   values: newValues,
                 };
-                updateForm('defaultForm', newState);
+                updateForm('settingsForm', newState);
               }
               return image;
             });
@@ -191,7 +191,7 @@ const Settings = (): JSX.Element => {
         render={({ handleSubmit, form }) => {
           return (
             <form onSubmit={handleSubmit}>
-              <FormStateToRedux form="defaultForm" />
+              <FormStateToRedux form="settingsForm" />
 
               <div className="buttons">
                 {/* <button type="button" onClick={() => push('content', undefined)}>
@@ -420,7 +420,7 @@ const Settings = (): JSX.Element => {
               <CodeSectionSetting formValues={formValues} />
 
               {/* <pre>{JSON.stringify(formValues, 0, 2)}</pre> */}
-              {/* <FormStateFromRedux form="defaultForm" /> */}
+              {/* <FormStateFromRedux form="settingsForm" /> */}
             </form>
           );
         }}
