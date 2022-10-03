@@ -15,7 +15,6 @@ const Components: { [key: string]: any } = {
 
 // eslint-disable-next-line react/display-name
 export default (popupData: formStateInterface): JSX.Element => {
-  // console.log('rerender');
   // component does exist
   if (typeof Components[popupData.template_id] !== 'undefined') {
     return React.createElement(Components[popupData.template_id], {
@@ -25,8 +24,4 @@ export default (popupData: formStateInterface): JSX.Element => {
   }
   // component doesn't exist yet
   return React.createElement(DEFAULT);
-  // return React.createElement(
-  //   () => <div>The component {block.component} has not been created yet.</div>,
-  //   { key: block.template_id }
-  // );
 };

@@ -1,12 +1,13 @@
+import { formStateInterface } from '@/store/features/settings.slice';
 import { colorPicker } from '@/utils/helpers';
 
-const valuePicker = (data, id) => {
+export const valuePicker = (data: formStateInterface, id: string) => {
   const { content } = data;
   if (data == null || content?.length == 0) return '$' + id;
   // console.log(content);
   return content?.filter((item) => item.name == id)?.[0]?.value;
 };
-const imagePicker = (data, id) => {
+export const imagePicker = (data: formStateInterface, id: string) => {
   if (data == null || data?.images.length == 0 || data?.images == undefined)
     return '$' + id;
   const { images } = data;
@@ -14,7 +15,10 @@ const imagePicker = (data, id) => {
   return images?.filter((item) => item.name == id)?.[0]?.value;
 };
 
-export default function POPUP_010({ popupData }) {
+interface Props {
+  popupData: formStateInterface;
+}
+export default function POPUP_010({ popupData }: Props) {
   return (
     <div className="w-[740px] h-[468px] grid grid-cols-2  bg-white shadow-xl   rounded-l-[40px] max-w-full max-h-full">
       <div className="w-[300px] mx-auto max-w-full">
