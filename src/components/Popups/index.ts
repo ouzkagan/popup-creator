@@ -6,7 +6,13 @@ import DEFAULT from './DEFAULT';
 import Popup_001 from './POPUP_001';
 import Popup_002 from './POPUP_002';
 import Popup_010 from './POPUP_010';
-const Components: { [key: string]: any } = {
+const Components: {
+  [key: string]: ({
+    popupData,
+  }: {
+    popupData: formStateInterface;
+  }) => JSX.Element;
+} = {
   POPUP_001: Popup_001,
   POPUP_002: Popup_002,
   POPUP_010: Popup_010,
