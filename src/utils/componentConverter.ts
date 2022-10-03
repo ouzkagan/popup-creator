@@ -28,6 +28,7 @@ export const MyResponse = (template_id: string) =>
           urlBrowsing: false,
           browserLanguage: false,
           onExitIntent: false,
+          exitIntentTargeting: false,
         },
       })
     )

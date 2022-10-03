@@ -44,7 +44,9 @@ const Settings = (): JSX.Element => {
   );
   const formValues =
     useSelector(
-      (state: RootState) => (selectForm(state, 'settingsForm') as any)?.values
+      (state: RootState) =>
+        (selectForm(state, 'settingsForm') as FormState<formStateInterface>)
+          ?.values
     ) || initialGeneralSettings;
   const dispatch = useDispatch();
   const updateForm = (form: string, state: FormState<formStateInterface>) => {

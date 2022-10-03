@@ -75,7 +75,7 @@ export interface formStateInterface {
     onExitIntent: boolean;
     exitIntentTargeting: boolean;
   };
-  settingsForm?: any;
+  settingsForm?: unknown;
 }
 
 export const initialState: formStateInterface = {
@@ -96,8 +96,8 @@ export const initialState: formStateInterface = {
   // images: [],
   browserLanguage: ['en-EN'],
   onExitIntent: true,
-  content: [],
-  images: [],
+  // content: [],
+  // images: [],
   inputStatus: {
     // Targeting Rules
     visitorDevice: true,
@@ -127,7 +127,7 @@ export const settingsSlice = createSlice({
   initialState,
   reducers: {
     UPDATE_FORM_STATE: (state, action) => {
-      const formName: string = action?.payload?.form;
+      // const formName: string = action?.payload?.form;
       // console.log(action.payload.state);
       state.settingsForm = action.payload.state;
     },

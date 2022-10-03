@@ -4,24 +4,17 @@ import {
   formStateInterface,
   selectForm,
 } from '@/store/features/settings.slice';
+import { FormState } from 'final-form';
 import { useSelector } from 'react-redux';
-// const FormStateFromRedux = ({ form }) => {
-//   const formValue = useSelector((state) => selectForm(state, form));
-//   return <span>{JSON.stringify(formValue.values, 0, 2)}</span>;
-// };
 const Preview = (): JSX.Element => {
   const formValues: formStateInterface = useSelector(
-    (state: AppState) => selectForm(state, 'settingsForm')?.values
+    (state: AppState) =>
+      (selectForm(state, 'settingsForm') as FormState<formStateInterface>)
+        ?.values
   );
   return (
     <div className="relative mt-24 mx-auto">
-      <div className="sticky top-24 ">
-        {/* {data.content.body.map(block => Popups(block))} */}
-        {PopupSelector(formValues)}
-      </div>
-      {/* <div className="sticky top-24 w-[800px] h-[468px] bg-white">
-        <FormStateFromRedux form="defaultForm" />
-      </div> */}
+      <div className="sticky top-24 ">{PopupSelector(formValues)}</div>
     </div>
   );
 };
