@@ -8,6 +8,12 @@ module.exports = {
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     // 'storybook-addon-next',
+    {
+      name: 'storybook-addon-next',
+      options: {
+        nextConfigPath: path.resolve(__dirname, '../next.config.js'),
+      },
+    },
     // '@storybook/addon-a11y',
   ],
 
@@ -46,11 +52,12 @@ module.exports = {
   // },
   webpackFinal: async (config, { configType }) => {
     // Make whatever fine-grained changes you need
-    config.module.rules.push({
-      test: /\.scss$/,
-      use: ['style-loader', 'css-loader', 'sass-loader'],
-      include: path.resolve(__dirname, '../'),
-    });
+    // config.module.rules.push({
+    //   test: /\.scss$/,
+    //   use: ['style-loader', 'css-loader', 'sass-loader'],
+    //   include: path.resolve(__dirname, '../'),
+    // });
+    // config.resolve.alias['next/image'] = require.resolve('./NextImage.js');
 
     // Return the altered config
     return config;
