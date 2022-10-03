@@ -4,11 +4,9 @@ import { render } from 'react-dom';
 import POPUP_001 from 'src/components/Popups/POPUP_001';
 describe('popupSelector test', () => {
   test('Can pick a popup component', () => {
-    // console.log(PopupSelector, POPUP_001);
     const initialSettings: formStateInterface = {
       template_id: 'POPUP_001',
-      // content: null,
-      // images: null,
+
       size: 'SMALL',
       position: 'TOP_CENTER',
       logo: '',
