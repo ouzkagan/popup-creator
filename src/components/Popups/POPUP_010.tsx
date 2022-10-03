@@ -8,7 +8,7 @@ export const valuePicker = (data: formStateInterface, id: string) => {
   return content?.filter((item) => item.name == id)?.[0]?.value;
 };
 export const imagePicker = (data: formStateInterface, id: string) => {
-  if (data == null || data?.images.length == 0 || data?.images == undefined)
+  if (data == null || data?.images?.length == 0 || data?.images == undefined)
     return '$' + id;
   const { images } = data;
   // console.log(content);
