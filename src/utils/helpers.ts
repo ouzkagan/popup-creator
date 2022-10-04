@@ -66,6 +66,6 @@ export const asAString = (_formValues: formStateInterface) => {
   delete processedValues?.images;
 
   const stringValues = JSON.stringify(processedValues);
-  const valueToCopy = `<script type="text/javascript" src="https://popupsmart.com/freechat.js"></script><script> window.start.init(${stringValues})</script>`;
+  const valueToCopy = `<script type="text/javascript" src="https://popup-creator.vercel.app/bundle.js"></script><script> window.start.init(${stringValues})</script>`;
   return valueToCopy;
 };
