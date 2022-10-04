@@ -12,10 +12,10 @@ const myLoader = ({ src, width, quality }: Loader) => {
   return `https://example.com/${src}?w=${width}&q=${quality || 75}`;
 };
 
-const MyImage = (props) => {
+const MyImage = (props: Loader) => {
   return (
     <Image
-      loader={myLoader}
+      loader={myLoader({ ...props })}
       src="me.png"
       alt="Picture of the author"
       width={500}
@@ -23,3 +23,5 @@ const MyImage = (props) => {
     />
   );
 };
+
+export const MyImage;

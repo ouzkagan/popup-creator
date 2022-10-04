@@ -4,7 +4,6 @@ import Settings from '@/templates/Settings';
 import { wrapper } from '@/store';
 import { set_popups } from '@/store/features/popupTemplates.slice';
 import Templates from '@/templates/Templates';
-import { PopupTemplate } from '@/types';
 export const getStaticProps = wrapper.getStaticProps((store) => async () => {
   const res = await fetch(`${process.env.BASE_URL}/api/popups`);
   const popupTemplates = await res.json();
@@ -14,22 +13,22 @@ export const getStaticProps = wrapper.getStaticProps((store) => async () => {
   // Pass data to the page via props
   return { props: { popupTemplates } };
 });
-interface Props {
-  popupTemplates: PopupTemplate[];
-}
+// interface Props {
+//   popupTemplates?: PopupTemplate[];
+// }
 
-const Home = ({ popupTemplates }: Props) => {
+const Home = () => {
   // console.log(myState);
 
   /* */
   return (
     <div className=" bg-white">
       {/* {MyResponse} */}
-      <div className="bg-gradient-to-b from-white to-gray-200 w-full">
+      <div className="w-full bg-gradient-to-b from-white to-gray-200">
         <section className="container mx-auto px-32 font-inter ">
-          <nav className="w-full flex justify-between items-center mt-6">
-            <div className="w-full flex justify-start items-center">
-              <a href="#" className="flex justify-center items-center mr-20">
+          <nav className="mt-6 flex w-full items-center justify-between">
+            <div className="flex w-full items-center justify-start">
+              <a href="#" className="mr-20 flex items-center justify-center">
                 <svg
                   width="36"
                   height="36"
@@ -51,15 +50,15 @@ const Home = ({ popupTemplates }: Props) => {
                     fill="white"
                   />
                 </svg>
-                <span className="not-italic font-extrabold text-base leading-4 text-black ml-2">
+                <span className="ml-2 text-base font-extrabold not-italic leading-4 text-black">
                   modal.cards
                 </span>
               </a>
               <ul className="flex items-center">
-                <li className="hover:bg-white mr-8">
+                <li className="mr-8 hover:bg-white">
                   <a
                     href="#"
-                    className="font-medium text-base leading-4 text-black flex"
+                    className="flex text-base font-medium leading-4 text-black"
                   >
                     Solutions{' '}
                     <span>
@@ -79,51 +78,51 @@ const Home = ({ popupTemplates }: Props) => {
                     </span>
                   </a>
                 </li>
-                <li className="hover:bg-white mr-8">
+                <li className="mr-8 hover:bg-white">
                   <a
                     href="#"
-                    className="font-medium text-base leading-4 text-black"
+                    className="text-base font-medium leading-4 text-black"
                   >
                     Product Tour
                   </a>
                 </li>
-                <li className="hover:bg-white mr-8">
+                <li className="mr-8 hover:bg-white">
                   <a
                     href="#"
-                    className="font-medium text-base leading-4 text-black"
+                    className="text-base font-medium leading-4 text-black"
                   >
                     Showcase
                   </a>
                 </li>
-                <li className="hover:bg-white mr-8">
+                <li className="mr-8 hover:bg-white">
                   <a
                     href="#"
-                    className="font-medium text-base leading-4 text-black"
+                    className="text-base font-medium leading-4 text-black"
                   >
                     Pricing
                   </a>
                 </li>
-                <li className="hover:bg-white mr-8">
+                <li className="mr-8 hover:bg-white">
                   <a
                     href="#"
-                    className="font-medium text-base leading-4 text-black"
+                    className="text-base font-medium leading-4 text-black"
                   >
                     Sign in
                   </a>
                 </li>
               </ul>
             </div>
-            <ul className="flex justify-end items-center">
-              <li className="hover:bg-white mr-8">
+            <ul className="flex items-center justify-end">
+              <li className="mr-8 hover:bg-white">
                 <a
                   href="#"
-                  className="font-medium text-base leading-4 text-black whitespace-nowrap"
+                  className="whitespace-nowrap text-base font-medium leading-4 text-black"
                 >
                   Sign in
                 </a>
               </li>
-              <li className="hover:bg-white mr-8">
-                <button className="rounded-xl bg-purple-600 px-5 py-2 whitespace-nowrap  font-medium text-base leading-4 text-center text-white tracking-tight	">
+              <li className="mr-8 hover:bg-white">
+                <button className="whitespace-nowrap rounded-xl bg-purple-600 px-5 py-2  text-center text-base font-medium leading-4 tracking-tight text-white	">
                   Try for free
                 </button>
               </li>
@@ -131,20 +130,20 @@ const Home = ({ popupTemplates }: Props) => {
           </nav>
         </section>
         <section className="container mx-auto px-32 pb-[317px]">
-          <h1 className=" font-semibold text-black leading-20 text-7xl tracking-tight mt-16">
+          <h1 className=" leading-20 mt-16 text-7xl font-semibold tracking-tight text-black">
             Simple modal <br />
             card creator
           </h1>
-          <p className="text-3xl  mt-5 font-normal">
+          <p className="mt-5  text-3xl font-normal">
             A utility-first CSS framework packed with classeslike flex, pt-4,
             text-center and rotate-90 that can becomposed to build any design,
             directly in your markup.
           </p>
-          <button className="rounded-xl bg-purple-600 whitespace-nowrap  font-medium text-lg leading-5 text-center text-white tracking-tight mt-16 py-5 px-8 ">
+          <button className="mt-16 whitespace-nowrap rounded-xl  bg-purple-600 py-5 px-8 text-center text-lg font-medium leading-5 tracking-tight text-white ">
             Try it out now
           </button>
-          <div className="flex mt-10 ">
-            <span className="text-xs leading-4 text-black flex items-center font-light">
+          <div className="mt-10 flex ">
+            <span className="flex items-center text-xs font-light leading-4 text-black">
               <svg
                 width="16"
                 height="16"
@@ -159,7 +158,7 @@ const Home = ({ popupTemplates }: Props) => {
               </svg>
               Free and paid plans
             </span>
-            <span className="text-xs leading-4 text-black flex items-center">
+            <span className="flex items-center text-xs leading-4 text-black">
               <svg
                 width="16"
                 height="16"
@@ -174,7 +173,7 @@ const Home = ({ popupTemplates }: Props) => {
               </svg>
               Free and paid plans
             </span>
-            <span className="text-xs leading-4 text-black flex items-center">
+            <span className="flex items-center text-xs leading-4 text-black">
               <svg
                 width="16"
                 height="16"
@@ -194,9 +193,9 @@ const Home = ({ popupTemplates }: Props) => {
       </div>
 
       {/* popup example */}
-      <div className="container mx-auto px-32 relative ">
-        <div className="w-[800px] h-[468px] grid grid-cols-2  bg-white rounded-xl-[40px] absolute top-[-227px]  rounded-[40px]">
-          <div className="flex flex-col justify-center items-center w-[300px] mx-auto">
+      <div className="container relative mx-auto px-32 ">
+        <div className="rounded-xl-[40px] absolute top-[-227px] grid  h-[468px] w-[800px] grid-cols-2 rounded-[40px]  bg-white">
+          <div className="mx-auto flex w-[300px] flex-col items-center justify-center">
             <svg
               width="106"
               height="38"
@@ -209,30 +208,30 @@ const Home = ({ popupTemplates }: Props) => {
                 fill="#E60000"
               />
             </svg>
-            <h3 className="text-4xl	font-semibold  text-black leading-[3.375rem] mt-10">
+            <h3 className="mt-10	text-4xl  font-semibold leading-[3.375rem] text-black">
               Join the club
             </h3>
-            <p className="text-lg leading-6  text-black mt-2">
+            <p className="mt-2 text-lg  leading-6 text-black">
               Subscribe and Get an Extra <br /> <span>25% Off</span> on your
               first purchase.
             </p>
-            <div className="w-full mt-8">
+            <div className="mt-8 w-full">
               <input
                 type="text"
-                className="rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3"
+                className="h-[48px] w-full rounded-xl border border-solid pl-3 text-base leading-6  text-gray-600"
                 name=""
                 id=""
                 placeholder="Email address"
               />
             </div>
-            <button className="rounded-xl bg-black py-3 px-24 whitespace-nowrap  font-medium text-base leading-4 text-center text-white tracking-tight	w-full h-[48px] mt-4 ">
+            <button className="mt-4 h-[48px] w-full whitespace-nowrap rounded-xl  bg-black py-3 px-24 text-center text-base font-medium	leading-4 tracking-tight text-white ">
               Try for free
             </button>
           </div>
           <div className="relative  ">
             {/* <img src="/51951afc5aa43fb6d90f01eeeec2b12c.png" alt="me" /> */}
-            <div className="absolute w-full h-full top-0 left-0 ">
-              <span className="w-10 h-10 ml-auto rounded-full bg-white 	flex justify-center items-center mt-6 mr-6">
+            <div className="absolute top-0 left-0 h-full w-full ">
+              <span className="ml-auto mt-6 mr-6 flex h-10 	w-10 items-center justify-center rounded-full bg-white">
                 <svg
                   width="24"
                   height="24"
@@ -246,7 +245,7 @@ const Home = ({ popupTemplates }: Props) => {
                   />
                 </svg>
               </span>
-              <div className="w-48 h-12	 bg-white py-3 px-5 flex justify-center items-center rounded-xl	whitespace-nowrap ml-[341px] mt-10">
+              <div className="ml-[341px] mt-10	 flex h-12 w-48 items-center justify-center whitespace-nowrap rounded-xl	bg-white py-3 px-5">
                 <svg
                   width="24"
                   height="24"
@@ -266,11 +265,11 @@ const Home = ({ popupTemplates }: Props) => {
                     </clipPath>
                   </defs>
                 </svg>
-                <span className="font-medium text-base leading-6 text-black whitespace-nowrap">
+                <span className="whitespace-nowrap text-base font-medium leading-6 text-black">
                   Grow email list
                 </span>
               </div>
-              <div className="w-[270px] h-12	 bg-white py-3 px-5 flex justify-center items-center rounded-xl ml-[326px] mt-2	">
+              <div className="ml-[326px] mt-2	 flex h-12 w-[270px] items-center justify-center rounded-xl bg-white py-3 px-5	">
                 <svg
                   width="24"
                   height="24"
@@ -291,13 +290,13 @@ const Home = ({ popupTemplates }: Props) => {
                   </defs>
                 </svg>
 
-                <span className="font-medium text-base leading-6 text-black whitespace-nowrap">
+                <span className="whitespace-nowrap text-base font-medium leading-6 text-black">
                   Increase sales conversion
                 </span>
               </div>
             </div>
             <div
-              className="bg-cover	h-full bg-left-42 rounded-r-[40px]"
+              className="h-full	rounded-r-[40px] bg-cover bg-left-42"
               style={{
                 backgroundImage: `url(/assets/51951afc5aa43fb6d90f01eeeec2b12c.png)`,
               }}
@@ -306,10 +305,10 @@ const Home = ({ popupTemplates }: Props) => {
         </div>
       </div>
       <section className=" h-[630px] bg-[#666666] text-white">
-        <div className="container mx-auto px-32 flex justify-start pt-[361px] pb-[137px]">
+        <div className="container mx-auto flex justify-start px-32 pt-[361px] pb-[137px]">
           <div className="flex justify-start gap-[120px]">
             <div>
-              <div className="font-semibold  text-[80px] leading-[80px]">
+              <div className="text-[80px]  font-semibold leading-[80px]">
                 3X
               </div>
               <p>
@@ -319,7 +318,7 @@ const Home = ({ popupTemplates }: Props) => {
               </p>
             </div>
             <div>
-              <div className="font-semibold  text-[80px] leading-[80px]">
+              <div className="text-[80px]  font-semibold leading-[80px]">
                 120%
               </div>
               <p>
@@ -329,7 +328,7 @@ const Home = ({ popupTemplates }: Props) => {
               </p>
             </div>
             <div>
-              <div className="font-semibold  text-[80px] leading-[80px]">
+              <div className="text-[80px]  font-semibold leading-[80px]">
                 390%
               </div>
               <p>
@@ -339,7 +338,7 @@ const Home = ({ popupTemplates }: Props) => {
               </p>
             </div>
             <div>
-              <p className=" font-semibold text-4xl tracking-tighter">
+              <p className=" text-4xl font-semibold tracking-tighter">
                 Popupsmart meets all your business needs.
               </p>
             </div>
@@ -347,10 +346,10 @@ const Home = ({ popupTemplates }: Props) => {
         </div>
       </section>
       <section className="container mx-auto px-32">
-        <h2 className="font-semibold text-4xl text-black leading-[48px] tracking-half-tighter	mt-24">
+        <h2 className="mt-24 text-4xl font-semibold leading-[48px] tracking-half-tighter	text-black">
           Modal Card Generator
         </h2>
-        <p className="max-w-[459px] mt-4 font-[400] text-base leading-6 tracking-tighter">
+        <p className="mt-4 max-w-[459px] text-base font-[400] leading-6 tracking-tighter">
           Measure your return on email marketing efforts easier and faster by
           using thebest online tools. Popupsmart is ready to help you build an
           efficient email list!
@@ -358,7 +357,7 @@ const Home = ({ popupTemplates }: Props) => {
 
         <Templates />
         {/* STEPS */}
-        <div className="flex gap-[76px] h-[3500px]">
+        <div className="flex h-[3500px] gap-[76px]">
           <Settings />
 
           <Preview />

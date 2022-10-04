@@ -1,5 +1,4 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { Button } from './Button';
 
@@ -21,21 +20,21 @@ export const Primary = Template.bind({});
 Primary.args = {
   primary: true,
   label: 'Button',
+  backgroundColor: 'bg-purple-600',
+  padding: 'py-2 px-5',
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
   label: 'Button',
+  backgroundColor: 'bg-purple-600',
+  padding: 'py-5 px-8',
 };
 
 export const Large = Template.bind({});
 Large.args = {
-  size: 'large',
   label: 'Button',
-};
-
-export const Small = Template.bind({});
-Small.args = {
-  size: 'small',
-  label: 'Button',
+  backgroundColor: 'bg-black',
+  padding: 'py-3 px-24',
+  width: 'w-full',
 };
