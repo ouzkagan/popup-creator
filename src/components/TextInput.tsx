@@ -18,8 +18,7 @@ const TextInput = ({
         }`}
       />
 
-      {meta.error && meta.touched && (
-        // !rest?.disabled &&
+      {meta.error && meta.touched && !rest?.disabled && (
         <div className="text-red-500 p-2">{meta.error}</div>
       )}
     </div>
