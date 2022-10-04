@@ -5,7 +5,6 @@ const TextInput = ({
   meta,
   ...rest
 }: FieldRenderProps<string, HTMLInputElement>): JSX.Element => {
-  console.log(input.name);
   return (
     <div>
       <input

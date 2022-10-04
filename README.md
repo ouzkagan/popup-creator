@@ -28,6 +28,7 @@ Deployed at: [https://popup-creator.vercel.app/](https://popup-creator.vercel.ap
 
 # Background Features
 
+- Popups templates served from api/ dynamically via converting [Tailwind React components to inlince CSS HTML](https://popup-creator.vercel.app/api/popups/POPUP_010)
 - Creating dynamic inputs with Final-form
 - Validating constant and dynamic fields with YUP
 - Syncing Final-form with Redux via FormSpy

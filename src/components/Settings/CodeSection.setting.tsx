@@ -67,7 +67,7 @@ function CodeSectionSetting({ formValues }: Props) {
         <div className="relative mt-[30px]">
           <div className="overflow-hidden rounded-[8px] bg-[#333333] p-[15px] pb-[57px] font-robotomono text-xs font-light not-italic leading-4 text-white">
             <CodeBlock
-              codeString={`<script type="text/javascript" src="https://!.com/bundle.js"></script><script> window.start.init(${JSON.stringify(
+              codeString={`<script type="text/javascript" src="https://popup-creator.vercel.app/bundle.js"></script><script> window.start.init(${JSON.stringify(
                 formValues,
                 undefined,
                 2

@@ -40,7 +40,6 @@ function FileInput({
     getFiles(files);
     onDrop(files);
   };
-  console.log(meta);
   return (
     <Dropzone
       onDrop={(acceptedFiles) => handleFiles(acceptedFiles)}
