@@ -1,6 +1,7 @@
 import Preview from '@/templates/Preview';
 import Settings from '@/templates/Settings';
 
+import { server } from '@/config';
 import { wrapper } from '@/store';
 import { setPopups } from '@/store/features/popupTemplates.slice';
 import Templates from '@/templates/Templates';
@@ -14,9 +15,7 @@ export const getStaticProps = wrapper.getStaticProps((store) => async () => {
   //     ssl = 'http';
   //   }
   // }
-  const apiResponse = await fetch(
-    `https://popup-creator.vercel.app/api/popups/`
-  );
+  const apiResponse = await fetch(`${server}/api/popups/`);
   const popupTemplates = await apiResponse.json();
   await store.dispatch(setPopups(popupTemplates));
 
