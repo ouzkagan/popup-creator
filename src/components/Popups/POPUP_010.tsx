@@ -41,7 +41,7 @@ export default function POPUP_010({ popupData }: Props) {
                 type="text"
                 className={`rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 ${
                   colorPicker(popupData?.color)
-                    ? colorPicker(popupData?.color).focusOutline
+                    ? colorPicker(popupData?.color, 'focusOutline')
                     : ''
                 }`}
                 name="input_1"
@@ -53,7 +53,7 @@ export default function POPUP_010({ popupData }: Props) {
                 type="text"
                 className={`rounded-xl border border-solid text-base leading-6 text-gray-600 w-full h-[48px]  pl-3 ${
                   colorPicker(popupData?.color)
-                    ? colorPicker(popupData?.color).focusOutline
+                    ? colorPicker(popupData?.color, 'focusOutline')
                     : ''
                 }`}
                 name="input_2"
@@ -65,7 +65,7 @@ export default function POPUP_010({ popupData }: Props) {
               type="submit"
               className={
                 'rounded-xl py-3 px-24 whitespace-nowrap  font-medium text-base leading-4 text-center text-white tracking-tight	w-full h-[48px] mt-4  border-0 cursor-pointer ' +
-                (colorPicker(popupData?.color)?.bg || '')
+                (colorPicker(popupData?.color, 'bg') || '')
               }
               // x={colorPicker(popupData?.color)}
               style={{

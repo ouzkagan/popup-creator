@@ -24,9 +24,11 @@ const cors = Cors({
 function runMiddleware(
   req: NextApiRequest,
   res: NextApiResponse,
+  // eslint-disable-next-line @typescript-eslint/ban-types
   fn: Function
 ) {
   return new Promise((resolve, reject) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fn(req, res, (result: any) => {
       if (result instanceof Error) {
         return reject(result);
@@ -47,15 +49,16 @@ export default async function handler(
   await runMiddleware(req, res, cors);
 
   // Rest of the API logic
-  // res.json({ message: 'Hello Everyone!' })
   const { id } = req.query;
   let pid: string;
   if (typeof id === 'string') {
     pid = id;
   } else {
+    // default popup
     pid = 'POPUP_010';
   }
 
+  // retrieve popup settings
   const settings = popups.find((popup) => popup.template_id == id)?.settings;
 
   // console.log(id);

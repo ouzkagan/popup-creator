@@ -31,8 +31,13 @@ const colorsConfig: {
   large: 'px-5 py-2',
 };
 
-export const colorPicker = (hex: string) => {
-  return colorsConfig[hex] ? colorsConfig[hex] : '';
+export const colorPicker = (hex: string | undefined, property?: string) => {
+  const result =
+    hex !== undefined && colorsConfig[hex] ? colorsConfig[hex] : '';
+  if (typeof result === 'object') {
+    return result[property as keyof typeof result];
+  }
+  return result;
 };
 
 export const getContent = (
@@ -48,6 +53,7 @@ export const getContent = (
 
 // protect form fields on template change
 export const restOfFormValues = (_formValues: formStateInterface) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { template_id, content, ...rest } = _formValues;
   // console.log(rest);
   return rest;

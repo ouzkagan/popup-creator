@@ -25,7 +25,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/utils/TailwindCheatSheet.js"
+    "src/utils/TailwindCheatSheet.js",
+    "declarations.d.ts"
   ],
   "exclude": ["node_modules"]
 }

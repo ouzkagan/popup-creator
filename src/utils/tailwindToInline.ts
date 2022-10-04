@@ -19,10 +19,10 @@ function iter(o: Parsed) {
     }
     // console.log(o[k])
     if (k === 'class') {
-      let inlineCSS =
+      const inlineCSS =
         ';' + getConvertedClasses(o['class']).trim().replace(/\n/g, '');
       // console.log(inlineCSS)
-      let oldStyles = o['style' as keyof typeof o];
+      const oldStyles = o['style' as keyof typeof o];
       // console.log("oldstyles:", oldStyles)
       o['style'] = '';
       o['style'] = oldStyles ? oldStyles + ' ' + inlineCSS : ' ' + inlineCSS;
