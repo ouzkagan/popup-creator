@@ -11,14 +11,6 @@ const cors = Cors({
   methods: ['POST', 'GET', 'HEAD'],
 });
 
-// export default function handler(_req: NextApiRequest, res: NextApiResponse) {
-//   // Get data from your database
-//   const { id } = _req.query;
-//   // console.log(id);
-//   // res.status(200).json({ template: MyResponse(id) });
-//   res.status(200).json(MyResponse(id));
-// }
-
 // Helper method to wait for a middleware to execute before continuing
 // And to throw an error when an error happens in a middleware
 function runMiddleware(
