@@ -209,7 +209,7 @@ const Settings = (): JSX.Element => {
                 </span>
                 <div className="font-semibold text-lg leading-9 text-black tracking-half-tighter ">
                   Appearance
-                  <span className="font-normal">(Size, colors, logo)</span>
+                  <span className="font-normal"> (Size, colors, logo)</span>
                 </div>
               </div>
               <div className="mt-8">
