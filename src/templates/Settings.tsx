@@ -15,11 +15,11 @@ import FormStateToRedux from '@/components/FormStateToRedux';
 import { AppState, RootState } from '@/store';
 import {
   formStateInterface,
-  initialState as initialGeneralSettings,
+  initialState as initialSettings,
   selectForm,
   UPDATE_FORM_STATE,
 } from '@/store/features/settings.slice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 // setting components
 import CodeSectionSetting from '@/components/Settings/CodeSection.setting';
@@ -29,17 +29,16 @@ import GeneralSetting from '@/components/Settings/General.setting';
 import PositionSetting from '@/components/Settings/Position.setting';
 import SizeSetting from '@/components/Settings/Size.setting';
 // UTILS
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { asAString, getContent, restOfFormValues } from '@/utils/helpers';
 import axios, { AxiosError } from 'axios';
-
-// const FormStateFromRedux = ({ form }) => {
-//   const formValue = useSelector((state) => selectForm(state, form));
-//   return <pre>{JSON.stringify(formValue.values, 0, 2)}</pre>;
-// };
+import { get, set } from 'lodash';
+import { useState } from 'react';
 
 const Settings = (): JSX.Element => {
+  const [imageLoading, setImageLoading] = useState<string[]>([]);
   // redux selectors and functions
-  const selected_template_id = useSelector(
+  const selectedTemplateId = useAppSelector(
     (state: AppState) => state.settings.template_id
   );
   const formValues =
@@ -47,10 +46,9 @@ const Settings = (): JSX.Element => {
       (state: RootState) =>
         (selectForm(state, 'settingsForm') as FormState<formStateInterface>)
           ?.values
-    ) || initialGeneralSettings;
-  const dispatch = useDispatch();
+    ) || initialSettings;
+  const dispatch = useAppDispatch();
   const updateForm = (form: string, state: FormState<formStateInterface>) => {
-    // console.log(form, state);
     dispatch(UPDATE_FORM_STATE({ form, state }));
   };
 
@@ -58,14 +56,13 @@ const Settings = (): JSX.Element => {
     (state: RootState) => state.popupTemplates.popups
   );
 
-  // utils
-
   // submit
   const onSubmit = async (values: formStateInterface) => {
     const valueToCopy = asAString(values);
     navigator.clipboard.writeText(valueToCopy);
   };
-  const uploadFile = async (file: FileWithPath) => {
+  const uploadFile = async (field: string, file: FileWithPath) => {
+    setImageLoading([...imageLoading, field]);
     //here, we are creatingng a new FormData object; this lets you compile a set of key/value pairs.
     const data = new FormData();
     // we are appending a new value onto an existing key inside a FormData object. the keys here are what is required for the upload by the cloudinary endpoint. the value in line 7 is your upload preset
@@ -75,18 +72,23 @@ const Settings = (): JSX.Element => {
     // return 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80';
     try {
       //making a post request to the cloudinary endpoint
+
       return await axios
         .post(
           `https://api.cloudinary.com/v1_1/${process.env.CDN_USERNAME}/upload`,
           data
         )
-        .then((response) => response.data.secure_url);
+        .then((response) => {
+          return response.data.secure_url;
+        });
     } catch (e: unknown) {
       //logthe error if any here. you can as well display them to the users
       if (e instanceof AxiosError) {
         // Inside this block, err is known to be a ValidationError
         console.error(e);
+        // Set error to image and fallback
       }
+      return '/assets/default-popup.jpg';
     }
   };
 
@@ -118,32 +120,41 @@ const Settings = (): JSX.Element => {
       .required(`Bu alan gerekli`),
     content: Yup.array().of(
       Yup.object().shape({
-        value: Yup.string().required().min(1),
+        value: Yup.string().required('Bu alan gerekli'),
       })
     ),
   });
 
   const validate = (values: formStateInterface): ValidationErrors => {
-    const errors: { [value: string]: string } = {};
+    let errors: { [value: string]: string } = {};
     try {
       validationSchema.validateSync(values, {
         abortEarly: false,
       });
     } catch (error: unknown) {
       if (error instanceof Yup.ValidationError) {
-        error.inner.forEach((item) => {
-          if (
-            values.inputStatus[item.path as keyof typeof values.inputStatus]
-          ) {
-            const path = item?.path || 'unknownError';
-            errors[path] = item.message;
-          }
-        });
+        errors = { ...convertYupErrorsToFieldErrors(error) };
       }
     }
 
     return errors;
   };
+
+  function convertYupErrorsToFieldErrors(yupErrors: Yup.ValidationError) {
+    return yupErrors.inner?.reduce((errors, { path, message }) => {
+      if (get(errors, path as string)) {
+        set(
+          errors,
+          path as string,
+          get(errors, path as string) + ' ' + message
+        );
+      } else {
+        set(errors, path as string, message);
+      }
+      return errors;
+    }, {});
+  }
+
   return (
     <div className="w-[378px] mt-24">
       <Form
@@ -156,9 +167,9 @@ const Settings = (): JSX.Element => {
             return 1;
           },
           setImage: async ([field, value], state, { changeValue }) => {
-            await uploadFile(value).then((image) => {
+            await uploadFile(field, value).then((image) => {
               changeValue(state, field, () => image);
-
+              // logic to update final form fields with new fields manually. why? because changeValue didn't work in async logic.
               if (state.lastFormState?.values !== undefined) {
                 const newValues = setIn(
                   state.lastFormState?.values,
@@ -170,6 +181,9 @@ const Settings = (): JSX.Element => {
                   values: newValues,
                 };
                 updateForm('settingsForm', newState);
+                setImageLoading([
+                  ...imageLoading.filter((item) => item !== field),
+                ]);
               }
               return image;
             });
@@ -177,13 +191,9 @@ const Settings = (): JSX.Element => {
           },
         }}
         initialValues={{
-          template_id: selected_template_id,
-          content: [
-            ...getContent(popupTemplates, selected_template_id, 'text'),
-          ],
-          images: [
-            ...getContent(popupTemplates, selected_template_id, 'image'),
-          ],
+          template_id: selectedTemplateId,
+          content: [...getContent(popupTemplates, selectedTemplateId, 'text')],
+          images: [...getContent(popupTemplates, selectedTemplateId, 'image')],
           ...restOfFormValues(formValues),
         }}
         // initialValuesEqual={deepEqual}
@@ -193,16 +203,6 @@ const Settings = (): JSX.Element => {
           return (
             <form onSubmit={handleSubmit}>
               <FormStateToRedux form="settingsForm" />
-
-              <div className="buttons">
-                {/* <button type="button" onClick={() => push('content', undefined)}>
-                  Add Customer
-                </button>
-                <button type="button" onClick={() => pop('content')}>
-                  Remove Customer
-                </button> */}
-              </div>
-
               <div className="flex gap-[15px] items-center mb-8">
                 <span className="font-semibold text-base leading-6 text-center text-black tracking-half-tighter w-10 h-10  rounded-full bg-gray-300	flex justify-center items-center">
                   2
@@ -239,6 +239,7 @@ const Settings = (): JSX.Element => {
                   getFiles={(files: FileWithPath[]) =>
                     form.mutators.setImage(`logo`, files[0])
                   }
+                  loading={imageLoading.includes(`logo`)}
                 />
               </div>
               <div>
@@ -268,7 +269,10 @@ const Settings = (): JSX.Element => {
                             component={TextInput}
                             className="rounded-xl border border-solid text-base leading-6  w-full h-[48px]  pl-3 focus:outline-[#7D4AEA] text-black"
                             placeholder="Enter your own text"
-                            // allowNull={true}
+
+                            // validate={(value) =>
+                            //   value ? undefined : 'Bu alanı doldurmalısınız.'
+                            // }
                           />
                         </div>
                       );
@@ -294,6 +298,7 @@ const Settings = (): JSX.Element => {
                                   files[0]
                                 )
                               }
+                              loading={imageLoading.includes(`${name}.value`)}
                             />
                             <Field
                               name={`${name}.value`}
@@ -337,7 +342,7 @@ const Settings = (): JSX.Element => {
                     fieldName="afterScrollingXAmount"
                     alias="After % Scroll"
                     isDisabled={!formValues.inputStatus.afterScrollingXAmount}
-                    parse={(x) => x}
+                    parse={(x) => x + '%'}
                     allowNull={true}
                     placeholder="50"
                   />

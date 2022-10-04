@@ -15,7 +15,7 @@ export const popupTemplatesSlice = createSlice({
   name: 'popupTemplates',
   initialState,
   reducers: {
-    set_popups: (
+    setPopups: (
       state,
       { payload }: PayloadAction<defaultStateInterface['popups']>
     ) => {
@@ -33,6 +33,6 @@ export const popupTemplatesSlice = createSlice({
   },
 });
 
-export const { set_popups } = popupTemplatesSlice.actions;
+export const { setPopups } = popupTemplatesSlice.actions;
 
 export default popupTemplatesSlice;

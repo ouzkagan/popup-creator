@@ -2,7 +2,7 @@ import Preview from '@/templates/Preview';
 import Settings from '@/templates/Settings';
 
 import { wrapper } from '@/store';
-import { set_popups } from '@/store/features/popupTemplates.slice';
+import { setPopups } from '@/store/features/popupTemplates.slice';
 import Templates from '@/templates/Templates';
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
@@ -17,7 +17,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     }
     const apiResponse = await fetch(`${ssl}://${host}/api/popups`);
     const popupTemplates = await apiResponse.json();
-    await store.dispatch(set_popups(popupTemplates));
+    await store.dispatch(setPopups(popupTemplates));
 
     // Pass data to the page via props
     return { props: { popupTemplates } };

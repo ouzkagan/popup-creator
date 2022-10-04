@@ -29,6 +29,7 @@ Deployed at: [https://popup-creator.vercel.app/](https://popup-creator.vercel.ap
 # Background Features
 
 - Creating dynamic inputs with Final-form
+- Validating constant and dynamic fields with YUP
 - Syncing Final-form with Redux via FormSpy
 - Persisting form information between tabs with Next-redux-wrapper
 - Content stored at [CDN cloudinary](https://cloudinary.com)

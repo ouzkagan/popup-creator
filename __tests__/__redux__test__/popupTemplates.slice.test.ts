@@ -2,7 +2,7 @@
 import { popupTemplates } from 'src/mock';
 import popupTemplatesSlice, {
   initialState,
-  set_popups,
+  setPopups,
 } from 'src/store/features/popupTemplates.slice';
 
 describe('popupTemplates reducer', () => {
@@ -14,7 +14,7 @@ describe('popupTemplates reducer', () => {
   });
   test('Setting popups', () => {
     const { reducer } = popupTemplatesSlice;
-    const action = set_popups(popupTemplates);
+    const action = setPopups(popupTemplates);
     const state = reducer(initialState, action);
     expect(state).toEqual({ popups: popupTemplates });
   });
