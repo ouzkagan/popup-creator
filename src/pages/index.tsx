@@ -4,15 +4,25 @@ import Settings from '@/templates/Settings';
 import { wrapper } from '@/store';
 import { set_popups } from '@/store/features/popupTemplates.slice';
 import Templates from '@/templates/Templates';
-export const getStaticProps = wrapper.getStaticProps((store) => async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/popups`);
-  const popupTemplates = await res.json();
-  await store.dispatch(set_popups(popupTemplates));
-  // await store.dispatch(getPopupTemplates());
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context) => {
+    const { req } = context;
+    let host: string | undefined = 'http://localhost:3000';
+    let ssl = 'https';
+    if (req) {
+      host = req.headers.host; // will give you localhost:3000
+      if (host?.includes('localhost')) {
+        ssl = 'http';
+      }
+    }
+    const apiResponse = await fetch(`${ssl}://${host}/api/popups`);
+    const popupTemplates = await apiResponse.json();
+    await store.dispatch(set_popups(popupTemplates));
 
-  // Pass data to the page via props
-  return { props: { popupTemplates } };
-});
+    // Pass data to the page via props
+    return { props: { popupTemplates } };
+  }
+);
 // interface Props {
 //   popupTemplates?: PopupTemplate[];
 // }
