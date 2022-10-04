@@ -4,25 +4,25 @@ import Settings from '@/templates/Settings';
 import { wrapper } from '@/store';
 import { setPopups } from '@/store/features/popupTemplates.slice';
 import Templates from '@/templates/Templates';
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) => async (context) => {
-    const { req } = context;
-    let host: string | undefined = 'http://localhost:3000';
-    let ssl = 'https';
-    if (req) {
-      host = req.headers.host; // will give you localhost:3000
-      if (host?.includes('localhost')) {
-        ssl = 'http';
-      }
-    }
-    const apiResponse = await fetch(`${ssl}://${host}/api/popups`);
-    const popupTemplates = await apiResponse.json();
-    await store.dispatch(setPopups(popupTemplates));
+export const getStaticProps = wrapper.getStaticProps((store) => async () => {
+  // const { req } = context;
+  // let host: string | undefined = 'http://localhost:3000';
+  // let ssl = 'https';
+  // if (req) {
+  //   host = req.headers.host; // will give you localhost:3000
+  //   if (host?.includes('localhost')) {
+  //     ssl = 'http';
+  //   }
+  // }
+  const apiResponse = await fetch(
+    `https://popup-creator.vercel.app/api/popups/`
+  );
+  const popupTemplates = await apiResponse.json();
+  await store.dispatch(setPopups(popupTemplates));
 
-    // Pass data to the page via props
-    return { props: { popupTemplates } };
-  }
-);
+  // Pass data to the page via props
+  return { props: { popupTemplates } };
+});
 // interface Props {
 //   popupTemplates?: PopupTemplate[];
 // }
