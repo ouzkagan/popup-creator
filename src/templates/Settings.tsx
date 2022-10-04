@@ -96,8 +96,10 @@ const Settings = (): JSX.Element => {
     // const validationSchema = Yup.object().shape({
     afterXSeconds: Yup.string().required(`Bu alan gerekli`),
     afterScrollingXAmount: Yup.string()
-      .required(`Bu alan gerekli`)
-      .max(100, 'Bu alan 100`den büyük olmamalı'),
+      .test('Max', 'Bu alan 100`den büyük olmamalı', (value) => {
+        return Number(value) < 100;
+      })
+      .required(`Bu alan gerekli`),
     logo: Yup.string()
       .test('filePresence', 'Lütfen logonuzu yükleyin', (value) => {
         return value !== '';
@@ -111,13 +113,18 @@ const Settings = (): JSX.Element => {
       }),
     onExitIntent: Yup.string().required(`Bu alan gerekli`),
     webHookTypes: Yup.string().required(`Bu alan gerekli`),
-    urlBrowsing: Yup.string().required(`Bu alan gerekli`),
+    urlBrowsing: Yup.string()
+      .required(`Bu alan gerekli`)
+      .matches(
+        /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+        'Lütfen bir URL girin'
+      ),
     webHookUrl: Yup.string()
+      .required(`Bu alan gerekli`)
       .matches(
         /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
         'Lütfen bir URL girin!'
-      )
-      .required(`Bu alan gerekli`),
+      ),
     content: Yup.array().of(
       Yup.object().shape({
         value: Yup.string().required('Bu alan gerekli'),
