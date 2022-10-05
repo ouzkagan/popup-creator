@@ -6,7 +6,10 @@ interface Props {
 }
 export default function POPUP_010({ popupData }: Props) {
   return (
-    <div className="w-[740px] h-[405px] grid grid-cols-2  bg-white shadow-xl   rounded-l-[40px] max-w-full max-h-full">
+    <div
+      data-testid="POPUP_010"
+      className="w-[740px] h-[405px] grid grid-cols-2  bg-white shadow-xl   rounded-l-[40px] max-w-full max-h-full"
+    >
       <div className="w-[300px] mx-auto max-w-full">
         <div className="flex flex-col justify-center items-center  mx-auto">
           <h3 className="text-4xl	font-semibold  text-black leading-[3.375rem] mt-[49px]">

@@ -5,7 +5,10 @@ interface Props {
 }
 export default function POPUP_001({ popupData }: Props) {
   return (
-    <div className="w-[480px] h-[446px] relative  bg-white shadow-xl   rounded-l-[40px] max-w-full max-h-full">
+    <div
+      data-testid="POPUP_001"
+      className="w-[480px] h-[446px] relative  bg-white shadow-xl   rounded-l-[40px] max-w-full max-h-full"
+    >
       <div className="w-full mx-auto max-w-full">
         <div className="flex flex-col justify-center items-center  mx-auto w-[350px] py-[40px]">
           <div
