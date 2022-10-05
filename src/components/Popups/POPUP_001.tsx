@@ -99,9 +99,6 @@ export default function POPUP_001({ popupData }: Props) {
               </button>
             </div>
           </form>
-          <span className="font-light leading-3 text-gray-600 text-[10px] mt-4 ">
-            {contentPicker(popupData, 'privacy_text_1')}
-          </span>
         </div>
       </div>
       <span
