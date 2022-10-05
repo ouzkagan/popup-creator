@@ -12,7 +12,7 @@ export default function POPUP_001({ popupData }: Props) {
       <div className="w-full mx-auto max-w-full pt-4">
         <div className="flex flex-col justify-center items-center  mx-auto w-[350px] py-[40px]">
           <div
-            className="rounded-full bg-purple-600 flex justify-center items-center p-[21px] "
+            className="rounded-full flex justify-center items-center p-[21px] "
             style={{
               backgroundColor: popupData?.color || '$color',
             }}
