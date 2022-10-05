@@ -30,7 +30,12 @@ import PositionSetting from '@/components/Settings/Position.setting';
 import SizeSetting from '@/components/Settings/Size.setting';
 // UTILS
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { asAString, getContent, restOfFormValues } from '@/utils/helpers';
+import {
+  asAString,
+  getContent,
+  getDefaultProperty,
+  restOfFormValues,
+} from '@/utils/helpers';
 import axios, { AxiosError } from 'axios';
 import { get, set } from 'lodash';
 import { useState } from 'react';
@@ -202,6 +207,7 @@ const Settings = (): JSX.Element => {
           template_id: selectedTemplateId,
           content: [...getContent(popupTemplates, selectedTemplateId, 'text')],
           images: [...getContent(popupTemplates, selectedTemplateId, 'image')],
+          logo: getDefaultProperty(popupTemplates, selectedTemplateId, 'logo'),
           ...restOfFormValues(formValues),
         }}
         // initialValuesEqual={deepEqual}
@@ -240,7 +246,7 @@ const Settings = (): JSX.Element => {
                 <span className="font-normal text-sm leading-4">
                   Upload Logo
                 </span>
-                <Field
+                {/* <Field
                   parse={(x) => x}
                   name={`logo`}
                   component={FileInput}
@@ -248,6 +254,22 @@ const Settings = (): JSX.Element => {
                     form.mutators.setImage(`logo`, files[0])
                   }
                   loading={imageLoading.includes(`logo`)}
+                /> */}
+                <Field
+                  parse={(x) => x}
+                  name={`logo`}
+                  component={FileInput}
+                  getFiles={(files: File[]) =>
+                    form.mutators.setImage(`logo`, files[0])
+                  }
+                  loading={imageLoading.includes(`logo`)}
+                />
+                <Field
+                  name={`logo`}
+                  subscribe={{ touched: true, error: true }}
+                  render={({ meta: { touched, error } }) =>
+                    touched && error ? <span>{error}</span> : null
+                  }
                 />
               </div>
               <div>
@@ -287,40 +309,42 @@ const Settings = (): JSX.Element => {
                     })
                   }
                 </FieldArray>
-                <div className="mt-8">
-                  <span className="font-normal text-sm leading-4">
-                    Upload Image
-                  </span>
-                  <FieldArray name="images">
-                    {({ fields }) =>
-                      fields.map((name) => {
-                        return (
-                          <div className="w-full mt-4" key={name}>
-                            <Field
-                              parse={(x) => x}
-                              name={`${name}.value`}
-                              component={FileInput}
-                              getFiles={(files: File[]) =>
-                                form.mutators.setImage(
-                                  `${name}.value`,
-                                  files[0]
-                                )
-                              }
-                              loading={imageLoading.includes(`${name}.value`)}
-                            />
-                            <Field
-                              name={`${name}.value`}
-                              subscribe={{ touched: true, error: true }}
-                              render={({ meta: { touched, error } }) =>
-                                touched && error ? <span>{error}</span> : null
-                              }
-                            />
-                          </div>
-                        );
-                      })
-                    }
-                  </FieldArray>
-                </div>
+                {formValues?.images && formValues?.images?.length > 0 && (
+                  <div className="mt-8">
+                    <span className="font-normal text-sm leading-4">
+                      Upload Image
+                    </span>
+                    <FieldArray name="images">
+                      {({ fields }) =>
+                        fields.map((name) => {
+                          return (
+                            <div className="w-full mt-4" key={name}>
+                              <Field
+                                parse={(x) => x}
+                                name={`${name}.value`}
+                                component={FileInput}
+                                getFiles={(files: File[]) =>
+                                  form.mutators.setImage(
+                                    `${name}.value`,
+                                    files[0]
+                                  )
+                                }
+                                loading={imageLoading.includes(`${name}.value`)}
+                              />
+                              <Field
+                                name={`${name}.value`}
+                                subscribe={{ touched: true, error: true }}
+                                render={({ meta: { touched, error } }) =>
+                                  touched && error ? <span>{error}</span> : null
+                                }
+                              />
+                            </div>
+                          );
+                        })
+                      }
+                    </FieldArray>
+                  </div>
+                )}
               </div>
               <div className="mt-24">
                 <div className="flex gap-[15px] items-center mb-8">

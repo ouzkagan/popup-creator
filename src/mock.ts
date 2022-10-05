@@ -13,6 +13,7 @@ export const popupTemplates: PopupTemplate[] = [
         'https://fonts.googleapis.com/css2?family=Inter:wght@200;300;500;600;700;800;900&display=swap',
     },
     image: '/assets/popups/01 1.png',
+    logo: '/assets/popup_001_logo.svg',
     content: [
       {
         name: 'headline',
@@ -27,6 +28,12 @@ export const popupTemplates: PopupTemplate[] = [
         color: '#000000',
       },
       {
+        name: 'input_1',
+        type: 'text',
+        value: 'Enter full name',
+        color: '#000000',
+      },
+      {
         name: 'button_text_1',
         type: 'text',
         value: 'Cancel',
@@ -35,6 +42,11 @@ export const popupTemplates: PopupTemplate[] = [
         name: 'button_text_2',
         type: 'text',
         value: 'Continue',
+      },
+      {
+        name: 'image_1',
+        type: 'image',
+        value: `/assets/example-popup-bg.png`,
       },
     ],
   },

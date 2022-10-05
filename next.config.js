@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  domains: ['localhost', 'api.cloudinary.com'],
+  images: {
+    domains: ['api.cloudinary.com', 'res.cloudinary.com'],
+  },
   reactStrictMode: true,
   swcMinify: true,
   env: {

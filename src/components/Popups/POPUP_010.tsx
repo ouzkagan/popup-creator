@@ -1,19 +1,5 @@
 import { formStateInterface } from '@/store/features/settings.slice';
-import { colorPicker } from '@/utils/helpers';
-
-export const valuePicker = (data: formStateInterface, id: string) => {
-  const { content } = data;
-  if (data == null || content?.length == 0) return '$' + id;
-  // console.log(content);
-  return content?.filter((item) => item.name == id)?.[0]?.value;
-};
-export const imagePicker = (data: formStateInterface, id: string) => {
-  if (data == null || data?.images?.length == 0 || data?.images == undefined)
-    return '$' + id;
-  const { images } = data;
-  // console.log(content);
-  return images?.filter((item) => item.name == id)?.[0]?.value;
-};
+import { colorPicker, contentPicker, imagePicker } from '@/utils/helpers';
 
 interface Props {
   popupData: formStateInterface;
@@ -25,11 +11,11 @@ export default function POPUP_010({ popupData }: Props) {
         <div className="flex flex-col justify-center items-center  mx-auto">
           <h3 className="text-4xl	font-semibold  text-black leading-[3.375rem] mt-[49px]">
             {/* {popupData?.content?.[0]?.value || '$headline'} */}
-            {valuePicker(popupData, 'headline')}
+            {contentPicker(popupData, 'headline')}
           </h3>
 
           <p className="max-w-[459px] mt-[10px] font-[400] text-base leading-6 tracking-tighter">
-            {valuePicker(popupData, 'description')}
+            {contentPicker(popupData, 'description')}
           </p>
           <form
             id="webhookForm"
@@ -45,7 +31,7 @@ export default function POPUP_010({ popupData }: Props) {
                     : ''
                 }`}
                 name="input_1"
-                placeholder={valuePicker(popupData, 'input_1')}
+                placeholder={contentPicker(popupData, 'input_1')}
               />
             </div>
             <div className="w-full mt-4">
@@ -57,7 +43,7 @@ export default function POPUP_010({ popupData }: Props) {
                     : ''
                 }`}
                 name="input_2"
-                placeholder={valuePicker(popupData, 'input_2')}
+                placeholder={contentPicker(popupData, 'input_2')}
               />
             </div>
             <button
@@ -72,12 +58,12 @@ export default function POPUP_010({ popupData }: Props) {
                 backgroundColor: popupData?.color || '$color',
               }}
             >
-              {valuePicker(popupData, 'button_text_1')}
+              {contentPicker(popupData, 'button_text_1')}
             </button>
           </form>
         </div>
         <span className="font-light leading-3 text-gray-600 text-[10px] mt-4 ">
-          {valuePicker(popupData, 'privacy_text_1')}
+          {contentPicker(popupData, 'privacy_text_1')}
         </span>
       </div>
       <div className="relative  ">
