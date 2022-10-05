@@ -1,5 +1,7 @@
 import { formStateInterface } from '@/store/features/settings.slice';
 import { PopupTemplate } from '@/types';
+import axios, { AxiosError } from 'axios';
+import { FileWithPath } from 'react-dropzone';
 
 const colorsConfig: {
   [key: string]: string | { bg: string; color: string; focusOutline: string };
@@ -101,4 +103,34 @@ export const imagePicker = (data: formStateInterface, id: string) => {
   const { images } = data;
   // console.log(content);
   return images?.filter((item) => item.name == id)?.[0]?.value;
+};
+
+export const uploadFile = async (field: string, file: FileWithPath) => {
+  //here, we are creatingng a new FormData object; this lets you compile a set of key/value pairs.
+  const data = new FormData();
+  // we are appending a new value onto an existing key inside a FormData object. the keys here are what is required for the upload by the cloudinary endpoint. the value in line 7 is your upload preset
+  data.append('upload_preset', 'ntlolkzu');
+  // URL.createObjectURL(file)
+  data.append('file', file);
+  // return 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80';
+  try {
+    //making a post request to the cloudinary endpoint
+
+    return await axios
+      .post(
+        `https://api.cloudinary.com/v1_1/${process.env.CDN_USERNAME}/upload`,
+        data
+      )
+      .then((response) => {
+        return response.data.secure_url;
+      });
+  } catch (e: unknown) {
+    //logthe error if any here. you can as well display them to the users
+    if (e instanceof AxiosError) {
+      // Inside this block, err is known to be a ValidationError
+      console.error(e);
+      // Set error to image and fallback
+    }
+    return '/assets/default-popup.jpg';
+  }
 };

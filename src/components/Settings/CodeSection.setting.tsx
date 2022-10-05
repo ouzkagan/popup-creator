@@ -1,16 +1,66 @@
-import { formStateInterface } from '@/store/features/settings.slice';
+import {
+  formStateInterface,
+  inputStatusInterface,
+} from '@/store/features/settings.slice';
 import { asAString } from '@/utils/helpers';
+import { validate } from '@/utils/validations';
+import { ValidationErrors } from 'final-form';
+import { useState } from 'react';
 import { Field } from 'react-final-form';
 import CodeBlock from '../CodeBlock';
 import TextInput from '../TextInput';
 interface Props {
   formValues: formStateInterface;
+  // submitSuccess: boolean | null;
+  // customSubmit: () => void;
+  // errors: { [key: string]: string } | undefined;
 }
 
-function CodeSectionSetting({ formValues }: Props) {
+function CodeSectionSetting({
+  formValues,
+}: // submitSuccess,
+// customSubmit,
+// errors: filteredErrors,
+Props) {
+  const [copying, setCopying] = useState<boolean>(false);
+  const [submitSuccess, setSubmitSuccess] = useState<boolean | null>(null);
+  const [filteredErrors, setFilteredErrors] = useState<ValidationErrors>({});
+  // to copy the script
   const copyScript = () => {
     const valueToCopy = asAString(formValues);
     navigator.clipboard.writeText(valueToCopy);
+    setCopying(true);
+    setTimeout(() => {
+      setCopying(false);
+    }, 2500);
+  };
+  // calculate filtered errors from Toggled fields
+  const customSubmit = () => {
+    const values = { ...formValues };
+    const errors = validate(values);
+
+    let realErrors: ValidationErrors = {};
+    if (errors != undefined) {
+      realErrors = {
+        ...Object.keys(errors)
+          .filter((key) => {
+            if (key in formValues.inputStatus) {
+              return formValues?.inputStatus[key as keyof inputStatusInterface];
+            }
+            return true;
+          })
+          .reduce((cur, key) => {
+            return Object.assign(cur, { [key]: errors[key] });
+          }, {}),
+      };
+    }
+    setFilteredErrors(realErrors);
+    if (Object.keys(realErrors).length <= 0) {
+      setSubmitSuccess(true);
+      return;
+    }
+    setSubmitSuccess(false);
+    return;
   };
   return (
     <div className="mt-24">
@@ -61,27 +111,51 @@ function CodeSectionSetting({ formValues }: Props) {
           />{' '}
           Send click data
         </div>
-        <button className="mt-[50px] whitespace-nowrap rounded-xl  bg-purple-600 py-5 px-8 text-center text-lg font-medium leading-5 tracking-tight text-white ">
+        <button
+          type="submit"
+          // disabled={submitting}
+          className="mt-[50px] whitespace-nowrap rounded-xl  bg-purple-600 py-5 px-8 text-center text-lg font-medium leading-5 tracking-tight text-white "
+          onClick={customSubmit}
+        >
           Get your Code
         </button>
-        <div className="relative mt-[30px]">
-          <div className="overflow-hidden rounded-[8px] bg-[#333333] p-[15px] pb-[57px] font-robotomono text-xs font-light not-italic leading-4 text-white">
-            <CodeBlock
-              codeString={`<script type="text/javascript" src="https://popup-creator.vercel.app/bundle.js"></script><script> window.start.init(${JSON.stringify(
-                formValues,
-                undefined,
-                2
-              )})</script>`}
-            />
+        {submitSuccess === false &&
+          Object.keys(filteredErrors as Record<string, unknown>).length > 0 && (
+            <div className="p-3 bg-slate-200/50 mt-3">
+              Please fill these fields correctly or disable them:
+              {filteredErrors &&
+                Object.keys(filteredErrors).map((key, index) => {
+                  return (
+                    <div
+                      className="text-red-400"
+                      key={'key' + index.toString()}
+                    >
+                      {key} : {filteredErrors[key]}
+                    </div>
+                  );
+                })}
+            </div>
+          )}
+        {submitSuccess && (
+          <div className="relative mt-[30px]">
+            <div className="overflow-hidden rounded-[8px] bg-[#333333] p-[15px] pb-[57px] font-robotomono text-xs font-light not-italic leading-4 text-white">
+              <CodeBlock
+                codeString={`<script type="text/javascript" src="https://popup-creator.vercel.app/bundle.js"></script><script> window.start.init(${JSON.stringify(
+                  formValues,
+                  undefined,
+                  2
+                )})</script>`}
+              />
+            </div>
+            <button
+              className=" absolute bottom-[10px] right-[10px] mt-[50px] min-w-[122px] whitespace-nowrap rounded-xl bg-purple-600 py-[4px] px-[15px] text-center text-sm font-medium leading-5 tracking-tight text-white drop-shadow-md hover:drop-shadow-xl active:bg-purple-500"
+              type="submit"
+              onClick={copyScript}
+            >
+              {copying ? 'Copied!' : 'Get your Code'}
+            </button>
           </div>
-          <button
-            className=" absolute bottom-[10px] right-[10px] mt-[50px]  whitespace-nowrap rounded-xl bg-purple-600 py-[4px] px-[15px] text-center text-sm font-medium leading-5 tracking-tight text-white drop-shadow-md hover:drop-shadow-xl active:bg-purple-500"
-            type="submit"
-            onClick={copyScript}
-          >
-            Get your Code
-          </button>
-        </div>
+        )}
       </div>
     </div>
   );

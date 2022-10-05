@@ -42,6 +42,16 @@ export interface ContentImage {
   type: string;
   value: string;
 }
+export interface inputStatusInterface {
+  // Targeting Rules
+  visitorDevice: boolean;
+  afterXSeconds: boolean;
+  afterScrollingXAmount: boolean;
+  urlBrowsing: boolean;
+  browserLanguage: boolean;
+  onExitIntent: boolean;
+  exitIntentTargeting: boolean;
+}
 
 export interface formStateInterface {
   template_id: string;
@@ -65,16 +75,7 @@ export interface formStateInterface {
   webHookTypes: WebHookType[];
   content?: Content[];
   images?: ContentImage[];
-  inputStatus: {
-    // Targeting Rules
-    visitorDevice: boolean;
-    afterXSeconds: boolean;
-    afterScrollingXAmount: boolean;
-    urlBrowsing: boolean;
-    browserLanguage: boolean;
-    onExitIntent: boolean;
-    exitIntentTargeting: boolean;
-  };
+  inputStatus: inputStatusInterface;
   settingsForm?: unknown;
 }
 

@@ -4,12 +4,10 @@ import MultiSelect from '@/components/MultiSelect';
 import TextInput from '@/components/TextInput';
 import ToggleInput from '@/components/ToggleInput';
 import { languages } from 'countries-list';
-import { FormState, setIn, ValidationErrors } from 'final-form';
+import { FormState, setIn } from 'final-form';
 import arrayMutators from 'final-form-arrays';
-import { FileWithPath } from 'react-dropzone';
 import { Field, Form } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
-import * as Yup from 'yup';
 // state
 import FormStateToRedux from '@/components/FormStateToRedux';
 import { AppState, RootState } from '@/store';
@@ -19,6 +17,7 @@ import {
   selectForm,
   UPDATE_FORM_STATE,
 } from '@/store/features/settings.slice';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 // setting components
@@ -35,13 +34,13 @@ import {
   getContent,
   getDefaultProperty,
   restOfFormValues,
+  uploadFile,
 } from '@/utils/helpers';
-import axios, { AxiosError } from 'axios';
-import { get, set } from 'lodash';
-import { useState } from 'react';
+import { validate } from '@/utils/validations';
 
 const Settings = (): JSX.Element => {
   const [imageLoading, setImageLoading] = useState<string[]>([]);
+
   // redux selectors and functions
   const selectedTemplateId = useAppSelector(
     (state: AppState) => state.settings.template_id
@@ -63,110 +62,11 @@ const Settings = (): JSX.Element => {
 
   // submit
   const onSubmit = async (values: formStateInterface) => {
+    // const errors = validate(values);
+    // console.log(errors);
     const valueToCopy = asAString(values);
     navigator.clipboard.writeText(valueToCopy);
   };
-  const uploadFile = async (field: string, file: FileWithPath) => {
-    setImageLoading([...imageLoading, field]);
-    //here, we are creatingng a new FormData object; this lets you compile a set of key/value pairs.
-    const data = new FormData();
-    // we are appending a new value onto an existing key inside a FormData object. the keys here are what is required for the upload by the cloudinary endpoint. the value in line 7 is your upload preset
-    data.append('upload_preset', 'ntlolkzu');
-    // URL.createObjectURL(file)
-    data.append('file', file);
-    // return 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80';
-    try {
-      //making a post request to the cloudinary endpoint
-
-      return await axios
-        .post(
-          `https://api.cloudinary.com/v1_1/${process.env.CDN_USERNAME}/upload`,
-          data
-        )
-        .then((response) => {
-          return response.data.secure_url;
-        });
-    } catch (e: unknown) {
-      //logthe error if any here. you can as well display them to the users
-      if (e instanceof AxiosError) {
-        // Inside this block, err is known to be a ValidationError
-        console.error(e);
-        // Set error to image and fallback
-      }
-      return '/assets/default-popup.jpg';
-    }
-  };
-
-  const validationSchema = Yup.object().shape({
-    // const validationSchema = Yup.object().shape({
-    afterXSeconds: Yup.string().required(`Bu alan gerekli`),
-    afterScrollingXAmount: Yup.string()
-      .test('Max', 'Bu alan 100`den büyük olmamalı', (value) => {
-        return Number(value) < 100;
-      })
-      .required(`Bu alan gerekli`),
-    logo: Yup.string()
-      .test('filePresence', 'Lütfen logonuzu yükleyin', (value) => {
-        return value !== '';
-      })
-      .required(`Bu alan gerekli`),
-    visitorDevice: Yup.string().required(`Bu alan gerekli`),
-    browserLanguage: Yup.string()
-      .required(`Bu alan gerekli`)
-      .test('length', 'En az bir dil girmelisiniz', (value) => {
-        console.log(value);
-        return (value && value?.length > 0) || false;
-      }),
-    onExitIntent: Yup.string().required(`Bu alan gerekli`),
-    webHookTypes: Yup.string().required(`Bu alan gerekli`),
-    urlBrowsing: Yup.string()
-      .required(`Bu alan gerekli`)
-      .matches(
-        /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-        'Lütfen bir URL girin'
-      ),
-    webHookUrl: Yup.string()
-      .required(`Bu alan gerekli`)
-      .matches(
-        /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-        'Lütfen bir URL girin!'
-      ),
-    content: Yup.array().of(
-      Yup.object().shape({
-        value: Yup.string().required('Bu alan gerekli'),
-      })
-    ),
-  });
-
-  const validate = (values: formStateInterface): ValidationErrors => {
-    let errors: { [value: string]: string } = {};
-    try {
-      validationSchema.validateSync(values, {
-        abortEarly: false,
-      });
-    } catch (error: unknown) {
-      if (error instanceof Yup.ValidationError) {
-        errors = { ...convertYupErrorsToFieldErrors(error) };
-      }
-    }
-
-    return errors;
-  };
-
-  function convertYupErrorsToFieldErrors(yupErrors: Yup.ValidationError) {
-    return yupErrors.inner?.reduce((errors, { path, message }) => {
-      if (get(errors, path as string)) {
-        set(
-          errors,
-          path as string,
-          get(errors, path as string) + ' ' + message
-        );
-      } else {
-        set(errors, path as string, message);
-      }
-      return errors;
-    }, {});
-  }
 
   return (
     <div className="w-[378px] mt-[88px]">
@@ -180,6 +80,7 @@ const Settings = (): JSX.Element => {
             return 1;
           },
           setImage: async ([field, value], state, { changeValue }) => {
+            setImageLoading([...imageLoading, field]);
             await uploadFile(field, value).then((image) => {
               changeValue(state, field, () => image);
               // logic to update final form fields with new fields manually. why? because changeValue didn't work in async logic.
@@ -212,8 +113,8 @@ const Settings = (): JSX.Element => {
         }}
         // initialValuesEqual={deepEqual}
         initialValuesEqual={(a, b) => a?.template_id == b?.template_id}
-        subscription={{ submitting: true, pristine: true }}
-        render={({ handleSubmit, form }) => {
+        // subscription={{ submitting: true, pristine: true }}
+        render={({ handleSubmit, form, errors }) => {
           return (
             <form onSubmit={handleSubmit}>
               <FormStateToRedux form="settingsForm" />
@@ -232,7 +133,6 @@ const Settings = (): JSX.Element => {
                   size={formValues?.['size']}
                 />
               </div>
-
               <div className="mt-[22px]">
                 <PositionSetting
                   setValue={form.mutators.setValue}
@@ -246,15 +146,6 @@ const Settings = (): JSX.Element => {
                 <span className="font-normal text-sm leading-4">
                   Upload Logo
                 </span>
-                {/* <Field
-                  parse={(x) => x}
-                  name={`logo`}
-                  component={FileInput}
-                  getFiles={(files: FileWithPath[]) =>
-                    form.mutators.setImage(`logo`, files[0])
-                  }
-                  loading={imageLoading.includes(`logo`)}
-                /> */}
                 <Field
                   parse={(x) => x}
                   name={`logo`}
@@ -433,6 +324,12 @@ const Settings = (): JSX.Element => {
                       defaultValue="en-EN"
                       disabled={!formValues.inputStatus.browserLanguage}
                     />
+                    {errors?.browserLanguage &&
+                      formValues.inputStatus.browserLanguage && (
+                        <div className="text-red-500 p-2">
+                          {errors?.browserLanguage}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="mt-8">
@@ -456,9 +353,6 @@ const Settings = (): JSX.Element => {
               </div>
 
               <CodeSectionSetting formValues={formValues} />
-
-              {/* <pre>{JSON.stringify(formValues, 0, 2)}</pre> */}
-              {/* <FormStateFromRedux form="settingsForm" /> */}
             </form>
           );
         }}
