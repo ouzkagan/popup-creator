@@ -20,7 +20,7 @@ const makeStore = () =>
   });
 
 export default makeStore;
-export const mainStore = (preloadedState: PreloadedState<RootState>) =>
+export const mainStore = (preloadedState?: PreloadedState<RootState>) =>
   configureStore({
     reducer: rootReducer,
     preloadedState,

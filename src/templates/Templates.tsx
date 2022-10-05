@@ -61,6 +61,7 @@ const Templates = (): JSX.Element => {
                   onClick={() =>
                     dispatch(set_template(popupTemplate.template_id))
                   }
+                  data-testid={`select-template-${popupTemplate.template_id}`}
                 >
                   Select template
                 </button>

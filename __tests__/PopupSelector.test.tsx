@@ -1,6 +1,7 @@
 import { render } from 'react-dom';
 import { formStateInterface } from '../src/store/features/settings.slice';
 //ignore
+import PopupSelector from '@/components/Popups';
 import POPUP_001 from '../src/components/Popups/POPUP_001';
 const initialSettings: formStateInterface = {
   template_id: 'POPUP_001',
@@ -31,5 +32,10 @@ describe('popupSelector test', () => {
     const root = document.createElement('div');
 
     render(POPUP_001({ popupData: initialSettings }), root);
+  });
+  it('can select a popup via popupSelector', () => {
+    const root = document.createElement('div');
+
+    render(PopupSelector(initialSettings), root);
   });
 });

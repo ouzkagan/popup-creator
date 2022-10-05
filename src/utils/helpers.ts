@@ -83,7 +83,6 @@ export const asAString = (_formValues: formStateInterface) => {
 };
 
 export const valuePicker = (data: formStateInterface, id: string) => {
-  console.log('incoming;', data, 'id: ', id);
   return (
     data[id as keyof typeof data] ||
     data[id as keyof typeof data] !== '' ||
