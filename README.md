@@ -33,9 +33,10 @@ Deployed at: [https://popup-creator.vercel.app/](https://popup-creator.vercel.ap
 - Validating constant and dynamic fields with YUP
 - Syncing Final-form with Redux via FormSpy
 - Persisting form information between tabs with Next-redux-wrapper
+- Custom Multiselect component with cached values
 - Content stored at [CDN cloudinary](https://cloudinary.com)
 - Eslint, prettier for linting and formatting
-- Linting and testing on commit with Husky
+- Linting and testing pre commit with Husky
 
 # Functionalities
 
