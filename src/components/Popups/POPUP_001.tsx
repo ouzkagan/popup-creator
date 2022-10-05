@@ -1,5 +1,5 @@
 import { formStateInterface } from '@/store/features/settings.slice';
-import { colorPicker, contentPicker, valuePicker } from '@/utils/helpers';
+import { colorPicker, contentPicker, valuePicker } from '../../utils/helpers';
 interface Props {
   popupData: formStateInterface;
 }

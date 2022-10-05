@@ -1,7 +1,7 @@
-import { formStateInterface } from '@/store/features/settings.slice';
 import { render } from 'react-dom';
+import { formStateInterface } from '../src/store/features/settings.slice';
 //ignore
-import POPUP_001 from 'src/components/Popups/POPUP_001';
+import POPUP_001 from '../src/components/Popups/POPUP_001';
 describe('popupSelector test', () => {
   test('Can pick a popup component', () => {
     const initialSettings: formStateInterface = {
