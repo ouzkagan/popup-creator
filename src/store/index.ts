@@ -2,6 +2,7 @@ import {
   Action,
   combineReducers,
   configureStore,
+  PreloadedState,
   ThunkAction,
 } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
@@ -19,6 +20,11 @@ const makeStore = () =>
   });
 
 export default makeStore;
+export const mainStore = (preloadedState: PreloadedState<RootState>) =>
+  configureStore({
+    reducer: rootReducer,
+    preloadedState,
+  });
 
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof makeStore>;

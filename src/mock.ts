@@ -43,11 +43,6 @@ export const popupTemplates: PopupTemplate[] = [
         type: 'text',
         value: 'Continue',
       },
-      {
-        name: 'image_1',
-        type: 'image',
-        value: `/assets/example-popup-bg.png`,
-      },
     ],
   },
   {

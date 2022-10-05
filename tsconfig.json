@@ -6,7 +6,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@/components/*": ["src/components/*"],
-      "@/templates/*": ["src/templates/*"]
+      "@/templates/*": ["src/templates/*"],
+      "@/pages/*": ["src/pages/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,
