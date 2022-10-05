@@ -20,15 +20,15 @@ interface Props {
 }
 export default function POPUP_010({ popupData }: Props) {
   return (
-    <div className="w-[740px] h-[468px] grid grid-cols-2  bg-white shadow-xl   rounded-l-[40px] max-w-full max-h-full">
+    <div className="w-[740px] h-[405px] grid grid-cols-2  bg-white shadow-xl   rounded-l-[40px] max-w-full max-h-full">
       <div className="w-[300px] mx-auto max-w-full">
         <div className="flex flex-col justify-center items-center  mx-auto">
-          <h3 className="text-4xl	font-semibold  text-black leading-[3.375rem] mt-16">
+          <h3 className="text-4xl	font-semibold  text-black leading-[3.375rem] mt-[49px]">
             {/* {popupData?.content?.[0]?.value || '$headline'} */}
             {valuePicker(popupData, 'headline')}
           </h3>
 
-          <p className="max-w-[459px] mt-2 font-[400] text-base leading-6 tracking-tighter">
+          <p className="max-w-[459px] mt-[10px] font-[400] text-base leading-6 tracking-tighter">
             {valuePicker(popupData, 'description')}
           </p>
           <form

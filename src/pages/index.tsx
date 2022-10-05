@@ -34,7 +34,7 @@ const Home = () => {
     <div className=" bg-white">
       {/* {MyResponse} */}
       <div className="w-full bg-gradient-to-b from-white to-gray-200">
-        <section className="container mx-auto px-32 font-inter ">
+        <section className="container mx-auto font-inter ">
           <nav className="mt-6 flex w-full items-center justify-between">
             <div className="flex w-full items-center justify-start">
               <a href="#" className="mr-20 flex items-center justify-center">
@@ -138,21 +138,21 @@ const Home = () => {
             </ul>
           </nav>
         </section>
-        <section className="container mx-auto px-32 pb-[317px]">
-          <h1 className=" leading-20 mt-16 text-7xl font-semibold tracking-tight text-black">
+        <section className="container mx-auto pb-[317px]">
+          <h1 className=" leading-20 mt-[90px] text-7xl font-semibold tracking-tight leading-[80px] text-black">
             Simple modal <br />
             card creator
           </h1>
-          <p className="mt-5  text-3xl font-normal">
+          <p className="mt-5  text-3xl font-normal leading-[44px] tracking-tighter">
             A utility-first CSS framework packed with classeslike flex, pt-4,
             text-center and rotate-90 that can becomposed to build any design,
             directly in your markup.
           </p>
-          <button className="mt-16 whitespace-nowrap rounded-xl  bg-purple-600 py-5 px-8 text-center text-lg font-medium leading-5 tracking-tight text-white ">
+          <button className="mt-[60px] whitespace-nowrap rounded-xl  bg-purple-600 py-5 px-8 text-center text-lg font-medium leading-5 tracking-half-tighter text-white ">
             Try it out now
           </button>
           <div className="mt-10 flex ">
-            <span className="flex items-center text-xs font-light leading-4 text-black">
+            <span className="flex items-center text-[13px] font-[400] leading-4 text-black gap-[10px] mr-[25px]">
               <svg
                 width="16"
                 height="16"
@@ -167,7 +167,7 @@ const Home = () => {
               </svg>
               Free and paid plans
             </span>
-            <span className="flex items-center text-xs leading-4 text-black">
+            <span className="flex items-center text-[13px] leading-4 text-black gap-[10px] mr-[25px]">
               <svg
                 width="16"
                 height="16"
@@ -180,9 +180,9 @@ const Home = () => {
                   fill="black"
                 />
               </svg>
-              Free and paid plans
+              Setup in minutes
             </span>
-            <span className="flex items-center text-xs leading-4 text-black">
+            <span className="flex items-center text-[13px] leading-4 text-black gap-[10px] mr-[25px]">
               <svg
                 width="16"
                 height="16"
@@ -195,47 +195,54 @@ const Home = () => {
                   fill="black"
                 />
               </svg>
-              Free and paid plans
+              No credit card required*
             </span>
           </div>
         </section>
       </div>
 
       {/* popup example */}
-      <div className="container relative mx-auto px-32 ">
+      <div className="container relative mx-auto ">
         <div className="rounded-xl-[40px] absolute top-[-227px] grid  h-[468px] w-[800px] grid-cols-2 rounded-[40px]  bg-white">
-          <div className="mx-auto flex w-[300px] flex-col items-center justify-center">
-            <svg
-              width="106"
-              height="38"
-              viewBox="0 0 106 38"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7.98565 0H6.88287C3.04215 0 0 3.03618 0 6.87437V29.0633C0 32.9588 3.17525 36.0141 6.9209 36.0141H7.68143C11.6552 36.0141 14.7354 32.9588 14.7354 28.4523V21.2342H9.22152V28.5859C9.22152 29.3688 8.87928 30.6482 7.51031 30.6482H7.2061C6.31247 30.6482 5.53291 29.9226 5.53291 28.6623V7.50452C5.53291 6.47337 6.29345 5.51859 7.2061 5.51859H7.51031C8.44197 5.51859 9.22152 6.47337 9.22152 7.50452V14.3407H14.7354V6.87437C14.7354 3.01709 11.6552 0 7.98565 0ZM45.6133 11.3427L41.4683 0.763819H35.7453V26.6191L41.2592 25.8553V13.7296L45.6133 22.4945L49.8913 13.5769V25.2442H55.4052V0.763819H50.0244L45.6133 11.3618V11.3427ZM81.5677 17.396H87.5189V12.5457H81.5677V5.63317H88.1083V0.763819H76.0538V27.4211C80.541 28.3568 84.6859 29.2734 88.4126 30.5146V25.2251L81.5677 23.9266V17.4342V17.396ZM103.414 18.1598C104.745 17.396 105.848 15.8111 105.848 14.0925V5.4995C105.848 2.84523 103.718 0.744724 100.923 0.744724H91.0935V31.603L96.5693 33.7417V20.2221C96.5693 20.2221 100.41 19.7829 100.41 23.6211V35.3457L106 38V22.1508C106 20.0884 104.84 18.6181 103.433 18.1598H103.414ZM100.391 13.4432C100.391 14.4744 100.125 14.99 98.889 14.99H96.5503V5.4995H98.889C100.125 5.4995 100.391 5.93869 100.391 7.00804V13.4432ZM25.8203 0.0763819H24.7175C20.8768 0.0763819 17.8726 3.11256 17.8726 6.98895V30.5146L23.3865 28.8342V21.7498H27.0561V28.1849L32.494 27.0774V6.98895C32.494 3.09347 29.4518 0.0763819 25.8203 0.0763819ZM27.0561 16.6131H23.3865V7.38995C23.3865 6.49246 24.1471 5.57588 25.0597 5.57588H25.3639C26.2956 5.57588 27.0371 6.51156 27.0371 7.38995V16.6131H27.0561ZM68.6766 0.763819H58.8086V25.3779L64.3605 25.6834V18.9809H68.6766C71.4526 18.9809 73.5821 16.8231 73.5821 13.9588V5.4995C73.5821 2.84523 71.4526 0.744724 68.6766 0.744724V0.763819ZM68.1252 12.6985C68.1252 13.8251 67.821 14.3216 66.6231 14.3216H64.3225V5.57588H66.6231C67.821 5.57588 68.1252 5.84322 68.1252 6.91256V12.6985Z"
-                fill="#E60000"
-              />
-            </svg>
-            <h3 className="mt-10	text-4xl  font-semibold leading-[3.375rem] text-black">
-              Join the club
-            </h3>
-            <p className="mt-2 text-lg  leading-6 text-black">
-              Subscribe and Get an Extra <br /> <span>25% Off</span> on your
-              first purchase.
-            </p>
-            <div className="mt-8 w-full">
-              <input
-                type="text"
-                className="h-[48px] w-full rounded-xl border border-solid pl-3 text-base leading-6  text-gray-600"
-                name=""
-                id=""
-                placeholder="Email address"
-              />
+          <div className="w-full h-full">
+            <div className="mx-auto flex w-[300px] h-full flex-col items-center mt-[45px]">
+              <svg
+                width="106"
+                height="38"
+                viewBox="0 0 106 38"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M7.98565 0H6.88287C3.04215 0 0 3.03618 0 6.87437V29.0633C0 32.9588 3.17525 36.0141 6.9209 36.0141H7.68143C11.6552 36.0141 14.7354 32.9588 14.7354 28.4523V21.2342H9.22152V28.5859C9.22152 29.3688 8.87928 30.6482 7.51031 30.6482H7.2061C6.31247 30.6482 5.53291 29.9226 5.53291 28.6623V7.50452C5.53291 6.47337 6.29345 5.51859 7.2061 5.51859H7.51031C8.44197 5.51859 9.22152 6.47337 9.22152 7.50452V14.3407H14.7354V6.87437C14.7354 3.01709 11.6552 0 7.98565 0ZM45.6133 11.3427L41.4683 0.763819H35.7453V26.6191L41.2592 25.8553V13.7296L45.6133 22.4945L49.8913 13.5769V25.2442H55.4052V0.763819H50.0244L45.6133 11.3618V11.3427ZM81.5677 17.396H87.5189V12.5457H81.5677V5.63317H88.1083V0.763819H76.0538V27.4211C80.541 28.3568 84.6859 29.2734 88.4126 30.5146V25.2251L81.5677 23.9266V17.4342V17.396ZM103.414 18.1598C104.745 17.396 105.848 15.8111 105.848 14.0925V5.4995C105.848 2.84523 103.718 0.744724 100.923 0.744724H91.0935V31.603L96.5693 33.7417V20.2221C96.5693 20.2221 100.41 19.7829 100.41 23.6211V35.3457L106 38V22.1508C106 20.0884 104.84 18.6181 103.433 18.1598H103.414ZM100.391 13.4432C100.391 14.4744 100.125 14.99 98.889 14.99H96.5503V5.4995H98.889C100.125 5.4995 100.391 5.93869 100.391 7.00804V13.4432ZM25.8203 0.0763819H24.7175C20.8768 0.0763819 17.8726 3.11256 17.8726 6.98895V30.5146L23.3865 28.8342V21.7498H27.0561V28.1849L32.494 27.0774V6.98895C32.494 3.09347 29.4518 0.0763819 25.8203 0.0763819ZM27.0561 16.6131H23.3865V7.38995C23.3865 6.49246 24.1471 5.57588 25.0597 5.57588H25.3639C26.2956 5.57588 27.0371 6.51156 27.0371 7.38995V16.6131H27.0561ZM68.6766 0.763819H58.8086V25.3779L64.3605 25.6834V18.9809H68.6766C71.4526 18.9809 73.5821 16.8231 73.5821 13.9588V5.4995C73.5821 2.84523 71.4526 0.744724 68.6766 0.744724V0.763819ZM68.1252 12.6985C68.1252 13.8251 67.821 14.3216 66.6231 14.3216H64.3225V5.57588H66.6231C67.821 5.57588 68.1252 5.84322 68.1252 6.91256V12.6985Z"
+                  fill="#E60000"
+                />
+              </svg>
+              <h3 className="mt-8	text-[40px]  font-semibold leading-[3.375rem] tracking-half-tighter text-black">
+                Join the club
+              </h3>
+              <p className="mt-[10px] text-lg  leading-6 text-black tracking-[-0.01em]">
+                Subscribe and Get an Extra <br /> <span>25% Off</span> on your
+                first purchase.
+              </p>
+              <div className="mt-[30px] w-full">
+                <input
+                  type="text"
+                  className="h-[48px] w-full rounded-xl border border-solid pl-3 text-base leading-6  text-gray-600"
+                  name=""
+                  id=""
+                  placeholder="Email address"
+                />
+              </div>
+              <button className="mt-[15px] h-[48px] w-full whitespace-nowrap rounded-xl  bg-black py-3 px-24 text-center text-base font-medium	leading-4 tracking-tight text-white ">
+                Subscribe
+              </button>
+              <p className="mt-[20px] font-[400] text-[12px] text-[#777777] leading-[18px]">
+                By signing up, you agree to{' '}
+                <span className="underline">Privacy Policy</span> and{' '}
+                <span className="underline">Terms of Use</span>.
+              </p>
             </div>
-            <button className="mt-4 h-[48px] w-full whitespace-nowrap rounded-xl  bg-black py-3 px-24 text-center text-base font-medium	leading-4 tracking-tight text-white ">
-              Try for free
-            </button>
           </div>
           <div className="relative  ">
             {/* <img src="/51951afc5aa43fb6d90f01eeeec2b12c.png" alt="me" /> */}
@@ -304,58 +311,65 @@ const Home = () => {
                 </span>
               </div>
             </div>
+            <div className="relative ">
+              <span className="absolute top-[358px] left-[30px] h-full w-full font-[600] text-[36px] leading-10 tracking-half-tighter text-white">
+                Mediterranean
+                <br />
+                Sneakers®
+              </span>
+            </div>
             <div
-              className="h-full	rounded-r-[40px] bg-cover bg-left-42"
+              className="h-full	rounded-r-[40px] bg-cover"
               style={{
-                backgroundImage: `url(/assets/51951afc5aa43fb6d90f01eeeec2b12c.png)`,
+                backgroundImage: `url(/assets/example-popup-bg.png)`,
               }}
             ></div>
           </div>
         </div>
       </div>
       <section className=" h-[630px] bg-[#666666] text-white">
-        <div className="container mx-auto flex justify-start px-32 pt-[361px] pb-[137px]">
+        <div className="container mx-auto flex justify-start pt-[361px] pb-[137px]">
           <div className="flex justify-start gap-[120px]">
             <div>
-              <div className="text-[80px]  font-semibold leading-[80px]">
-                3X
+              <div className="text-[72px] tracking-half-tighter  font-semibold leading-[80px] min-w-[120px]">
+                3x
               </div>
-              <p>
+              <p className="text-[16px] leading-[22px] tracking-half-tighter mt-[15px] font-medium">
                 Increase
                 <br />
                 Conversion Rate
               </p>
             </div>
             <div>
-              <div className="text-[80px]  font-semibold leading-[80px]">
+              <div className="text-[72px] tracking-half-tighter  font-semibold leading-[80px] min-w-[120px]">
                 120%
               </div>
-              <p>
+              <p className="text-[16px] leading-[22px] tracking-half-tighter mt-[15px] font-medium">
                 Email
                 <br />
                 Subscribers
               </p>
             </div>
             <div>
-              <div className="text-[80px]  font-semibold leading-[80px]">
+              <div className="text-[72px] tracking-half-tighter  font-semibold leading-[80px] min-w-[120px]">
                 390%
               </div>
-              <p>
+              <p className="text-[16px] leading-[22px] tracking-half-tighter mt-[15px] font-medium">
                 More Customer
                 <br />
                 Engagement
               </p>
             </div>
             <div>
-              <p className=" text-4xl font-semibold tracking-tighter">
+              <p className=" text-4xl leading-[44px] font-semibold tracking-tighter">
                 Popupsmart meets all your business needs.
               </p>
             </div>
           </div>
         </div>
       </section>
-      <section className="container mx-auto px-32">
-        <h2 className="mt-24 text-4xl font-semibold leading-[48px] tracking-half-tighter	text-black">
+      <section className="container mx-auto">
+        <h2 className="mt-[90px] text-4xl font-semibold leading-[48px] tracking-half-tighter	text-black">
           Modal Card Generator
         </h2>
         <p className="mt-4 max-w-[459px] text-base font-[400] leading-6 tracking-tighter">
@@ -366,7 +380,7 @@ const Home = () => {
 
         <Templates />
         {/* STEPS */}
-        <div className="flex h-[3500px] gap-[76px]">
+        <div className="flex h-[3500px] gap-[76px] font-inter">
           <Settings />
 
           <Preview />

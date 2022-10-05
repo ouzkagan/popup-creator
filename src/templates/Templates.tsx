@@ -37,12 +37,12 @@ const Templates = (): JSX.Element => {
     return popupTemplates.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, recordsPerPage, popupTemplates]);
   return (
-    <div className="mt-24">
+    <div className="mt-[90px]">
       <div className="flex gap-[15px] items-center mb-8">
-        <span className="font-semibold text-base leading-6 text-center text-black tracking-half-tighter w-10 h-10  rounded-full bg-gray-300	flex justify-center items-center">
+        <span className="font-semibold text-[18px] leading-6 text-center text-black tracking-half-tighter w-[36px] h-[36px]  rounded-full bg-[#eaeaea]	flex justify-center items-center">
           1
         </span>
-        <p className="font-semibold text-lg leading-9 text-black tracking-half-tighter ">
+        <p className="font-semibold text-lg leading-9 text-black tracking-half-tighter  text-[18px]  text-center ">
           Choose your template
         </p>
       </div>
@@ -52,14 +52,13 @@ const Templates = (): JSX.Element => {
         {paginatedPopups.map((popupTemplate) => {
           return (
             <div
-              className="border border-[#EAEAEA] border-solid h-48 bg-[#F5F5F5] flex items-center justify-center relative group"
+              className="border border-[#EAEAEA] border-solid h-[200px] bg-[#F5F5F5] flex items-center justify-center relative group"
               key={popupTemplate.template_id}
             >
               <div className="hidden absolute w-full h-full top-0 left-0 bg-[#7D4AEA]/25 z-10 group-hover:flex  items-center justify-center ">
                 <button
                   className="rounded-xl bg-white px-6 py-4 whitespace-nowrap  font-medium text-base leading-4 text-center text-purple-600 tracking-tight	"
                   onClick={() =>
-                    // dispatch(set_template('t' + ((index % 3) + 1).toString()))
                     dispatch(set_template(popupTemplate.template_id))
                   }
                 >
@@ -85,13 +84,15 @@ const Templates = (): JSX.Element => {
           );
         })}
       </div>
-      <ul className="mt-[33px] flex items-center bg-[#F5F5F5] rounded-xl max-w-min h-12 p-[3px]">
+      <ul className="mt-[28px] flex items-center bg-[#F5F5F5] rounded-xl max-w-min h-12 p-[3px]">
         {pageNumbers.map((pageNumber, index) => {
           return (
             <li
               key={pageNumber}
-              className={`w-10 h-10 flex justify-center items-center text-sm leading-4 text-center text-black rounded-[10px] cursor-pointer ${
-                currentPage === index + 1 ? 'bg-white' : 'text-[#777777]'
+              className={`w-10 h-10 flex justify-center items-center text-sm leading-[18px] font-semibold text-center  rounded-[10px] cursor-pointer ${
+                currentPage === index + 1
+                  ? 'text-black bg-white'
+                  : 'text-[#777]'
               }`}
               onClick={() => setCurrentPage(index + 1)}
             >

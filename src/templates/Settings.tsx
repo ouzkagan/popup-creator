@@ -109,6 +109,7 @@ const Settings = (): JSX.Element => {
     browserLanguage: Yup.string()
       .required(`Bu alan gerekli`)
       .test('length', 'En az bir dil girmelisiniz', (value) => {
+        console.log(value);
         return (value && value?.length > 0) || false;
       }),
     onExitIntent: Yup.string().required(`Bu alan gerekli`),
@@ -163,7 +164,7 @@ const Settings = (): JSX.Element => {
   }
 
   return (
-    <div className="w-[378px] mt-24">
+    <div className="w-[378px] mt-[88px]">
       <Form
         onSubmit={onSubmit}
         validate={validate}
@@ -210,32 +211,32 @@ const Settings = (): JSX.Element => {
           return (
             <form onSubmit={handleSubmit}>
               <FormStateToRedux form="settingsForm" />
-              <div className="flex gap-[15px] items-center mb-8">
-                <span className="font-semibold text-base leading-6 text-center text-black tracking-half-tighter w-10 h-10  rounded-full bg-gray-300	flex justify-center items-center">
+              <div className="flex gap-[15px] items-center">
+                <span className="font-semibold text-[18px] leading-6 text-center text-black tracking-half-tighter w-[36px] h-[36px]  rounded-full bg-[#eaeaea]	flex justify-center items-center">
                   2
                 </span>
-                <div className="font-semibold text-lg leading-9 text-black tracking-half-tighter ">
+                <div className="font-semibold text-lg leading-9 text-black tracking-half-tighter  text-[18px]  text-center ">
                   Appearance
                   <span className="font-normal"> (Size, colors, logo)</span>
                 </div>
               </div>
-              <div className="mt-8">
+              <div className="mt-[22px]">
                 <SizeSetting
                   setValue={form.mutators.setValue}
                   size={formValues?.['size']}
                 />
               </div>
 
-              <div className="mt-8">
+              <div className="mt-[22px]">
                 <PositionSetting
                   setValue={form.mutators.setValue}
                   position={formValues?.['position']}
                 />
               </div>
-              <div className="mt-8">
+              <div className="mt-[22px]">
                 <ColorSetting setValue={form.mutators.setValue} />
               </div>
-              <div className="mt-8">
+              <div className="mt-[22px]">
                 <span className="font-normal text-sm leading-4">
                   Upload Logo
                 </span>
