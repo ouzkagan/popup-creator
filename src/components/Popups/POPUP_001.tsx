@@ -9,10 +9,10 @@ export default function POPUP_001({ popupData }: Props) {
       data-testid="POPUP_001"
       className="w-[480px] h-[446px] relative  bg-white shadow-xl   rounded-l-[40px] max-w-full max-h-full"
     >
-      <div className="w-full mx-auto max-w-full">
+      <div className="w-full mx-auto max-w-full pt-4">
         <div className="flex flex-col justify-center items-center  mx-auto w-[350px] py-[40px]">
           <div
-            className="rounded-full bg-purple-600 flex justify-center items-center p-[21px]"
+            className="rounded-full bg-purple-600 flex justify-center items-center p-[21px] "
             style={{
               backgroundColor: popupData?.color || '$color',
             }}
