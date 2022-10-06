@@ -23,6 +23,7 @@ Deployed at: [https://popup-creator.vercel.app/](https://popup-creator.vercel.ap
 - Redux-toolkit
 - Next-redux-wrapper
 - Storybook
+- React Dropzone
 - Jest for unit testing
 - Husky for git hooks
 
