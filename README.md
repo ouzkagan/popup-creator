@@ -1,4 +1,4 @@
-# React To-do App with mockapi.com
+# React Popup Creator With Nextjs, Redux and Final Form
 
 A service made with NextJS and Redux-Toolkit to create beautiful popups for your website.
 
